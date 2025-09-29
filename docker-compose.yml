@@ -1,0 +1,39 @@
+services:
+  apache-php:
+    build: .
+    container_name: apache-php
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: CHANGEME
+      MYSQL_DATABASE: maintenance
+      MYSQL_USER: maintenance
+      MYSQL_PASSWORD: CHANGEME
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./db_init/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: CHANGEME
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
+    restart: always
+
+
