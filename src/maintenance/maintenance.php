@@ -156,7 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <td><?= htmlspecialchars($row['type_of_service']) ?></td>
             <td><?= htmlspecialchars($row['description']) ?></td>
             <td>
-                <a href="view_maintenance.php?id=<?= $row['id'] ?>&type=<?= $refrigeration_id ? 'refrigeration' : 'trailer' ?>" class="btn btn-info">View Maintenance</a>
+                <a href="view_maintenance.php?id=<?= $row['id'] ?>&type=<?= $refrigeration_id ? 'refrigeration' : 'trailer' ?>" class="btn btn-info">View</a>
+                <a href="view_maintenance.php?id=<?= $row['id'] ?>&type=<?= $refrigeration_id ? 'refrigeration' : 'trailer' ?>&edit=1" class="btn btn-warning">Edit</a>
             </td>
         </tr>
     <?php endwhile; ?>
