@@ -1,4 +1,3 @@
-- Password change
 - Validate all inputs
     - Clean all inputs before doing anything
 - Click an add button and page scrolls down to see all the add stuff  for all tabs
