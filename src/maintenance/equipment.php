@@ -86,7 +86,7 @@ $archived = $pdo->query('SELECT * FROM trailers WHERE archived = 1')->fetchAll()
                 <td><?= htmlspecialchars($trl['length']) ?></td>
                 <td>
                     <a href="equipment.php?archive=<?= $trl['id'] ?>" class="btn btn-warning btn-sm">Archive</a>
-                    <a href="maintenance.php?trl_id=<?= $trl['id'] ?>" class="btn btn-info btn-sm">View Maintenance</a>
+                    <a href="maintenance.php?trl_id=<?= $trl['id'] ?>&type=trailer" class="btn btn-info btn-sm">View Maintenance</a>
                     <button class="btn btn-secondary btn-sm" onclick="editTrl(<?= $trl['id'] ?>, <?= $trl['axles'] ?>, '<?= htmlspecialchars(addslashes($trl['door_type'])) ?>', <?= $trl['length'] ?>)">Edit</button>
                 </td>
             </tr>

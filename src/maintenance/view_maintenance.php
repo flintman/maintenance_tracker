@@ -2,8 +2,10 @@
 require 'config.php';
 include 'templates/header.php';
 
-// Get the maintenance ID from the query string
+// Get the maintenance ID and type from the query string
 $maintenance_id = $_GET['id'] ?? null;
+$type = $_GET['type'] ?? null;
+
 if (!$maintenance_id) {
     echo "No maintenance record selected.";
     exit;
@@ -21,10 +23,13 @@ if (!$maintenance) {
 
 // Decode photos JSON
 $photos = $maintenance['photos'] ? json_decode($maintenance['photos'], true) : [];
+
+// Determine the back link based on the type
+$backLink = $type === 'refrigeration' ? 'refrigeration.php' : 'equipment.php';
 ?>
 
 <h2>Maintenance Details</h2>
-<a href="maintenance.php" class="btn btn-secondary mb-3">Back to Maintenance</a>
+<a href="<?= $backLink ?>" class="btn btn-secondary mb-3">Back to <?= $type === 'refrigeration' ? 'Refrigeration Units' : 'Trailers' ?></a>
 
 <table class="table table-bordered">
     <tr><th>Type of Service</th><td><?= htmlspecialchars($maintenance['type_of_service']) ?></td></tr>

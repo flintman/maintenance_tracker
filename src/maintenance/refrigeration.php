@@ -106,7 +106,7 @@ $trailers = $pdo->query('SELECT trl_id FROM trailers')->fetchAll();
                             <input type="hidden" name="id" value="<?= $unit['id'] ?>">
                             <button name="archive" class="btn btn-warning btn-sm">Archive</button>
                         </form>
-                        <a href="maintenance.php?refrigeration_id=<?= $unit['id'] ?>" class="btn btn-info btn-sm">View Maintenance</a>
+                        <a href="maintenance.php?refrigeration_id=<?= $unit['id'] ?>&type=refrigeration" class="btn btn-info btn-sm">View Maintenance</a>
                         <button class="btn btn-secondary btn-sm" onclick="editUnit(<?= $unit['id'] ?>, '<?= htmlspecialchars($unit['trl_id']) ?>', '<?= htmlspecialchars($unit['model']) ?>', '<?= htmlspecialchars($unit['serial']) ?>', '<?= htmlspecialchars($unit['refrigerant']) ?>')">Edit</button>
                     </td>
                 </tr>
