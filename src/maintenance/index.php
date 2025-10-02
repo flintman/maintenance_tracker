@@ -1,6 +1,5 @@
 <?php
-session_start();
-require 'config.php';
+require_once 'config.php';
 if (isset($_SESSION['user_id'])) {
     include 'equipment.php';
     exit;

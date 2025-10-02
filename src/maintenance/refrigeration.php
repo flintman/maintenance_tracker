@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require_once 'config.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -10,20 +10,33 @@ if (!isset($_SESSION['user_id'])) {
 // Handle add/edit/archive
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add'])) {
+        $trl_id = cleanInput($_POST['trl_id'], 'int');
+        $model = cleanInput($_POST['model']);
+        $serial = cleanInput($_POST['serial']);
+        $refrigerant = cleanInput($_POST['refrigerant']);
+
         $stmt = $pdo->prepare('INSERT INTO refrigeration (trl_id, model, serial, refrigerant) VALUES (?, ?, ?, ?)');
-        $stmt->execute([$_POST['trl_id'], $_POST['model'], $_POST['serial'], $_POST['refrigerant']]);
+        $stmt->execute([$trl_id, $model, $serial, $refrigerant]);
     }
     if (isset($_POST['edit'])) {
+        $id = cleanInput($_POST['id'], 'int');
+        $trl_id = cleanInput($_POST['trl_id'], 'int');
+        $model = cleanInput($_POST['model']);
+        $serial = cleanInput($_POST['serial']);
+        $refrigerant = cleanInput($_POST['refrigerant']);
+
         $stmt = $pdo->prepare('UPDATE refrigeration SET trl_id=?, model=?, serial=?, refrigerant=? WHERE id=?');
-        $stmt->execute([$_POST['trl_id'], $_POST['model'], $_POST['serial'], $_POST['refrigerant'], $_POST['id']]);
+        $stmt->execute([$trl_id, $model, $serial, $refrigerant, $id]);
     }
     if (isset($_POST['archive'])) {
+        $id = cleanInput($_POST['id'], 'int');
         $stmt = $pdo->prepare('UPDATE refrigeration SET archived=1 WHERE id=?');
-        $stmt->execute([$_POST['id']]);
+        $stmt->execute([$id]);
     }
     if (isset($_POST['unarchive'])) {
+        $id = cleanInput($_POST['id'], 'int');
         $stmt = $pdo->prepare('UPDATE refrigeration SET archived=0 WHERE id=?');
-        $stmt->execute([$_POST['id']]);
+        $stmt->execute([$id]);
     }
 }
 

@@ -1,14 +1,17 @@
 <?php
-session_start();
-require 'config.php';
+require_once 'config.php';
 include 'templates/header.php';
 if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
 // Determine context: refrigeration or trailer
-$refrigeration_id = $_GET['refrigeration_id'] ?? null;
-$trl_id = $_GET['trl_id'] ?? null;
+$refrigeration_id = cleanInput($_GET['refrigeration_id'] ?? null, 'int');
+$trl_id = cleanInput($_GET['trl_id'] ?? null, 'int');
+
+// Ensure refrigeration_id and trl_id are properly set to NULL if empty
+$refrigeration_id = $refrigeration_id ?: null;
+$trl_id = $trl_id ?: null;
 
 if (!$refrigeration_id && !$trl_id) {
     echo "No equipment selected.";
@@ -27,17 +30,17 @@ $eq = $stmt->fetch();
 
 // Add maintenance
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_maintenance'])) {
-    $refrigeration_id = $_POST['refrigeration_id'] ?? null;
-    $trl_id = $_POST['trl_id'] ?? null;
-    $type_of_service = $_POST['type_of_service'] ?? '';
-    $description = $_POST['description'] ?? '';
-    $costs_of_parts = $_POST['costs_of_parts'] ?? 0;
-    $performed_at = $_POST['performed_at'] ?? null;
-    $performed_by = $_POST['performed_by'] ?? '';
+    $refrigeration_id = cleanInput($_POST['refrigeration_id'] ?? null, 'int');
+    $trl_id = cleanInput($_POST['trl_id'] ?? null, 'int');
+    $type_of_service = cleanInput($_POST['type_of_service']);
+    $description = cleanInput($_POST['description']);
+    $costs_of_parts = cleanInput($_POST['costs_of_parts'], 'int');
+    $performed_at = cleanInput($_POST['performed_at']);
+    $performed_by = cleanInput($_POST['performed_by']);
 
-    // Validate refrigeration_id and trl_id immediately after retrieving from POST
-    $refrigeration_id = isset($_POST['refrigeration_id']) && $_POST['refrigeration_id'] !== '' ? (int)$_POST['refrigeration_id'] : null;
-    $trl_id = isset($_POST['trl_id']) && $_POST['trl_id'] !== '' ? (int)$_POST['trl_id'] : null;
+    // Ensure refrigeration_id and trl_id are properly set to NULL if empty
+    $refrigeration_id = $refrigeration_id ?: null;
+    $trl_id = $trl_id ?: null;
 
     // Insert maintenance record
     $stmt = $pdo->prepare('INSERT INTO maintenance (refrigeration_id, trl_id, type_of_service, description, costs_of_parts, performed_at, performed_by) VALUES (?, ?, ?, ?, ?, ?, ?)');
@@ -76,11 +79,7 @@ if ($refrigeration_id) {
 $records = $stmt->fetchAll();
 
 // Ensure $maintenance_id is defined
-$maintenance_id = $_POST['maintenance_id'] ?? null;
-
-// Ensure refrigeration_id and trl_id are properly set to NULL if empty
-$refrigeration_id = isset($_GET['refrigeration_id']) && $_GET['refrigeration_id'] !== '' ? (int)$_GET['refrigeration_id'] : null;
-$trl_id = isset($_GET['trl_id']) && $_GET['trl_id'] !== '' ? (int)$_GET['trl_id'] : null;
+$maintenance_id = cleanInput($_POST['maintenance_id'] ?? null, 'int');
 ?>
 
 <h2>Maintenance for <?= htmlspecialchars($eq['name'] ?? '') ?></h2>

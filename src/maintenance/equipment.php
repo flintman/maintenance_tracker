@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require_once 'config.php';
 if (!isset($_SESSION['user_id'])) {
     echo 'Access denied';
     exit;
@@ -7,14 +7,16 @@ if (!isset($_SESSION['user_id'])) {
 
 // Archive/unarchive
 if (isset($_GET['archive'])) {
+    $archive_id = cleanInput($_GET['archive'], 'int');
     $stmt = $pdo->prepare('UPDATE trailers SET archived = 1 WHERE id = ?');
-    $stmt->execute([$_GET['archive']]);
+    $stmt->execute([$archive_id]);
     header('Location: index.php');
     exit;
 }
 if (isset($_GET['unarchive'])) {
+    $unarchive_id = cleanInput($_GET['unarchive'], 'int');
     $stmt = $pdo->prepare('UPDATE trailers SET archived = 0 WHERE id = ?');
-    $stmt->execute([$_GET['unarchive']]);
+    $stmt->execute([$unarchive_id]);
     header('Location: index.php');
     exit;
 }
@@ -22,19 +24,19 @@ if (isset($_GET['unarchive'])) {
 include_once 'templates/header.php';
 // Add trailer
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
-    $trl_id = $_POST['trl_id'] ?? '';
-    $axles = $_POST['axles'] ?? '';
-    $door_type = $_POST['door_type'] ?? '';
-    $length = $_POST['length'] ?? '';
+    $trl_id = cleanInput($_POST['trl_id'], 'int');
+    $axles = cleanInput($_POST['axles'], 'int');
+    $door_type = cleanInput($_POST['door_type']);
+    $length = cleanInput($_POST['length'], 'int');
     $stmt = $pdo->prepare('INSERT INTO trailers (trl_id, axles, door_type, length) VALUES (?, ?, ?, ?)');
     $stmt->execute([$trl_id, $axles, $door_type, $length]);
 }
 // Edit trailer
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit'])) {
-    $id = $_POST['id'] ?? '';
-    $trl_id = $_POST['trl_id'] ?? '';
-    $door_type = $_POST['door_type'] ?? '';
-    $length = $_POST['length'] ?? '';
+    $id = cleanInput($_POST['id'], 'int');
+    $trl_id = cleanInput($_POST['trl_id'], 'int');
+    $door_type = cleanInput($_POST['door_type']);
+    $length = cleanInput($_POST['length'], 'int');
     $stmt = $pdo->prepare('UPDATE trailers SET trl_id = ?, door_type = ?, length = ? WHERE id = ?');
     $stmt->execute([$trl_id, $door_type, $length, $id]);
 }
