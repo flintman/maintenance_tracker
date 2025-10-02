@@ -45,7 +45,7 @@ include_once 'templates/header.php';
 $units = $pdo->query('SELECT * FROM refrigeration WHERE archived = 0')->fetchAll();
 $archived = $pdo->query('SELECT * FROM refrigeration WHERE archived = 1')->fetchAll();
 // Fetch trailers for dropdown
-$trailers = $pdo->query('SELECT trl_id FROM trailers')->fetchAll();
+$trailers = $pdo->query('SELECT trl_id FROM trailers WHERE trl_id NOT IN (SELECT trl_id FROM refrigeration WHERE archived = 0)')->fetchAll();
 ?>
 
 <h2>Refrigeration Units</h2>
