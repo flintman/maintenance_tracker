@@ -1,5 +1,5 @@
 <?php
-require_once 'config.php';
+require_once 'common.php';
 include 'templates/header.php';
 if (!isset($_SESSION['user_id'])) {
     exit;

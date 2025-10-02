@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require 'common.php';
 include 'templates/header.php';
 
 // Get the maintenance ID and type from the query string
