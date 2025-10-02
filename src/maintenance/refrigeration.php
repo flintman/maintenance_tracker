@@ -21,6 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare('UPDATE refrigeration SET archived=1 WHERE id=?');
         $stmt->execute([$_POST['id']]);
     }
+    if (isset($_POST['unarchive'])) {
+        $stmt = $pdo->prepare('UPDATE refrigeration SET archived=0 WHERE id=?');
+        $stmt->execute([$_POST['id']]);
+    }
 }
 
 include_once 'templates/header.php';
@@ -32,76 +36,94 @@ $trailers = $pdo->query('SELECT trl_id FROM trailers')->fetchAll();
 ?>
 
 <h2>Refrigeration Units</h2>
-<h3>Add Refrigeration Unit</h3>
-<form method="post">
-    <input type="hidden" name="add" value="1">
-    <div class="mb-3">
-        <label class="form-label">Trailer ID</label>
-        <select name="trl_id" class="form-control" required>
-            <option value=""></option>
-            <?php foreach ($trailers as $trl): ?>
-                <option value="<?= $trl['trl_id'] ?>"><?= $trl['trl_id'] ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Model</label>
-        <input type="text" name="model" class="form-control" required>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Serial</label>
-        <input type="text" name="serial" class="form-control" required>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Refrigerant</label>
-        <input type="text" name="refrigerant" class="form-control" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Add</button>
-</form>
+<h3>
+    <button class="btn btn-link collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#addRefrigerationForm" aria-expanded="false" aria-controls="addRefrigerationForm" onclick="toggleArrow(this)">
+        <span class="me-2 arrow">➤</span> <span class="toggle-text">Add Refrigeration Unit</span>
+    </button>
+</h3>
+<div class="collapse" id="addRefrigerationForm">
+    <form method="post">
+        <input type="hidden" name="add" value="1">
+        <div class="mb-3">
+            <label class="form-label">Trailer ID</label>
+            <select name="trl_id" class="form-control" required>
+                <option value=""></option>
+                <?php foreach ($trailers as $trl): ?>
+                    <option value="<?= $trl['trl_id'] ?>"><?= $trl['trl_id'] ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Model</label>
+            <input type="text" name="model" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Serial</label>
+            <input type="text" name="serial" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Refrigerant</label>
+            <input type="text" name="refrigerant" class="form-control" required>
+        </div>
+        <button class="btn btn-success">Submit</button>
+    </form>
+</div>
 
 <h3>Active Refrigeration Units</h3>
-<table class="table">
-    <thead><tr><th>Trailer ID</th><th>Model</th><th>Serial</th><th>Refrigerant</th><th>Actions</th></tr></thead>
-    <tbody>
-    <?php foreach ($units as $unit): ?>
-        <tr>
-            <td><?= htmlspecialchars($unit['trl_id']) ?></td>
-            <td><?= htmlspecialchars($unit['model']) ?></td>
-            <td><?= htmlspecialchars($unit['serial']) ?></td>
-            <td><?= htmlspecialchars($unit['refrigerant']) ?></td>
-            <td>
-                <form method="post" style="display:inline-block">
-                    <input type="hidden" name="id" value="<?= $unit['id'] ?>">
-                    <button name="archive" class="btn btn-warning btn-sm">Archive</button>
-                </form>
-                <a href="maintenance.php?refrigeration_id=<?= $unit['id'] ?>" class="btn btn-info btn-sm">View Maintenance</a>
-                <button class="btn btn-secondary btn-sm" onclick="editUnit(<?= $unit['id'] ?>, '<?= htmlspecialchars($unit['trl_id']) ?>', '<?= htmlspecialchars($unit['model']) ?>', '<?= htmlspecialchars($unit['serial']) ?>', '<?= htmlspecialchars($unit['refrigerant']) ?>')">Edit</button>
-            </td>
-        </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Trailer ID</th>
+                <th>Model</th>
+                <th>Serial</th>
+                <th>Refrigerant</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($units as $unit): ?>
+                <tr>
+                    <td><?= htmlspecialchars($unit['trl_id']) ?></td>
+                    <td><?= htmlspecialchars($unit['model']) ?></td>
+                    <td><?= htmlspecialchars($unit['serial']) ?></td>
+                    <td><?= htmlspecialchars($unit['refrigerant']) ?></td>
+                    <td>
+                        <form method="post" style="display:inline-block">
+                            <input type="hidden" name="id" value="<?= $unit['id'] ?>">
+                            <button name="archive" class="btn btn-warning btn-sm">Archive</button>
+                        </form>
+                        <a href="maintenance.php?refrigeration_id=<?= $unit['id'] ?>" class="btn btn-info btn-sm">View Maintenance</a>
+                        <button class="btn btn-secondary btn-sm" onclick="editUnit(<?= $unit['id'] ?>, '<?= htmlspecialchars($unit['trl_id']) ?>', '<?= htmlspecialchars($unit['model']) ?>', '<?= htmlspecialchars($unit['serial']) ?>', '<?= htmlspecialchars($unit['refrigerant']) ?>')">Edit</button>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 <h3>Archived Refrigeration Units</h3>
-<table class="table">
-    <thead><tr><th>Trailer ID</th><th>Model</th><th>Serial</th><th>Refrigerant</th><th>Actions</th></tr></thead>
-    <tbody>
-    <?php foreach ($archived as $unit): ?>
-        <tr>
-            <td><?= htmlspecialchars($unit['trl_id']) ?></td>
-            <td><?= htmlspecialchars($unit['model']) ?></td>
-            <td><?= htmlspecialchars($unit['serial']) ?></td>
-            <td><?= htmlspecialchars($unit['refrigerant']) ?></td>
-            <td>
-                <form method="post" style="display:inline-block">
-                    <input type="hidden" name="id" value="<?= $unit['id'] ?>">
-                    <button name="unarchive" class="btn btn-success btn-sm">Unarchive</button>
-                </form>
-            </td>
-        </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table">
+        <thead><tr><th>Trailer ID</th><th>Model</th><th>Serial</th><th>Refrigerant</th><th>Actions</th></tr></thead>
+        <tbody>
+        <?php foreach ($archived as $unit): ?>
+            <tr>
+                <td><?= htmlspecialchars($unit['trl_id']) ?></td>
+                <td><?= htmlspecialchars($unit['model']) ?></td>
+                <td><?= htmlspecialchars($unit['serial']) ?></td>
+                <td><?= htmlspecialchars($unit['refrigerant']) ?></td>
+                <td>
+                    <form method="post" style="display:inline-block">
+                        <input type="hidden" name="id" value="<?= $unit['id'] ?>">
+                        <button name="unarchive" class="btn btn-success btn-sm">Unarchive</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
 
 <form id="editForm" method="post" style="display:none">
     <input type="hidden" name="edit" value="1">
@@ -141,4 +163,18 @@ function editUnit(id, trlId, model, serial, refrigerant) {
     document.getElementById('editForm').style.display = 'block';
     window.scrollTo(0,document.body.scrollHeight);
 }
+
+function toggleArrow(button) {
+    const arrow = button.querySelector('.arrow');
+    arrow.textContent = button.getAttribute('aria-expanded') === 'true' ? '▼' : '➤';
+}
+
+// Initialize arrow direction and theme-specific styles on page load
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(button => {
+        const arrow = button.querySelector('.arrow');
+        arrow.textContent = button.getAttribute('aria-expanded') === 'true' ? '▼' : '➤';
+        button.classList.add('text-' + document.documentElement.getAttribute('data-bs-theme'));
+    });
+});
 </script>

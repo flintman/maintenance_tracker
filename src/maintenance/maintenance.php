@@ -86,39 +86,58 @@ $trl_id = isset($_GET['trl_id']) && $_GET['trl_id'] !== '' ? (int)$_GET['trl_id'
 <h2>Maintenance for <?= htmlspecialchars($eq['name'] ?? '') ?></h2>
 <a href="equipment.php" class="btn btn-secondary mb-3">Back to Equipment</a>
 
-<h3>Add Maintenance Record</h3>
-<?php if (!empty($msg)): ?>
-    <div class="alert alert-info"><?= htmlspecialchars($msg) ?></div>
-<?php endif; ?>
-<form method="post" enctype="multipart/form-data">
-    <input type="hidden" name="refrigeration_id" value="<?= $refrigeration_id ?? '' ?>">
-    <input type="hidden" name="trl_id" value="<?= $trl_id ?? '' ?>">
-    <div class="mb-2">
-        <label>Type of Service</label>
-        <input type="text" name="type_of_service" class="form-control" required>
-    </div>
-    <div class="mb-2">
-        <label>Description</label>
-        <textarea name="description" class="form-control" required></textarea>
-    </div>
-    <div class="mb-2">
-        <label>Costs of Parts</label>
-        <input type="number" name="costs_of_parts" class="form-control" step="0.01" required>
-    </div>
-    <div class="mb-2">
-        <label>Performed At</label>
-        <input type="date" name="performed_at" class="form-control" required>
-    </div>
-    <div class="mb-2">
-        <label>Performed By</label>
-        <input type="text" name="performed_by" class="form-control" required>
-    </div>
-    <div class="mb-2">
-        <label>Photos</label>
-        <input type="file" name="photos[]" class="form-control" multiple>
-    </div>
-    <button class="btn btn-primary" name="add_maintenance">Add Maintenance</button>
-</form>
+<h3>
+    <button class="btn btn-link collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#addMaintenanceForm" aria-expanded="false" aria-controls="addMaintenanceForm" onclick="toggleArrow(this)">
+        <span class="me-2 arrow">➤</span> <span class="toggle-text">Add Maintenance Record</span>
+    </button>
+</h3>
+<div class="collapse" id="addMaintenanceForm">
+    <form method="post" enctype="multipart/form-data">
+        <input type="hidden" name="refrigeration_id" value="<?= $refrigeration_id ?? '' ?>">
+        <input type="hidden" name="trl_id" value="<?= $trl_id ?? '' ?>">
+        <div class="mb-2">
+            <label>Type of Service</label>
+            <input type="text" name="type_of_service" class="form-control" required>
+        </div>
+        <div class="mb-2">
+            <label>Description</label>
+            <textarea name="description" class="form-control" required></textarea>
+        </div>
+        <div class="mb-2">
+            <label>Costs of Parts</label>
+            <input type="number" name="costs_of_parts" class="form-control" step="0.01" required>
+        </div>
+        <div class="mb-2">
+            <label>Performed On</label>
+            <input type="date" name="performed_at" class="form-control" required>
+        </div>
+        <div class="mb-2">
+            <label>Performed By</label>
+            <input type="text" name="performed_by" class="form-control" required>
+        </div>
+        <div class="mb-2">
+            <label>Photos</label>
+            <input type="file" name="photos[]" class="form-control" multiple>
+        </div>
+        <button class="btn btn-success" name="add_maintenance">Submit</button>
+    </form>
+</div>
+
+<script>
+function toggleArrow(button) {
+    const arrow = button.querySelector('.arrow');
+    arrow.textContent = button.getAttribute('aria-expanded') === 'true' ? '▼' : '➤';
+}
+
+// Initialize arrow direction and theme-specific styles on page load
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(button => {
+        const arrow = button.querySelector('.arrow');
+        arrow.textContent = button.getAttribute('aria-expanded') === 'true' ? '▼' : '➤';
+        button.classList.add('text-' + document.documentElement.getAttribute('data-bs-theme'));
+    });
+});
+</script>
 
 <h3>Maintenance Records</h3>
 <table class="table table-bordered">

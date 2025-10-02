@@ -45,27 +45,33 @@ $archived = $pdo->query('SELECT * FROM trailers WHERE archived = 1')->fetchAll()
 
 ?>
     <h2>Equipment</h2>
-    <h3>Add Trailer</h3>
-    <form method="post">
-        <input type="hidden" name="add" value="1">
-        <div class="mb-3">
-            <label class="form-label">Trailer ID</label>
-            <input type="number" name="trl_id" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Axles</label>
-            <input type="number" name="axles" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Door Type</label>
-            <input type="text" name="door_type" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Length</label>
-            <input type="number" name="length" class="form-control" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Add</button>
-    </form>
+    <h3>
+        <button class="btn btn-link collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#addTrailerForm" aria-expanded="false" aria-controls="addTrailerForm" onclick="toggleArrow(this)">
+            <span class="me-2 arrow">➤</span> <span class="toggle-text">Add Trailer</span>
+        </button>
+    </h3>
+    <div class="collapse" id="addTrailerForm">
+        <form method="post">
+            <input type="hidden" name="add" value="1">
+            <div class="mb-3">
+                <label class="form-label">Trailer ID</label>
+                <input type="number" name="trl_id" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Axles</label>
+                <input type="number" name="axles" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Door Type</label>
+                <input type="text" name="door_type" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Length</label>
+                <input type="number" name="length" class="form-control" required>
+            </div>
+            <button class="btn btn-success">Submit</button>
+        </form>
+    </div>
     <h3>Active Trailers</h3>
     <table class="table">
         <thead><tr><th>Trailer ID</th><th>Axles</th><th>Door Type</th><th>Length</th><th>Actions</th></tr></thead>
@@ -135,4 +141,17 @@ $archived = $pdo->query('SELECT * FROM trailers WHERE archived = 1')->fetchAll()
         document.getElementById('editForm').style.display = 'block';
         window.scrollTo(0,document.body.scrollHeight);
     }
+    function toggleArrow(button) {
+        const arrow = button.querySelector('.arrow');
+        arrow.textContent = button.getAttribute('aria-expanded') === 'true' ? '▼' : '➤';
+    }
+
+    // Initialize arrow direction and theme-specific styles on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(button => {
+            const arrow = button.querySelector('.arrow');
+            arrow.textContent = button.getAttribute('aria-expanded') === 'true' ? '▼' : '➤';
+            button.classList.add('text-' + document.documentElement.getAttribute('data-bs-theme'));
+        });
+    });
     </script>

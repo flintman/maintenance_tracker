@@ -2,18 +2,36 @@
 $theme = $_COOKIE['theme'] ?? 'light';
 ?>
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="<?= htmlspecialchars($theme) ?>">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maintenance Tracker</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .navbar {
+            background-color: var(--bs-body-bg, #343a40); /* Default to dark theme */
+        }
+        .navbar a, .navbar .theme-toggle {
+            color: var(--bs-body-color, #fff) !important; /* Default to light text */
+        }
+    </style>
     <script>
-    function toggleTheme() {
-        let theme = document.documentElement.getAttribute('data-bs-theme');
-        theme = theme === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-bs-theme', theme);
-        document.cookie = 'theme=' + theme + ';path=/';
-    }
+        // Restore theme from cookie
+        document.addEventListener('DOMContentLoaded', () => {
+            const theme = document.cookie.split('; ').find(row => row.startsWith('theme='))?.split('=')[1];
+            if (theme) {
+                document.documentElement.setAttribute('data-bs-theme', theme);
+            }
+        });
+
+        function toggleTheme() {
+            let theme = document.documentElement.getAttribute('data-bs-theme');
+            theme = theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            document.cookie = 'theme=' + theme + ';path=/';
+        }
     </script>
 </head>
 <body>
