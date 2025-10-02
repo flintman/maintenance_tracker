@@ -6,6 +6,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
+                <?php if (isset($_SESSION['user_id'])): ?>
                 <li class="nav-item">
                     <a class="nav-link" href="equipment.php">Trailers</a>
                 </li>
@@ -15,6 +16,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="user.php">User Info</a>
                 </li>
+                <?php endif; ?>
             </ul>
             <button class="btn btn-outline-light theme-toggle me-2" onclick="toggleTheme()">Toggle Theme</button>
             <?php if (isset($_SESSION['user_id'])): ?>
