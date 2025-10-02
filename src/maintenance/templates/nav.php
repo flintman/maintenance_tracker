@@ -16,12 +16,37 @@
                 <li class="nav-item">
                     <a class="nav-link" href="user.php">User Info</a>
                 </li>
+                <?php if (($_SESSION['privilege']) === 'admin'): ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin/index.php">Admin Dashboard</a>
+                </li>
+                <?php endif; ?>
                 <?php endif; ?>
             </ul>
-            <button class="btn btn-outline-light theme-toggle me-2" onclick="toggleTheme()">Toggle Theme</button>
+            <button class="btn btn-outline-secondary theme-toggle me-2" onclick="toggleTheme()">
+                <span id="theme-label">Toggle Theme</span>
+            </button>
             <?php if (isset($_SESSION['user_id'])): ?>
               <a class="btn btn-danger ms-2" href="logout.php">Logout</a>
             <?php endif; ?>
         </div>
     </div>
 </nav>
+<script>
+    // Update theme label and icon
+    function updateThemeLabel() {
+        const theme = document.documentElement.getAttribute('data-bs-theme');
+        document.getElementById('theme-label').textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';
+    }
+    document.addEventListener('DOMContentLoaded', updateThemeLabel);
+    document.addEventListener('DOMContentLoaded', function() {
+        document.documentElement.addEventListener('change', updateThemeLabel);
+    });
+    function toggleTheme() {
+        let theme = document.documentElement.getAttribute('data-bs-theme');
+        theme = theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-bs-theme', theme);
+        document.cookie = 'theme=' + theme + ';path=/';
+        updateThemeLabel();
+    }
+</script>

@@ -4,49 +4,50 @@ if (!isset($_SESSION['user_id'])) {
     echo 'Access denied';
     exit;
 }
+if (($_SESSION['privilege'] ?? '') === 'admin') {
+    // Archive/unarchive
+    if (isset($_GET['archive'])) {
+        $archive_id = cleanInput($_GET['archive'], 'int');
+        $stmt = $pdo->prepare('UPDATE trailers SET archived = 1 WHERE id = ?');
+        $stmt->execute([$archive_id]);
+        header('Location: index.php');
+        exit;
+    }
+    if (isset($_GET['unarchive'])) {
+        $unarchive_id = cleanInput($_GET['unarchive'], 'int');
+        $stmt = $pdo->prepare('UPDATE trailers SET archived = 0 WHERE id = ?');
+        $stmt->execute([$unarchive_id]);
+        header('Location: index.php');
+        exit;
+    }
 
-// Archive/unarchive
-if (isset($_GET['archive'])) {
-    $archive_id = cleanInput($_GET['archive'], 'int');
-    $stmt = $pdo->prepare('UPDATE trailers SET archived = 1 WHERE id = ?');
-    $stmt->execute([$archive_id]);
-    header('Location: index.php');
-    exit;
+    // Add trailer
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
+        $trl_id = cleanInput($_POST['trl_id'], 'int');
+        $axles = cleanInput($_POST['axles'], 'int');
+        $door_type = cleanInput($_POST['door_type']);
+        $length = cleanInput($_POST['length'], 'int');
+        $stmt = $pdo->prepare('INSERT INTO trailers (trl_id, axles, door_type, length) VALUES (?, ?, ?, ?)');
+        $stmt->execute([$trl_id, $axles, $door_type, $length]);
+    }
+    // Edit trailer
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit'])) {
+        $id = cleanInput($_POST['id'], 'int');
+        $trl_id = cleanInput($_POST['trl_id'], 'int');
+        $door_type = cleanInput($_POST['door_type']);
+        $length = cleanInput($_POST['length'], 'int');
+        $stmt = $pdo->prepare('UPDATE trailers SET trl_id = ?, door_type = ?, length = ? WHERE id = ?');
+        $stmt->execute([$trl_id, $door_type, $length, $id]);
+    }
 }
-if (isset($_GET['unarchive'])) {
-    $unarchive_id = cleanInput($_GET['unarchive'], 'int');
-    $stmt = $pdo->prepare('UPDATE trailers SET archived = 0 WHERE id = ?');
-    $stmt->execute([$unarchive_id]);
-    header('Location: index.php');
-    exit;
-}
-
 include_once 'templates/header.php';
-// Add trailer
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
-    $trl_id = cleanInput($_POST['trl_id'], 'int');
-    $axles = cleanInput($_POST['axles'], 'int');
-    $door_type = cleanInput($_POST['door_type']);
-    $length = cleanInput($_POST['length'], 'int');
-    $stmt = $pdo->prepare('INSERT INTO trailers (trl_id, axles, door_type, length) VALUES (?, ?, ?, ?)');
-    $stmt->execute([$trl_id, $axles, $door_type, $length]);
-}
-// Edit trailer
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit'])) {
-    $id = cleanInput($_POST['id'], 'int');
-    $trl_id = cleanInput($_POST['trl_id'], 'int');
-    $door_type = cleanInput($_POST['door_type']);
-    $length = cleanInput($_POST['length'], 'int');
-    $stmt = $pdo->prepare('UPDATE trailers SET trl_id = ?, door_type = ?, length = ? WHERE id = ?');
-    $stmt->execute([$trl_id, $door_type, $length, $id]);
-}
 // Fetch trailers
 $active = $pdo->query('SELECT * FROM trailers WHERE archived = 0')->fetchAll();
 $archived = $pdo->query('SELECT * FROM trailers WHERE archived = 1')->fetchAll();
 
-
 ?>
     <h2>Equipment</h2>
+    <?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
     <h3>
         <button class="btn btn-link collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#addTrailerForm" aria-expanded="false" aria-controls="addTrailerForm" onclick="toggleArrow(this)">
             <span class="me-2 arrow">➤</span> <span class="toggle-text">Add Trailer</span>
@@ -74,6 +75,7 @@ $archived = $pdo->query('SELECT * FROM trailers WHERE archived = 1')->fetchAll()
             <button class="btn btn-success">Submit</button>
         </form>
     </div>
+    <?php endif; ?>
     <h3>Active Trailers</h3>
     <table class="table">
         <thead><tr><th>Trailer ID</th><th>Axles</th><th>Door Type</th><th>Length</th><th>Actions</th></tr></thead>
@@ -85,14 +87,17 @@ $archived = $pdo->query('SELECT * FROM trailers WHERE archived = 1')->fetchAll()
                 <td><?= htmlspecialchars($trl['door_type']) ?></td>
                 <td><?= htmlspecialchars($trl['length']) ?></td>
                 <td>
-                    <a href="equipment.php?archive=<?= $trl['id'] ?>" class="btn btn-warning btn-sm">Archive</a>
                     <a href="maintenance.php?trl_id=<?= $trl['id'] ?>&type=trailer" class="btn btn-info btn-sm">View Maintenance</a>
+                    <?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
+                    <a href="equipment.php?archive=<?= $trl['id'] ?>" class="btn btn-warning btn-sm">Archive</a>
                     <button class="btn btn-secondary btn-sm" onclick="editTrl(<?= $trl['id'] ?>, <?= $trl['axles'] ?>, '<?= htmlspecialchars(addslashes($trl['door_type'])) ?>', <?= $trl['length'] ?>)">Edit</button>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
     </table>
+    <?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
     <h3>Archived Trailers</h3>
     <table class="table">
         <thead><tr><th>Trailer ID</th><th>Axles</th><th>Door Type</th><th>Length</th><th>Actions</th></tr></thead>
@@ -133,6 +138,7 @@ $archived = $pdo->query('SELECT * FROM trailers WHERE archived = 1')->fetchAll()
         <button type="submit" class="btn btn-primary">Save</button>
         <button type="button" class="btn btn-secondary" onclick="document.getElementById('editForm').style.display='none'">Cancel</button>
     </form>
+
     <script>
     function editTrl(id, axles, doorType, length) {
         document.getElementById('editId').value = id;
@@ -157,3 +163,4 @@ $archived = $pdo->query('SELECT * FROM trailers WHERE archived = 1')->fetchAll()
         });
     });
     </script>
+    <?php endif; ?>

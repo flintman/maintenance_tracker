@@ -7,39 +7,40 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Handle add/edit/archive
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['add'])) {
-        $trl_id = cleanInput($_POST['trl_id'], 'int');
-        $model = cleanInput($_POST['model']);
-        $serial = cleanInput($_POST['serial']);
-        $refrigerant = cleanInput($_POST['refrigerant']);
+if (($_SESSION['privilege'] ?? '') === 'admin') {
+    // Handle add/edit/archive
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['add'])) {
+            $trl_id = cleanInput($_POST['trl_id'], 'int');
+            $model = cleanInput($_POST['model']);
+            $serial = cleanInput($_POST['serial']);
+            $refrigerant = cleanInput($_POST['refrigerant']);
 
-        $stmt = $pdo->prepare('INSERT INTO refrigeration (trl_id, model, serial, refrigerant) VALUES (?, ?, ?, ?)');
-        $stmt->execute([$trl_id, $model, $serial, $refrigerant]);
-    }
-    if (isset($_POST['edit'])) {
-        $id = cleanInput($_POST['id'], 'int');
-        $trl_id = cleanInput($_POST['trl_id'], 'int');
-        $model = cleanInput($_POST['model']);
-        $serial = cleanInput($_POST['serial']);
-        $refrigerant = cleanInput($_POST['refrigerant']);
+            $stmt = $pdo->prepare('INSERT INTO refrigeration (trl_id, model, serial, refrigerant) VALUES (?, ?, ?, ?)');
+            $stmt->execute([$trl_id, $model, $serial, $refrigerant]);
+        }
+        if (isset($_POST['edit'])) {
+            $id = cleanInput($_POST['id'], 'int');
+            $trl_id = cleanInput($_POST['trl_id'], 'int');
+            $model = cleanInput($_POST['model']);
+            $serial = cleanInput($_POST['serial']);
+            $refrigerant = cleanInput($_POST['refrigerant']);
 
-        $stmt = $pdo->prepare('UPDATE refrigeration SET trl_id=?, model=?, serial=?, refrigerant=? WHERE id=?');
-        $stmt->execute([$trl_id, $model, $serial, $refrigerant, $id]);
-    }
-    if (isset($_POST['archive'])) {
-        $id = cleanInput($_POST['id'], 'int');
-        $stmt = $pdo->prepare('UPDATE refrigeration SET archived=1 WHERE id=?');
-        $stmt->execute([$id]);
-    }
-    if (isset($_POST['unarchive'])) {
-        $id = cleanInput($_POST['id'], 'int');
-        $stmt = $pdo->prepare('UPDATE refrigeration SET archived=0 WHERE id=?');
-        $stmt->execute([$id]);
+            $stmt = $pdo->prepare('UPDATE refrigeration SET trl_id=?, model=?, serial=?, refrigerant=? WHERE id=?');
+            $stmt->execute([$trl_id, $model, $serial, $refrigerant, $id]);
+        }
+        if (isset($_POST['archive'])) {
+            $id = cleanInput($_POST['id'], 'int');
+            $stmt = $pdo->prepare('UPDATE refrigeration SET archived=1 WHERE id=?');
+            $stmt->execute([$id]);
+        }
+        if (isset($_POST['unarchive'])) {
+            $id = cleanInput($_POST['id'], 'int');
+            $stmt = $pdo->prepare('UPDATE refrigeration SET archived=0 WHERE id=?');
+            $stmt->execute([$id]);
+        }
     }
 }
-
 include_once 'templates/header.php';
 // Fetch refrigeration units
 $units = $pdo->query('SELECT * FROM refrigeration WHERE archived = 0')->fetchAll();
@@ -49,6 +50,7 @@ $trailers = $pdo->query('SELECT trl_id FROM trailers WHERE trl_id NOT IN (SELECT
 ?>
 
 <h2>Refrigeration Units</h2>
+<?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
 <h3>
     <button class="btn btn-link collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#addRefrigerationForm" aria-expanded="false" aria-controls="addRefrigerationForm" onclick="toggleArrow(this)">
         <span class="me-2 arrow">➤</span> <span class="toggle-text">Add Refrigeration Unit</span>
@@ -81,7 +83,7 @@ $trailers = $pdo->query('SELECT trl_id FROM trailers WHERE trl_id NOT IN (SELECT
         <button class="btn btn-success">Submit</button>
     </form>
 </div>
-
+<?php endif; ?>
 <h3>Active Refrigeration Units</h3>
 <div class="table-responsive">
     <table class="table">
@@ -102,19 +104,21 @@ $trailers = $pdo->query('SELECT trl_id FROM trailers WHERE trl_id NOT IN (SELECT
                     <td><?= htmlspecialchars($unit['serial']) ?></td>
                     <td><?= htmlspecialchars($unit['refrigerant']) ?></td>
                     <td>
+                        <a href="maintenance.php?refrigeration_id=<?= $unit['id'] ?>&type=refrigeration" class="btn btn-info btn-sm">View Maintenance</a>
+                        <?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
                         <form method="post" style="display:inline-block">
                             <input type="hidden" name="id" value="<?= $unit['id'] ?>">
                             <button name="archive" class="btn btn-warning btn-sm">Archive</button>
                         </form>
-                        <a href="maintenance.php?refrigeration_id=<?= $unit['id'] ?>&type=refrigeration" class="btn btn-info btn-sm">View Maintenance</a>
                         <button class="btn btn-secondary btn-sm" onclick="editUnit(<?= $unit['id'] ?>, '<?= htmlspecialchars($unit['trl_id']) ?>', '<?= htmlspecialchars($unit['model']) ?>', '<?= htmlspecialchars($unit['serial']) ?>', '<?= htmlspecialchars($unit['refrigerant']) ?>')">Edit</button>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 </div>
-
+<?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
 <h3>Archived Refrigeration Units</h3>
 <div class="table-responsive">
     <table class="table">
@@ -191,3 +195,4 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
+<?php endif; ?>
