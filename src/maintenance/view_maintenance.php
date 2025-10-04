@@ -63,7 +63,11 @@ if (!$maintenance) {
     exit;
 }
 $photos = $maintenance['photos'] ? json_decode($maintenance['photos'], true) : [];
-$backLink = $type === 'refrigeration' ? 'refrigeration.php' : 'trailer.php';
+if ($type === 'refrigeration') {
+    $backLink = "maintenance.php?refrigeration_id=" . urlencode($maintenance['refrigeration_id']) . "&type=refrigeration";
+} else {
+    $backLink = "maintenance.php?trl_id=" . urlencode($maintenance['trl_id']) . "&type=" . urlencode($type);
+}
 ?>
 
 <h2><?= $edit_mode ? 'Edit' : 'View' ?> Maintenance Details</h2>

@@ -86,7 +86,9 @@ $maintenance_id = cleanInput($_POST['maintenance_id'] ?? null, 'int');
 ?>
 
 <h2>Maintenance for <?= htmlspecialchars($equipment_name ?? '') ?></h2>
-<a href="trailer.php" class="btn btn-secondary mb-3">Back to Equipment</a>
+<a href="<?= $refrigeration_id ? 'refrigeration.php' : 'trailer.php' ?>" class="btn btn-secondary mb-3">
+    Back to <?= $refrigeration_id ? 'Refrigeration Units' : 'Trailers' ?>
+</a>
 <?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
 <h3>
     <button class="btn btn-link collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#addMaintenanceForm" aria-expanded="false" aria-controls="addMaintenanceForm" onclick="toggleArrow(this)">
