@@ -20,13 +20,15 @@ if (!$refrigeration_id && !$trl_id) {
 
 // Fetch equipment name
 if ($refrigeration_id) {
-    $stmt = $pdo->prepare('SELECT model AS name FROM refrigeration WHERE id = ?');
-    $stmt->execute([$refrigeration_id]);
+    // Fetch answer to question 1 for this refrigeration unit
+    $stmt_q1 = $pdo->prepare('SELECT value FROM refrigeration_answers WHERE refrigeration_id = ? AND question_id = 1 LIMIT 1');
+    $stmt_q1->execute([$refrigeration_id]);
+    $equipment_name = $stmt_q1->fetchColumn();
 } else {
     $stmt = $pdo->prepare('SELECT trl_id FROM trailers WHERE id = ?');
     $stmt->execute([$trl_id]);
+    $equipment_name = $stmt->fetchColumn();
 }
-$eq = $stmt->fetch();
 if (($_SESSION['privilege'] ?? '') === 'admin') {
     // Add maintenance
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_maintenance'])) {
@@ -83,7 +85,7 @@ $records = $stmt->fetchAll();
 $maintenance_id = cleanInput($_POST['maintenance_id'] ?? null, 'int');
 ?>
 
-<h2>Maintenance for <?= htmlspecialchars($eq['name'] ?? '') ?></h2>
+<h2>Maintenance for <?= htmlspecialchars($equipment_name ?? '') ?></h2>
 <a href="trailer.php" class="btn btn-secondary mb-3">Back to Equipment</a>
 <?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
 <h3>
