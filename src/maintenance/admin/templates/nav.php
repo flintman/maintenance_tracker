@@ -15,9 +15,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="manage_trailer.php">Manage Trailers</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="">Manage Maintenance</a>
-                </li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
