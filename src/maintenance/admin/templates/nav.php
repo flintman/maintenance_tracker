@@ -10,7 +10,7 @@
                     <a class="nav-link" href="manage_refrigeration.php">Manage Refrigeration</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="">Manage Trailers</a>
+                    <a class="nav-link" href="manage_trailer.php">Manage Trailers</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="">Manage Maintenance</a>

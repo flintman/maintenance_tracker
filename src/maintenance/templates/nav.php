@@ -8,7 +8,7 @@
             <ul class="navbar-nav me-auto">
                 <?php if (isset($_SESSION['user_id'])): ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="equipment.php">Trailers</a>
+                    <a class="nav-link" href="trailer.php">Trailers</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="refrigeration.php">Refrigeration</a>
