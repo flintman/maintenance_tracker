@@ -1,7 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-admin mb-4">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.php">Admin Panel</a>
-        <div class="collapse navbar-collapse">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarNav" aria-controls="adminNavbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="adminNavbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="manage_users.php">Manage Users</a>
