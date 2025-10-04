@@ -36,7 +36,7 @@ $stmt = $pdo->query('SELECT COUNT(*) FROM refrigeration');
 $unit_count = $stmt->fetchColumn();
 $stmt = $pdo->query('SELECT COUNT(*) FROM users');
 $user_count = $stmt->fetchColumn();
-$stmt = $pdo->query('SELECT m.*, COALESCE(r.model, t.trl_id) AS equipment FROM maintenance m LEFT JOIN refrigeration r ON m.refrigeration_id = r.id LEFT JOIN trailers t ON m.trl_id = t.id ORDER BY m.performed_at DESC LIMIT 5');
+$stmt = $pdo->query('SELECT m.*, COALESCE(t.trl_id) AS equipment FROM maintenance m LEFT JOIN refrigeration r ON m.refrigeration_id = r.id LEFT JOIN trailers t ON m.trl_id = t.id ORDER BY m.performed_at DESC LIMIT 5');
 $latest_maintenance = $stmt->fetchAll();
 ?>
 <div class="container mt-5">

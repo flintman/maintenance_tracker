@@ -22,11 +22,25 @@ CREATE TABLE trailers (
 CREATE TABLE refrigeration (
     id INT AUTO_INCREMENT PRIMARY KEY,
     trl_id INT NULL,
-    model VARCHAR(100),
-    serial VARCHAR(100),
-    refrigerant VARCHAR(50),
     archived TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE refrigeration_questions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    label VARCHAR(100) NOT NULL,
+    type ENUM('string','text','number','date','multi_choice') NOT NULL,
+    options VARCHAR(255) DEFAULT NULL,
+    position INT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE refrigeration_answers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    refrigeration_id INT NOT NULL,
+    question_id INT NOT NULL,
+    value TEXT,
+    FOREIGN KEY (refrigeration_id) REFERENCES refrigeration(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES refrigeration_questions(id) ON DELETE CASCADE
 );
 
 CREATE TABLE photos (
