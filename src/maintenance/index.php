@@ -1,5 +1,5 @@
 <?php
-require_once 'common.php';
+require_once 'common/common.php';
 if (isset($_SESSION['user_id'])) {
     // Dashboard logic
     // Count trailers
@@ -31,7 +31,7 @@ if (isset($_SESSION['user_id'])) {
         LIMIT 5
     ');
     $latest_maintenance = $stmt->fetchAll();
-    include 'templates/header.php';
+    include 'common/header.php';
 ?>
 <div class="container mt-5">
     <h2 class="mb-4">Dashboard</h2>
@@ -78,7 +78,7 @@ if (isset($_SESSION['user_id'])) {
     </div>
 </div>
 <?php
-    include 'templates/footer.php';
+    include 'common/footer.php';
     exit;
 }
 
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Invalid credentials';
     }
 }
-include 'templates/header.php';
+include 'common/header.php';
 ?>
 <h2>Login</h2>
 <?php if (!empty($error)): ?>
@@ -114,4 +114,4 @@ include 'templates/header.php';
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
 </form>
-<?php include 'templates/footer.php'; ?>
+<?php include 'common/footer.php'; ?>

@@ -1,6 +1,6 @@
 <?php
-require 'common.php';
-include 'templates/header.php';
+require 'common/common.php';
+include 'common/header.php';
 
 $maintenance_id = $_GET['id'] ?? null;
 $type = $_GET['type'] ?? null;
@@ -115,4 +115,4 @@ if ($type === 'refrigeration') {
     <?php endforeach; ?>
 </div>
 
-<?php include 'templates/footer.php'; ?>
+<?php include 'common/footer.php'; ?>

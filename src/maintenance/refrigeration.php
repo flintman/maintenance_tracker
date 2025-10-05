@@ -1,10 +1,10 @@
 <?php
-require_once 'common.php';
+require_once 'common/common.php';
 if (!isset($_SESSION['user_id'])) {
     echo 'Access denied';
     exit;
 }
-include_once 'templates/header.php';
+include_once 'common/header.php';
 
 // Fetch questions for dynamic fields
 $questions = $pdo->query('SELECT * FROM refrigeration_questions ORDER BY position ASC')->fetchAll();
@@ -292,4 +292,4 @@ function editUnit(id, trlId) {
 }
 </script>
 <?php endif; ?>
-<?php include 'templates/footer.php'; ?>
+<?php include 'common/footer.php'; ?>

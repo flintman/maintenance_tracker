@@ -1,6 +1,6 @@
 <?php
-require 'common.php';
-include 'templates/header.php';
+require 'common/common.php';
+include 'common/header.php';
 if (!isset($_SESSION['user_id'])) {
     exit;
 }
@@ -81,4 +81,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     <button class="btn btn-primary">Update</button>
 </form>
-<?php include 'templates/footer.php'; ?>
+<?php include 'common/footer.php'; ?>

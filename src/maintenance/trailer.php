@@ -1,5 +1,5 @@
 <?php
-require_once 'common.php';
+require_once 'common/common.php';
 if (!isset($_SESSION['user_id'])) {
     echo 'Access denied';
     exit;
@@ -66,7 +66,7 @@ if (($_SESSION['privilege'] ?? '') === 'admin') {
         }
     }
 }
-include_once 'templates/header.php';
+include_once 'common/header.php';
 
 // Fetch trailers
 $active = $pdo->query('SELECT * FROM trailers WHERE archived = 0')->fetchAll();

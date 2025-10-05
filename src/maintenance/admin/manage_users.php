@@ -1,10 +1,10 @@
 <?php
-require_once '../common.php';
+require_once '../common/common.php';
 if (!isset($_SESSION['user_id']) || ($_SESSION['privilege'] ?? '') !== 'admin') {
     header('Location: ../index.php');
     exit;
 }
-include 'templates/header.php';
+include '../common/admin/header.php';
 
 // Handle edit user
 $edit_msg = '';
@@ -83,4 +83,4 @@ $users = $stmt->fetchAll();
         </tbody>
     </table>
 </div>
-<?php include 'templates/footer.php'; ?>
+<?php include '../common/admin/footer.php'; ?>

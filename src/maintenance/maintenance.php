@@ -1,6 +1,6 @@
 <?php
-require_once 'common.php';
-include 'templates/header.php';
+require_once 'common/common.php';
+include 'common/header.php';
 if (!isset($_SESSION['user_id'])) {
     exit;
 }
