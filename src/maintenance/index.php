@@ -9,7 +9,27 @@ if (isset($_SESSION['user_id'])) {
     $stmt = $pdo->query('SELECT COUNT(*) FROM refrigeration');
     $unit_count = $stmt->fetchColumn();
     // Latest maintenance tickets
-    $stmt = $pdo->query('SELECT m.*, COALESCE(t.trl_id) AS equipment FROM maintenance m LEFT JOIN refrigeration r ON m.refrigeration_id = r.id LEFT JOIN trailers t ON m.trl_id = t.id ORDER BY m.performed_at DESC LIMIT 5');
+    $stmt = $pdo->query('
+        SELECT
+            m.*,
+            t.trl_id AS trailer_id,
+            r.id AS refrigeration_id,
+            r.trl_id AS refrigeration_trailer_id,
+            CASE
+                WHEN m.refrigeration_id IS NOT NULL THEN (
+                    SELECT ra.value
+                    FROM refrigeration_answers ra
+                    WHERE ra.refrigeration_id = m.refrigeration_id AND ra.question_id = 1
+                    LIMIT 1
+                )
+                ELSE NULL
+            END AS refrigeration_answer_1
+        FROM maintenance m
+        LEFT JOIN refrigeration r ON m.refrigeration_id = r.id
+        LEFT JOIN trailers t ON m.trl_id = t.id
+        ORDER BY m.performed_at DESC
+        LIMIT 5
+    ');
     $latest_maintenance = $stmt->fetchAll();
     include 'templates/header.php';
 ?>
@@ -40,8 +60,14 @@ if (isset($_SESSION['user_id'])) {
                         <?php foreach ($latest_maintenance as $m): ?>
                         <li class="list-group-item bg-info text-white">
                             <a href="view_maintenance.php?id=<?= $m['id'] ?>&type=<?= $m['refrigeration_id'] ? 'refrigeration' : 'trailer' ?>" class="text-white text-decoration-none">
-                                <strong><?= htmlspecialchars($m['type_of_service']) ?></strong> - <?= htmlspecialchars($m['equipment']) ?> <br>
-                                <small><?= htmlspecialchars($m['performed_at']) ?> by <?= htmlspecialchars($m['performed_by']) ?></small>
+                                <strong><?= htmlspecialchars($m['type_of_service'] ?? '') ?></strong> -
+                                <?php if ($m['refrigeration_id']): ?>
+                                    <?= htmlspecialchars($m['refrigeration_answer_1'] ?? '') ?> (Trailer <?= htmlspecialchars($m['refrigeration_trailer_id'] ?? 'Unknown') ?>)
+                                <?php else: ?>
+                                    <?= htmlspecialchars(($m['trailer_id'] ?? $m['trl_id']) ?: 'Unknown') ?>
+                                <?php endif; ?>
+                                <br>
+                                <small><?= htmlspecialchars($m['performed_at'] ?? '') ?> by <?= htmlspecialchars($m['performed_by'] ?? '') ?></small>
                             </a>
                         </li>
                         <?php endforeach; ?>
