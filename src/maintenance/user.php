@@ -1,6 +1,7 @@
 <?php
+
 require 'common/common.php';
-include 'common/header.php';
+$smarty->display($theme_current . '/header.tpl');
 if (!isset($_SESSION['user_id'])) {
     exit;
 }
@@ -46,39 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-?>
-<h2>User Info</h2>
-<?php if ($errors): ?>
-    <div class="alert alert-danger">
-        <ul>
-            <?php foreach ($errors as $error): ?>
-                <li><?= htmlspecialchars($error) ?></li>
-            <?php endforeach; ?>
-        </ul>
-    </div>
-<?php endif; ?>
-<?php if (!empty($success_message)): ?>
-    <div class="alert alert-success">
-        <?= htmlspecialchars($success_message) ?>
-    </div>
-<?php endif; ?>
-<form method="post">
-    <div class="mb-3">
-        <label>Email</label>
-        <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($user['email']) ?>">
-    </div>
-    <div class="mb-3">
-        <label>Current Password</label>
-        <input type="password" name="current_password" class="form-control">
-    </div>
-    <div class="mb-3">
-        <label>New Password</label>
-        <input type="password" name="new_password" class="form-control">
-    </div>
-    <div class="mb-3">
-        <label>Confirm New Password</label>
-        <input type="password" name="confirm_password" class="form-control">
-    </div>
-    <button class="btn btn-primary">Update</button>
-</form>
-<?php include 'common/footer.php'; ?>
+
+$smarty->assign('user', $user);
+$smarty->assign('errors', $errors);
+$smarty->assign('success_message', $success_message);
+$smarty->display($theme_current . '/user.tpl');
+$smarty->display($theme_current . '/footer.tpl');

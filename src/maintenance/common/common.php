@@ -1,6 +1,14 @@
 <?php
 require 'include/smarty-5.6.0/libs/Smarty.class.php';
 
+// Initialize Smarty
+use Smarty\Smarty;
+$smarty = new Smarty();
+$smarty->setTemplateDir(__DIR__ . '/../templates/');
+$smarty->setCompileDir(__DIR__ . '/../templates_c/');
+
+$theme_current = "theme_1"; // Default theme
+
 $host = 'db';
 $db   = getenv('MYSQL_DATABASE');
 $user = getenv('MYSQL_USER');
@@ -34,3 +42,7 @@ function cleanInput($data, $type = 'string') {
             return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
     }
 }
+
+// Assign common variables to Smarty
+$smarty->assign('theme', $_COOKIE['theme'] ?? 'light');
+$smarty->assign('session', $_SESSION ?? []);

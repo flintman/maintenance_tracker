@@ -1,3 +1,4 @@
+{* Navigation Template *}
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand" href="index.php">Maintenance Tracker</a>
@@ -6,7 +7,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <?php if (isset($_SESSION['user_id'])): ?>
+                {if isset($session.user_id)}
                 <li class="nav-item">
                     <a class="nav-link" href="trailer.php">Trailers</a>
                 </li>
@@ -16,24 +17,23 @@
                 <li class="nav-item">
                     <a class="nav-link" href="user.php">User Info</a>
                 </li>
-                <?php if (($_SESSION['privilege']) === 'admin'): ?>
+                {if $session.privilege == 'admin'}
                 <li class="nav-item">
                     <a class="nav-link" href="admin/index.php">Admin Dashboard</a>
                 </li>
-                <?php endif; ?>
-                <?php endif; ?>
+                {/if}
+                {/if}
             </ul>
             <button class="btn btn-outline-secondary theme-toggle me-2" onclick="toggleTheme()">
                 <span id="theme-label">Toggle Theme</span>
             </button>
-            <?php if (isset($_SESSION['user_id'])): ?>
+            {if isset($session.user_id)}
               <a class="btn btn-danger ms-2" href="logout.php">Logout</a>
-            <?php endif; ?>
+            {/if}
         </div>
     </div>
 </nav>
 <script>
-    // Update theme label and icon
     function updateThemeLabel() {
         const theme = document.documentElement.getAttribute('data-bs-theme');
         document.getElementById('theme-label').textContent = theme === 'dark' ? 'Light Mode' : 'Dark Mode';

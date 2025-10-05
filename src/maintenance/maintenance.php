@@ -1,6 +1,6 @@
 <?php
 require_once 'common/common.php';
-include 'common/header.php';
+$smarty->display($theme_current . '/header.tpl');
 if (!isset($_SESSION['user_id'])) {
     exit;
 }
@@ -29,6 +29,7 @@ if ($refrigeration_id) {
     $stmt->execute([$trl_id]);
     $equipment_name = $stmt->fetchColumn();
 }
+$smarty->assign('equipment_name', $equipment_name);
 
 // Add maintenance
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_maintenance'])) {
@@ -43,6 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_maintenance'])) {
     // Ensure refrigeration_id and trl_id are properly set to NULL if empty
     $refrigeration_id = $refrigeration_id ?: null;
     $trl_id = $trl_id ?: null;
+    $smarty->assign('trl_id', $trl_id);
 
     // Insert maintenance record
     $stmt = $pdo->prepare('INSERT INTO maintenance (refrigeration_id, trl_id, type_of_service, description, costs_of_parts, performed_at, performed_by) VALUES (?, ?, ?, ?, ?, ?, ?)');
@@ -68,8 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_maintenance'])) {
     }
 
     $msg = 'Maintenance record added successfully!';
+    $smarty->assign('msg', $msg ?? '');
 }
-
 
 // Fetch maintenance records
 if ($refrigeration_id) {
@@ -81,109 +83,13 @@ if ($refrigeration_id) {
 }
 $records = $stmt->fetchAll();
 
+$smarty->assign('refrigeration_id', $refrigeration_id);
+$smarty->assign('records', $records);
 // Ensure $maintenance_id is defined
 $maintenance_id = cleanInput($_POST['maintenance_id'] ?? null, 'int');
+
+$smarty->display($theme_current . '/maintenance.tpl');
+$smarty->display($theme_current . '/footer.tpl');
 ?>
 
-<h2>Maintenance for <?= htmlspecialchars($equipment_name ?? '') ?></h2>
-<a href="<?= $refrigeration_id ? 'refrigeration.php' : 'trailer.php' ?>" class="btn btn-secondary mb-3">
-    Back to <?= $refrigeration_id ? 'Refrigeration Units' : 'Trailers' ?>
-</a>
-<h3>
-    <button class="btn btn-link collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#addMaintenanceForm" aria-expanded="false" aria-controls="addMaintenanceForm" onclick="toggleArrow(this)">
-        <span class="me-2 arrow">➤</span> <span class="toggle-text">Add Maintenance Record</span>
-    </button>
-</h3>
 
-<div class="collapse" id="addMaintenanceForm">
-    <form method="post" enctype="multipart/form-data">
-        <input type="hidden" name="refrigeration_id" value="<?= $refrigeration_id ?? '' ?>">
-        <input type="hidden" name="trl_id" value="<?= $trl_id ?? '' ?>">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-primary text-white fw-bold">Service Details</div>
-            <div class="card-body">
-                <div class="row g-3 align-items-center mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold" for="type_of_service">Type of Service</label>
-                        <input type="text" name="type_of_service" id="type_of_service" class="form-control" required placeholder="e.g. Inspection, Repair">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold" for="performed_by">Performed By</label>
-                        <input type="text" name="performed_by" id="performed_by" class="form-control" required placeholder="Technician Name">
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mb-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold" for="performed_at">Performed On</label>
-                        <input type="date" name="performed_at" id="performed_at" class="form-control" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold" for="costs_of_parts">Costs of Parts</label>
-                        <input type="number" name="costs_of_parts" id="costs_of_parts" class="form-control" step="0.01" required placeholder="0.00">
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label fw-bold" for="description">Description</label>
-                    <textarea name="description" id="description" class="form-control" rows="3" required placeholder="Describe the maintenance performed..."></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-secondary text-white fw-bold">Photos</div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <label class="form-label fw-bold" for="photos">Upload Photos</label>
-                    <input type="file" name="photos[]" id="photos" class="form-control" multiple>
-                    <small class="form-text text-muted">You can select multiple images.</small>
-                </div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-end">
-            <button class="btn btn-success px-4" name="add_maintenance">Submit</button>
-        </div>
-    </form>
-</div>
-
-<script>
-function toggleArrow(button) {
-    const arrow = button.querySelector('.arrow');
-    arrow.textContent = button.getAttribute('aria-expanded') === 'true' ? '▼' : '➤';
-}
-
-// Initialize arrow direction and theme-specific styles on page load
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('[data-bs-toggle="collapse"]').forEach(button => {
-        const arrow = button.querySelector('.arrow');
-        arrow.textContent = button.getAttribute('aria-expanded') === 'true' ? '▼' : '➤';
-        button.classList.add('text-' + document.documentElement.getAttribute('data-bs-theme'));
-    });
-});
-</script>
-
-<h3>Maintenance Records</h3>
-<table class="table table-bordered">
-    <thead><tr><th>ID</th><th>Type</th><th>Description</th><th>Actions</th></tr></thead>
-    <tbody>
-    <?php
-    if ($refrigeration_id) {
-        $stmt = $pdo->prepare('SELECT * FROM maintenance WHERE refrigeration_id = ? ORDER BY performed_at DESC');
-        $stmt->execute([$refrigeration_id]);
-    } else {
-        $stmt = $pdo->prepare('SELECT * FROM maintenance WHERE trl_id = ? ORDER BY performed_at DESC');
-        $stmt->execute([$trl_id]);
-    }
-    while ($row = $stmt->fetch()): ?>
-        <tr>
-            <td><?= $row['id'] ?></td>
-            <td><?= htmlspecialchars($row['type_of_service']) ?></td>
-            <td><?= htmlspecialchars($row['description']) ?></td>
-            <td>
-                <a href="view_maintenance.php?id=<?= $row['id'] ?>&type=<?= $refrigeration_id ? 'refrigeration' : 'trailer' ?>" class="btn btn-info">View</a>
-                <?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
-                <a href="view_maintenance.php?id=<?= $row['id'] ?>&type=<?= $refrigeration_id ? 'refrigeration' : 'trailer' ?>&edit=1" class="btn btn-warning">Edit</a>
-                <?php endif; ?>
-            </td>
-        </tr>
-    <?php endwhile; ?>
-    </tbody>
-</table>

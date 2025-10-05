@@ -1,3 +1,4 @@
+{* Footer Template *}
 </div>
 <footer class="text-center py-3">
     <small>Maintenance Tracker</small>
