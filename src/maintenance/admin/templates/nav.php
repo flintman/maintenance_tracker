@@ -23,7 +23,7 @@
                     </button>
                 </li>
                 <li class="nav-item"><a class="nav-link text-light" href="../index.php">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link text-light" href="logout.php">Logout</a></li>
+                <li class="nav-item"><a class="nav-link text-light" href="../logout.php">Logout</a></li>
             </ul>
         </div>
     </div>
