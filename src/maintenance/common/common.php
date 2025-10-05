@@ -1,4 +1,6 @@
 <?php
+require 'include/smarty-5.6.0/libs/Smarty.class.php';
+
 $host = 'db';
 $db   = getenv('MYSQL_DATABASE');
 $user = getenv('MYSQL_USER');
