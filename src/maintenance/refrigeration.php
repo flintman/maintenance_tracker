@@ -72,8 +72,8 @@ function getAnswers($pdo, $refrigeration_id) {
     return $stmt->fetchAll();
 }
 
-// Fetch trailers for dropdown
-$trailers = $pdo->query('SELECT trl_id FROM trailers')->fetchAll();
+// Fetch trailers for dropdown: only those not already associated with a refrigeration unit
+$trailers = $pdo->query('SELECT trl_id FROM trailers WHERE trl_id NOT IN (SELECT trl_id FROM refrigeration)')->fetchAll();
 ?>
 
 <h2>Refrigeration Units</h2>
