@@ -84,41 +84,53 @@ $trailers = $pdo->query('SELECT trl_id FROM trailers WHERE trl_id NOT IN (SELECT
     </button>
 </h3>
 <?php endif; ?>
+
 <div id="addEditRefrigerationForm" style="display:none;">
     <form method="post" id="addEditForm">
         <input type="hidden" name="mode" id="addEditMode" value="add">
         <input type="hidden" name="id" id="addEditId" value="">
-        <div class="mb-3">
-            <label class="form-label">Trailer ID</label>
-            <select name="trl_id" id="addEditTrlId" class="form-control" required>
-                <option value=""></option>
-                <?php foreach ($trailers as $trl): ?>
-                    <option value="<?= $trl['trl_id'] ?>"><?= $trl['trl_id'] ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <?php foreach ($questions as $q): ?>
-        <div class="mb-3">
-            <label class="form-label"><?= htmlspecialchars($q['label']) ?></label>
-            <?php if ($q['type'] === 'multi_choice'): ?>
-                <select name="question_<?= $q['id'] ?>[]" id="addEditQ<?= $q['id'] ?>" class="form-control" multiple>
-                    <?php foreach (explode(',', $q['options']) as $opt): ?>
-                        <option value="<?= htmlspecialchars(trim($opt)) ?>"><?= htmlspecialchars(trim($opt)) ?></option>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white fw-bold">Refrigeration Unit Details</div>
+            <div class="card-body">
+                <div class="row g-3 align-items-center mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold" for="addEditTrlId">Trailer ID</label>
+                        <select name="trl_id" id="addEditTrlId" class="form-control" required>
+                            <option value=""></option>
+                            <?php foreach ($trailers as $trl): ?>
+                                <option value="<?= $trl['trl_id'] ?>"><?= $trl['trl_id'] ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-3">
+                    <?php foreach ($questions as $q): ?>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold" for="addEditQ<?= $q['id'] ?>"><?= htmlspecialchars($q['label']) ?></label>
+                        <?php if ($q['type'] === 'multi_choice'): ?>
+                            <select name="question_<?= $q['id'] ?>[]" id="addEditQ<?= $q['id'] ?>" class="form-control" multiple>
+                                <?php foreach (explode(',', $q['options']) as $opt): ?>
+                                    <option value="<?= htmlspecialchars(trim($opt)) ?>"><?= htmlspecialchars(trim($opt)) ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        <?php elseif ($q['type'] === 'text'): ?>
+                            <textarea name="question_<?= $q['id'] ?>" id="addEditQ<?= $q['id'] ?>" class="form-control" rows="2"></textarea>
+                        <?php elseif ($q['type'] === 'number'): ?>
+                            <input type="number" name="question_<?= $q['id'] ?>" id="addEditQ<?= $q['id'] ?>" class="form-control">
+                        <?php elseif ($q['type'] === 'date'): ?>
+                            <input type="date" name="question_<?= $q['id'] ?>" id="addEditQ<?= $q['id'] ?>" class="form-control">
+                        <?php else: ?>
+                            <input type="text" name="question_<?= $q['id'] ?>" id="addEditQ<?= $q['id'] ?>" class="form-control">
+                        <?php endif; ?>
+                    </div>
                     <?php endforeach; ?>
-                </select>
-            <?php elseif ($q['type'] === 'text'): ?>
-                <textarea name="question_<?= $q['id'] ?>" id="addEditQ<?= $q['id'] ?>" class="form-control"></textarea>
-            <?php elseif ($q['type'] === 'number'): ?>
-                <input type="number" name="question_<?= $q['id'] ?>" id="addEditQ<?= $q['id'] ?>" class="form-control">
-            <?php elseif ($q['type'] === 'date'): ?>
-                <input type="date" name="question_<?= $q['id'] ?>" id="addEditQ<?= $q['id'] ?>" class="form-control">
-            <?php else: ?>
-                <input type="text" name="question_<?= $q['id'] ?>" id="addEditQ<?= $q['id'] ?>" class="form-control">
-            <?php endif; ?>
+                </div>
+            </div>
         </div>
-        <?php endforeach; ?>
-        <button class="btn btn-success" id="addEditSubmitBtn">Submit</button>
-        <button type="button" class="btn btn-secondary" id="addEditCancelBtn">Cancel</button>
+        <div class="d-flex justify-content-end mb-3">
+            <button class="btn btn-success px-4" id="addEditSubmitBtn">Submit</button>
+            <button type="button" class="btn btn-secondary ms-2" id="addEditCancelBtn">Cancel</button>
+        </div>
     </form>
 </div>
 
