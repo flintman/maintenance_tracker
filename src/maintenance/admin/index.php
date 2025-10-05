@@ -66,23 +66,6 @@ $latest_maintenance = $stmt->fetchAll();
                 </div>
             </div>
         </div>
-        <div class="col d-flex">
-            <div class="card admin-card mb-3 w-100 h-100">
-                <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <h5 class="card-title">Latest Maintenance</h5>
-                    <ul class="list-group list-group-flush w-100">
-                        <?php foreach ($latest_maintenance as $m): ?>
-                        <li class="list-group-item">
-                            <a href="../view_maintenance.php?id=<?= $m['id'] ?>&type=<?= $m['refrigeration_id'] ? 'refrigeration' : 'trailer' ?>" class="text-decoration-none">
-                                <strong><?= htmlspecialchars($m['type_of_service']) ?></strong> - <?= htmlspecialchars($m['equipment']) ?> <br>
-                                <small><?= htmlspecialchars($m['performed_at']) ?> by <?= htmlspecialchars($m['performed_by']) ?></small>
-                            </a>
-                        </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="row mb-4">
         <div class="col-md-6">

@@ -29,47 +29,47 @@ if ($refrigeration_id) {
     $stmt->execute([$trl_id]);
     $equipment_name = $stmt->fetchColumn();
 }
-if (($_SESSION['privilege'] ?? '') === 'admin') {
-    // Add maintenance
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_maintenance'])) {
-        $refrigeration_id = cleanInput($_POST['refrigeration_id'] ?? null, 'int');
-        $trl_id = cleanInput($_POST['trl_id'] ?? null, 'int');
-        $type_of_service = cleanInput($_POST['type_of_service']);
-        $description = cleanInput($_POST['description']);
-        $costs_of_parts = cleanInput($_POST['costs_of_parts'], 'int');
-        $performed_at = cleanInput($_POST['performed_at']);
-        $performed_by = cleanInput($_POST['performed_by']);
 
-        // Ensure refrigeration_id and trl_id are properly set to NULL if empty
-        $refrigeration_id = $refrigeration_id ?: null;
-        $trl_id = $trl_id ?: null;
+// Add maintenance
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_maintenance'])) {
+    $refrigeration_id = cleanInput($_POST['refrigeration_id'] ?? null, 'int');
+    $trl_id = cleanInput($_POST['trl_id'] ?? null, 'int');
+    $type_of_service = cleanInput($_POST['type_of_service']);
+    $description = cleanInput($_POST['description']);
+    $costs_of_parts = cleanInput($_POST['costs_of_parts'], 'int');
+    $performed_at = cleanInput($_POST['performed_at']);
+    $performed_by = cleanInput($_POST['performed_by']);
 
-        // Insert maintenance record
-        $stmt = $pdo->prepare('INSERT INTO maintenance (refrigeration_id, trl_id, type_of_service, description, costs_of_parts, performed_at, performed_by) VALUES (?, ?, ?, ?, ?, ?, ?)');
-        $stmt->execute([$refrigeration_id, $trl_id, $type_of_service, $description, $costs_of_parts, $performed_at, $performed_by]);
-        $maintenance_id = $pdo->lastInsertId();
+    // Ensure refrigeration_id and trl_id are properly set to NULL if empty
+    $refrigeration_id = $refrigeration_id ?: null;
+    $trl_id = $trl_id ?: null;
 
-        // Handle photo uploads
-        $uploaded_photos = [];
-        if (isset($_FILES['photos'])) {
-            foreach ($_FILES['photos']['name'] as $index => $name) {
-                $filename = basename($name);
-                $target = 'assets/uploads/' . $filename;
-                if (move_uploaded_file($_FILES['photos']['tmp_name'][$index], $target)) {
-                    $uploaded_photos[] = $filename;
-                }
+    // Insert maintenance record
+    $stmt = $pdo->prepare('INSERT INTO maintenance (refrigeration_id, trl_id, type_of_service, description, costs_of_parts, performed_at, performed_by) VALUES (?, ?, ?, ?, ?, ?, ?)');
+    $stmt->execute([$refrigeration_id, $trl_id, $type_of_service, $description, $costs_of_parts, $performed_at, $performed_by]);
+    $maintenance_id = $pdo->lastInsertId();
+
+    // Handle photo uploads
+    $uploaded_photos = [];
+    if (isset($_FILES['photos'])) {
+        foreach ($_FILES['photos']['name'] as $index => $name) {
+            $filename = basename($name);
+            $target = 'assets/uploads/' . $filename;
+            if (move_uploaded_file($_FILES['photos']['tmp_name'][$index], $target)) {
+                $uploaded_photos[] = $filename;
             }
         }
-
-        // Update maintenance record with photos
-        if (!empty($uploaded_photos)) {
-            $stmt = $pdo->prepare('UPDATE maintenance SET photos = ? WHERE id = ?');
-            $stmt->execute([json_encode($uploaded_photos), $maintenance_id]);
-        }
-
-        $msg = 'Maintenance record added successfully!';
     }
+
+    // Update maintenance record with photos
+    if (!empty($uploaded_photos)) {
+        $stmt = $pdo->prepare('UPDATE maintenance SET photos = ? WHERE id = ?');
+        $stmt->execute([json_encode($uploaded_photos), $maintenance_id]);
+    }
+
+    $msg = 'Maintenance record added successfully!';
 }
+
 
 // Fetch maintenance records
 if ($refrigeration_id) {
@@ -89,7 +89,6 @@ $maintenance_id = cleanInput($_POST['maintenance_id'] ?? null, 'int');
 <a href="<?= $refrigeration_id ? 'refrigeration.php' : 'trailer.php' ?>" class="btn btn-secondary mb-3">
     Back to <?= $refrigeration_id ? 'Refrigeration Units' : 'Trailers' ?>
 </a>
-<?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
 <h3>
     <button class="btn btn-link collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#addMaintenanceForm" aria-expanded="false" aria-controls="addMaintenanceForm" onclick="toggleArrow(this)">
         <span class="me-2 arrow">➤</span> <span class="toggle-text">Add Maintenance Record</span>
@@ -142,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
-<?php endif; ?>
+
 <h3>Maintenance Records</h3>
 <table class="table table-bordered">
     <thead><tr><th>ID</th><th>Type</th><th>Description</th><th>Actions</th></tr></thead>

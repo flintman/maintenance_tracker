@@ -77,11 +77,13 @@ $trailers = $pdo->query('SELECT trl_id FROM trailers WHERE trl_id NOT IN (SELECT
 ?>
 
 <h2>Refrigeration Units</h2>
+<?php if (($_SESSION['privilege'] ?? '') === 'admin'): ?>
 <h3>
     <button class="btn btn-link text-decoration-none" type="button" id="toggleAddEditBtn">
         <span class="me-2 arrow" id="addEditArrow">➤</span> <span class="toggle-text" id="addEditText">Add Refrigeration Unit</span>
     </button>
 </h3>
+<?php endif; ?>
 <div id="addEditRefrigerationForm" style="display:none;">
     <form method="post" id="addEditForm">
         <input type="hidden" name="mode" id="addEditMode" value="add">
