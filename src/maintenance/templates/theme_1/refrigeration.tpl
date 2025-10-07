@@ -140,7 +140,7 @@ function editUnit(id, trlId) {
         <thead>
             <tr>
                 <th>Trailer ID</th>
-                {foreach $questions_preview as $q}
+                {foreach $questions_first3 as $q}
                     <th>{$q.label|escape}</th>
                 {/foreach}
                 <th>Actions</th>
@@ -151,7 +151,7 @@ function editUnit(id, trlId) {
                 {assign var=answers value=$unit.answers}
                 <tr>
                     <td>{$unit.trl_id|escape}</td>
-                    {foreach $unit.answers_preview as $a}
+                    {foreach $unit.answers_first3 as $a}
                         <td>
                             {if $a.type == 'multi_choice'}
                                 {foreach $a.value|split:',' as $val}
@@ -185,7 +185,7 @@ function editUnit(id, trlId) {
         <thead>
             <tr>
                 <th>Trailer ID</th>
-                {foreach $questions_preview as $q}
+                {foreach $questions_first3 as $q}
                     <th>{$q.label|escape}</th>
                 {/foreach}
                 <th>Actions</th>
@@ -196,7 +196,7 @@ function editUnit(id, trlId) {
                 {assign var=answers value=$unit.answers}
                 <tr>
                     <td>{$unit.trl_id|escape}</td>
-                    {foreach $unit.answers_preview as $a}
+                    {foreach $unit.answers_first3 as $a}
                         <td>
                             {if $a.type == 'multi_choice'}
                                 {foreach $a.value|split:',' as $val}

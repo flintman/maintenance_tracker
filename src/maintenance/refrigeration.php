@@ -74,16 +74,20 @@ $trailers = $pdo->query('SELECT trl_id FROM trailers')->fetchAll();
 
 // Assign all required variables to Smarty
 
+
 $smarty->assign('questions', $questions);
 $smarty->assign('questions_preview', $questions);
+$smarty->assign('questions_first3', array_slice($questions, 0, 3));
 $smarty->assign('units', array_map(function($unit) use ($pdo) {
-    $unit['answers'] = getAnswers($pdo, $unit['id']);
-    $unit['answers_preview'] = $unit['answers'];
+    $answers = getAnswers($pdo, $unit['id']);
+    $unit['answers'] = $answers;
+    $unit['answers_first3'] = array_slice($answers, 0, 3);
     return $unit;
 }, $units));
 $smarty->assign('archived', array_map(function($unit) use ($pdo) {
-    $unit['answers'] = getAnswers($pdo, $unit['id']);
-    $unit['answers_preview'] = $unit['answers'];
+    $answers = getAnswers($pdo, $unit['id']);
+    $unit['answers'] = $answers;
+    $unit['answers_first3'] = array_slice($answers, 0, 3);
     return $unit;
 }, $archived));
 $smarty->assign('trailers', $trailers);
