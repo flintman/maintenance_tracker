@@ -11,8 +11,24 @@ $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
 $stmt->execute([$user_id]);
 $user = $stmt->fetch();
 
+
 $errors = [];
 $success_message = '';
+
+// Get available themes from templates/ directory
+$themes_dir = __DIR__ . '/templates/';
+if (!is_dir($themes_dir)) {
+    $themes_dir = realpath(__DIR__ . '/../templates/');
+}
+$theme_folders = [];
+if ($themes_dir && is_dir($themes_dir)) {
+    foreach (scandir($themes_dir) as $file) {
+        if ($file[0] !== '.' && is_dir($themes_dir . '/' . $file)) {
+            $theme_folders[] = $file;
+        }
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update email
     if (isset($_POST['email'])) {
@@ -25,6 +41,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user['email'] = $email;
             $success_message = 'Email updated successfully.';
         }
+    }
+
+    // Update theme
+    if (isset($_POST['theme']) && in_array($_POST['theme'], $theme_folders)) {
+        $stmt = $pdo->prepare('UPDATE users SET theme = ? WHERE id = ?');
+        $stmt->execute([$_POST['theme'], $user_id]);
+        $user['theme'] = $_POST['theme'];
+        $success_message = 'Theme updated successfully.';
     }
 
     // Update password only if current password is provided
@@ -49,7 +73,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $smarty->assign('user', $user);
+$smarty->assign('themes', $theme_folders);
 $smarty->assign('errors', $errors);
 $smarty->assign('success_message', $success_message);
+$refresh = '';
+if (!empty($success_message)) {
+    $refresh = '<meta http-equiv="refresh" content="2">';
+}
+$smarty->assign('refresh', $refresh);
 $smarty->display($theme_current . '/user.tpl');
 $smarty->display($theme_current . '/footer.tpl');

@@ -5,6 +5,7 @@ CREATE TABLE users (
     password VARCHAR(255) NOT NULL,
     privilege ENUM('user','admin') DEFAULT 'user',
     email VARCHAR(100),
+    theme VARCHAR(20) DEFAULT 'theme_1',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

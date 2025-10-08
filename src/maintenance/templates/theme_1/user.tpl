@@ -1,4 +1,5 @@
 {* User Info Page *}
+{$refresh nofilter}
 <h2>User Info</h2>
 {if $errors}
     <div class="alert alert-danger">
@@ -14,10 +15,19 @@
         {$success_message|escape}
     </div>
 {/if}
+
 <form method="post">
     <div class="mb-3">
         <label>Email</label>
         <input type="email" name="email" class="form-control" value="{$user.email|escape}">
+    </div>
+    <div class="mb-3">
+        <label>Theme</label>
+        <select name="theme" class="form-control">
+            {foreach $themes as $theme}
+                <option value="{$theme|escape}"{if $user.theme == $theme} selected{/if}>{$theme|escape}</option>
+            {/foreach}
+        </select>
     </div>
     <div class="mb-3">
         <label>Current Password</label>

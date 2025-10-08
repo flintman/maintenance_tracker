@@ -1,3 +1,4 @@
+{$refresh nofilter}
 <div class="container py-4">
     <h1 class="display-5 fw-bold mb-4">User Info</h1>
     {if $errors}
@@ -20,6 +21,14 @@
                 <div class="mb-3">
                     <label class="form-label fw-bold">Email</label>
                     <input type="email" name="email" class="form-control" value="{$user.email|escape}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Theme</label>
+                    <select name="theme" class="form-control">
+                        {foreach $themes as $theme}
+                            <option value="{$theme|escape}"{if $user.theme == $theme} selected{/if}>{$theme|escape}</option>
+                        {/foreach}
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label fw-bold">Current Password</label>
