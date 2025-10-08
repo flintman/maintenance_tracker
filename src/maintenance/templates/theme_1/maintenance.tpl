@@ -9,12 +9,12 @@
 {/if}
 
 <h3>
-    <button class="btn btn-link collapsed text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#addMaintenanceForm" aria-expanded="false" aria-controls="addMaintenanceForm" onclick="toggleArrow(this)">
-        <span class="me-2 arrow">➤</span> <span class="toggle-text">Add Maintenance Record</span>
+    <button class="btn btn-link text-decoration-none" type="button" id="toggleAddMaintenanceBtn">
+        <span class="me-2 arrow" id="addMaintenanceArrow">➤</span> <span class="toggle-text">Add Maintenance Record</span>
     </button>
 </h3>
 
-<div class="collapse" id="addMaintenanceForm">
+<div id="addMaintenanceForm" style="display:none;">
     <form method="post" enctype="multipart/form-data">
         <input type="hidden" name="refrigeration_id" value="{$refrigeration_id}">
         <input type="hidden" name="trl_id" value="{$trl_id}">
@@ -83,8 +83,20 @@
     </tbody>
 </table>
 <script>
-function toggleArrow(button) {
-    const arrow = button.querySelector('.arrow');
-    arrow.textContent = button.getAttribute('aria-expanded') === 'true' ? '▼' : '➤';
-}
+document.addEventListener('DOMContentLoaded', function() {
+    var formDiv = document.getElementById('addMaintenanceForm');
+    var arrow = document.getElementById('addMaintenanceArrow');
+    var btn = document.getElementById('toggleAddMaintenanceBtn');
+    if (btn && formDiv && arrow) {
+        btn.addEventListener('click', function() {
+            if (formDiv.style.display === 'none' || formDiv.style.display === '') {
+                formDiv.style.display = 'block';
+                arrow.textContent = '▼';
+            } else {
+                formDiv.style.display = 'none';
+                arrow.textContent = '➤';
+            }
+        });
+    }
+});
 </script>
