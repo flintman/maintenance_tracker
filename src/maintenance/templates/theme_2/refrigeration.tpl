@@ -84,6 +84,34 @@ function editUnit(id, trlId) {
         color: #e0e0e0 !important;
         border-color: #444 !important;
     }
+    .modern-btn-info {
+        background: linear-gradient(90deg, #232526 0%, #00bcd4 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .modern-btn-warning {
+        background: linear-gradient(90deg, #232526 0%, #ff9800 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .modern-btn-secondary {
+        background: linear-gradient(90deg, #232526 0%, #607d8b 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .modern-btn-success {
+        background: linear-gradient(90deg, #232526 0%, #4caf50 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
 </style>
 <div class="container py-4">
     <h1 class="display-5 fw-bold mb-4">Refrigeration Units</h1>
@@ -139,7 +167,7 @@ function editUnit(id, trlId) {
             </div>
             <div class="d-flex justify-content-end mb-3">
                 <button class="btn modern-btn modern-btn-primary px-4" id="addEditSubmitBtn">Submit</button>
-                <button type="button" class="btn btn-outline-secondary ms-2" id="addEditCancelBtn">Cancel</button>
+                <button type="button" class="btn modern-btn modern-btn-secondary ms-2" id="addEditCancelBtn">Cancel</button>
             </div>
         </form>
     </div>
@@ -172,13 +200,13 @@ function editUnit(id, trlId) {
                             </td>
                         {/foreach}
                         <td>
-                            <a href="maintenance.php?refrigeration_id={$unit.id}&type=refrigeration" class="btn modern-btn btn-info btn-sm">View Maintenance</a>
+                            <a href="maintenance.php?refrigeration_id={$unit.id}&type=refrigeration" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
                             {if $session.privilege == 'admin'}
                             <form method="post" style="display:inline-block">
                                 <input type="hidden" name="id" value="{$unit.id}">
-                                <button name="archive" class="btn modern-btn btn-warning btn-sm">Archive</button>
+                                <button name="archive" class="btn modern-btn modern-btn-warning btn-sm">Archive</button>
                             </form>
-                            <button class="btn modern-btn btn-secondary btn-sm" onclick="editUnit({$unit.id}, {$unit.trl_id})">Edit</button>
+                            <button class="btn modern-btn modern-btn-secondary btn-sm" onclick="editUnit({$unit.id}, {$unit.trl_id})">Edit</button>
                             {/if}
                         </td>
                     </tr>
@@ -218,7 +246,7 @@ function editUnit(id, trlId) {
                         <td>
                             <form method="post" style="display:inline-block">
                                 <input type="hidden" name="id" value="{$unit.id}">
-                                <button name="unarchive" class="btn modern-btn btn-success btn-sm">Unarchive</button>
+                                <button name="unarchive" class="btn modern-btn modern-btn-success btn-sm">Unarchive</button>
                             </form>
                         </td>
                     </tr>

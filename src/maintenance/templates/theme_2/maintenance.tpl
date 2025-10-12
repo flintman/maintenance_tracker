@@ -6,10 +6,38 @@
         color: #e0e0e0 !important;
         border-color: #444 !important;
     }
+    .modern-btn-info {
+        background: linear-gradient(90deg, #232526 0%, #00bcd4 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .modern-btn-warning {
+        background: linear-gradient(90deg, #232526 0%, #ff9800 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .modern-btn-secondary {
+        background: linear-gradient(90deg, #232526 0%, #607d8b 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .modern-btn-success {
+        background: linear-gradient(90deg, #232526 0%, #4caf50 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
 </style>
 <div class="container py-4">
     <h1 class="display-5 fw-bold mb-4">Maintenance for {$equipment_name|escape}</h1>
-    <a href="{$refrigeration_id ? 'refrigeration.php' : 'trailer.php'}" class="btn modern-btn btn-secondary mb-3">
+    <a href="{$refrigeration_id ? 'refrigeration.php' : 'trailer.php'}" class="btn modern-btn modern-btn-info mb-3">
         Back to {$refrigeration_id ? 'Refrigeration Units' : 'Trailers'}
     </a>
 
@@ -85,9 +113,9 @@
                     <td>{$row.type_of_service|escape}</td>
                     <td>{$row.description|escape}</td>
                     <td>
-                        <a href="view_maintenance.php?id={$row.id}&type={$refrigeration_id ? 'refrigeration' : 'trailer'}" class="btn modern-btn btn-info btn-sm">View</a>
+                        <a href="view_maintenance.php?id={$row.id}&type={$refrigeration_id ? 'refrigeration' : 'trailer'}" class="btn modern-btn modern-btn-info btn-sm">View</a>
                         {if $session.privilege == 'admin'}
-                        <a href="view_maintenance.php?id={$row.id}&type={$refrigeration_id ? 'refrigeration' : 'trailer'}&edit=1" class="btn modern-btn btn-warning btn-sm">Edit</a>
+                        <a href="view_maintenance.php?id={$row.id}&type={$refrigeration_id ? 'refrigeration' : 'trailer'}&edit=1" class="btn modern-btn modern-btn-secondary btn-sm">Edit</a>
                         {/if}
                     </td>
                 </tr>

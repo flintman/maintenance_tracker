@@ -89,7 +89,118 @@ function editTrl(id, answersMapStr) {
         color: #e0e0e0 !important;
         border-color: #444 !important;
     }
+    .modern-btn-info {
+        background: linear-gradient(90deg, #232526 0%, #00bcd4 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .modern-btn-warning {
+        background: linear-gradient(90deg, #232526 0%, #ff9800 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .modern-btn-secondary {
+        background: linear-gradient(90deg, #232526 0%, #607d8b 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+    .modern-btn-success {
+        background: linear-gradient(90deg, #232526 0%, #4caf50 100%) !important;
+        color: #fff !important;
+        border: none;
+        border-radius: 0.5rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
 </style>
+<script>
+var questionInfo = [
+{foreach $questions as $q}
+    {ldelim}id: {$q.id}, type: '{$q.type}', label: '{$q.label|escape}'{rdelim},
+{/foreach}
+];
+// Toggle add/edit form
+document.addEventListener('DOMContentLoaded', function() {
+    var toggleBtn = document.getElementById('toggleAddEditBtn');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', function() {
+            const formDiv = document.getElementById('addEditTrailerForm');
+            const arrow = document.getElementById('addEditArrow');
+            if (formDiv.style.display === 'none') {
+                formDiv.style.display = 'block';
+                arrow.textContent = '▼';
+                document.getElementById('addEditText').textContent = 'Add Trailer';
+            } else {
+                formDiv.style.display = 'none';
+                arrow.textContent = '➤';
+            }
+        });
+    }
+    var cancelBtn = document.getElementById('addEditCancelBtn');
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+            document.getElementById('addEditTrailerForm').style.display = 'none';
+            document.getElementById('addEditArrow').textContent = '➤';
+            document.getElementById('addEditMode').value = 'add';
+            document.getElementById('addEditId').value = '';
+            document.getElementById('addEditText').textContent = 'Add Trailer';
+            document.getElementById('addEditTrlId').value = '';
+            // Clear dynamic question fields
+            questionInfo.forEach(function(q) {
+                var el = document.getElementById('addEditQ' + q.id);
+                if (el) {
+                    if (q.type === 'multi_choice') {
+                        for (var i = 0; i < el.options.length; i++) {
+                            el.options[i].selected = false;
+                        }
+                    } else {
+                        el.value = '';
+                    }
+                }
+            });
+        });
+    }
+});
+var trailerIdToTrlId = {};
+{foreach $active as $trl}
+    trailerIdToTrlId[{$trl.id}] = '{$trl.trl_id|escape}';
+{/foreach}
+function editTrl(id, answersMapStr) {
+    var answersMap = {};
+    try {
+        answersMap = JSON.parse(answersMapStr);
+    } catch (e) {}
+    const formDiv = document.getElementById('addEditTrailerForm');
+    const arrow = document.getElementById('addEditArrow');
+    document.getElementById('addEditMode').value = 'edit';
+    document.getElementById('addEditId').value = id;
+    document.getElementById('addEditText').textContent = 'Edit Trailer';
+    document.getElementById('addEditTrlId').value = trailerIdToTrlId[id] || '';
+    // Populate dynamic question fields using answersMap
+    questionInfo.forEach(function(q) {
+        var val = answersMap[q.label] || '';
+        var el = document.getElementById('addEditQ' + q.id);
+        if (el) {
+            if (q.type === 'multi_choice') {
+                var opts = val.split(',');
+                for (var i = 0; i < el.options.length; i++) {
+                    el.options[i].selected = opts.includes(el.options[i].value);
+                }
+            } else {
+                el.value = val;
+            }
+        }
+    });
+    formDiv.style.display = 'block';
+    arrow.textContent = '▼';
+    window.scrollTo(0,document.body.scrollHeight);
+}
+</script>
 <div class="container py-4">
     <h1 class="display-5 fw-bold mb-4">Equipment</h1>
     {if isset($msg)}<div class="alert alert-info">{$msg}</div>{/if}
@@ -138,7 +249,7 @@ function editTrl(id, answersMapStr) {
             </div>
             <div class="d-flex justify-content-end mb-3">
                 <button class="btn modern-btn modern-btn-primary px-4" id="addEditSubmitBtn">Submit</button>
-                <button type="button" class="btn btn-outline-secondary ms-2" id="addEditCancelBtn">Cancel</button>
+                <button type="button" class="btn modern-btn modern-btn-secondary ms-2" id="addEditCancelBtn">Cancel</button>
             </div>
         </form>
     </div>
@@ -172,10 +283,10 @@ function editTrl(id, answersMapStr) {
                             </td>
                         {/foreach}
                         <td>
-                            <a href="maintenance.php?trl_id={$trl.id}&type=trailer" class="btn modern-btn btn-info btn-sm">View Maintenance</a>
+                            <a href="maintenance.php?trl_id={$trl.id}&type=trailer" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
                             {if $is_admin}
-                            <a href="trailer.php?archive={$trl.id}" class="btn modern-btn btn-warning btn-sm">Archive</a>
-                            <button class="btn modern-btn btn-secondary btn-sm" onclick="editTrl({$trl.id}, '{$trl.answers_json}')">Edit</button>
+                            <a href="trailer.php?archive={$trl.id}" class="btn modern-btn modern-btn-warning btn-sm">Archive</a>
+                            <button class="btn modern-btn modern-btn-secondary btn-sm" onclick="editTrl({$trl.id}, '{$trl.answers_json}')">Edit</button>
                             {/if}
                         </td>
                     </tr>
@@ -213,8 +324,8 @@ function editTrl(id, answersMapStr) {
                             </td>
                         {/foreach}
                         <td>
-                            <a href="trailer.php?unarchive={$trl.id}" class="btn modern-btn btn-success btn-sm">Unarchive</a>
-                            <a href="maintenance.php?trl_id={$trl.id}" class="btn modern-btn btn-info btn-sm">View Maintenance</a>
+                            <a href="trailer.php?unarchive={$trl.id}" class="btn modern-btn modern-btn-success btn-sm">Unarchive</a>
+                            <a href="maintenance.php?trl_id={$trl.id}" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
                         </td>
                     </tr>
                 {/foreach}
