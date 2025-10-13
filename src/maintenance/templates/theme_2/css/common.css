@@ -59,6 +59,44 @@ body {
     color: #fff;
 }
 
+.tableSearch {
+    padding: 8px 14px;
+    width: 260px;
+    border: 1.5px solid var(--bs-border-color, #b0bec5);
+    border-radius: 1.2rem;
+    background-color: var(--bs-body-bg, #fff);
+    color: var(--bs-body-color, #232526);
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s, color 0.2s;
+    box-shadow: 0 2px 8px rgba(0,188,212,0.04);
+}
+
+.tableSearch:focus {
+    outline: none;
+    border-color: #00bcd4;
+    box-shadow: 0 0 0 3px rgba(0,188,212,0.18);
+    background-color: #f0fcff;
+}
+
+[data-bs-theme="dark"] .tableSearch {
+    background-color: #232526;
+    color: #e0e0e0;
+    border-color: #333;
+    box-shadow: 0 2px 8px rgba(0,188,212,0.08);
+}
+
+[data-bs-theme="dark"] .tableSearch:focus {
+    background-color: #181a1b;
+    border-color: #00bcd4;
+    color: #fff;
+}
+
+[data-bs-theme="light"] .tableSearch {
+    background-color: #fff;
+    color: #232526;
+    border-color: #b0bec5;
+}
+
 /* Dark theme */
 [data-bs-theme="dark"] body {
     background: #181a1b;

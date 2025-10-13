@@ -5,6 +5,31 @@
     color: var(--bs-body-color, #fff) !important;
 }
 
+.tableSearch {
+    padding: 6px;
+    width: 250px;
+    border: 1px solid var(--bs-border-color, #b0bec5);
+    border-radius: 4px;
+    background-color: var(--bs-body-bg, #fff);
+    color: var(--bs-body-color, #232526);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+[data-bs-theme="dark"] .tableSearch {
+    background-color: #181a1b;
+    color: #e0e0e0;
+    border-color: #222;
+}
+[data-bs-theme="light"] .tableSearch {
+    background-color: #fff;
+    color: #232526;
+    border-color: #b0bec5;
+}
+.tableSearch:focus {
+    outline: none;
+    border-color: #00bcd4;
+    box-shadow: 0 0 0 2px rgba(0,188,212,0.15);
+}
+
 [data-bs-theme="dark"] .modern-table thead,
 [data-bs-theme="dark"] .modern-table thead tr,
 [data-bs-theme="dark"] .modern-table th {
@@ -35,3 +60,4 @@
     color: #232526 !important;
     border-color: #b0bec5 !important;
 }
+
