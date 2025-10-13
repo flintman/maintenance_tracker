@@ -6,6 +6,7 @@ CREATE TABLE users (
     privilege ENUM('user','admin') DEFAULT 'user',
     email VARCHAR(100),
     nickname VARCHAR(100),
+    api_key VARCHAR(255) UNIQUE,
     theme VARCHAR(20) DEFAULT 'theme_1',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

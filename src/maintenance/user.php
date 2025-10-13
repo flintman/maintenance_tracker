@@ -30,6 +30,17 @@ if ($themes_dir && is_dir($themes_dir)) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Generate new API key
+    if (isset($_POST['generate_api_key'])) {
+        // Generate a secure random API key (28 chars, numbers, letters, symbols)
+        $key_bytes = random_bytes(28); // 28 chars base64url
+        $api_key = rtrim(strtr(base64_encode($key_bytes), '+/', '-_'), '=');
+        $stmt = $pdo->prepare('UPDATE users SET api_key = ? WHERE id = ?');
+        $stmt->execute([$api_key, $user_id]);
+        $user['api_key'] = $api_key;
+        $success_message = 'A new API key has been generated.';
+    }
+
     // Update email
     if (isset($_POST['email'])) {
         $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);

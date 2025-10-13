@@ -43,6 +43,12 @@ $number_columns = $admin_config['columns_to_show'] ?? 3;
 $primary_label = $admin_config['primary_unit'] ?? 'Primary';
 $secondary_label = $admin_config['secondary_unit'] ?? 'Secondary';
 
+$api_keys = [];
+$stmt = $pdo->query("SELECT api_key FROM users WHERE api_key IS NOT NULL AND api_key != ''");
+while ($row = $stmt->fetch()) {
+    $api_keys[] = $row['api_key'];
+}
+
 // Helper function to sanitize and validate inputs
 function cleanInput($data, $type = 'string') {
     switch ($type) {

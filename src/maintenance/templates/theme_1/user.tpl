@@ -34,6 +34,14 @@
         </select>
     </div>
     <div class="mb-3">
+        <label>API Key</label>
+        <div class="input-group">
+            <input type="text" name="api_key" class="form-control" value="{$user.api_key|escape}" readonly>
+            <button class="btn btn-secondary" type="submit" name="generate_api_key" value="1">Generate New</button>
+        </div>
+        <small class="form-text text-muted">Keep your API key secret. Generating a new key will invalidate the old one.</small>
+    </div>
+    <div class="mb-3">
         <label>Current Password</label>
         <input type="password" name="current_password" class="form-control">
     </div>
