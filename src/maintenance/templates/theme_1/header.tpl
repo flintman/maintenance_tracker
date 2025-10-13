@@ -17,7 +17,6 @@
             });
         });
     </script>
-
     <style>
         .navbar {
             background-color: var(--bs-body-bg, #343a40);

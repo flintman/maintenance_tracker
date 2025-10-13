@@ -50,8 +50,9 @@
 </div>
 {/if}
 <h3>Active {$primary_label|escape} Units</h3>
-<table class="table tablesorter modern-table">
-    <thead>
+<input type="text" class="tableSearch" data-table="activeTable" placeholder="Search..." style="margin-bottom:10px;">
+<table class="table tablesorter modern-table" id="activeTable">
+     <thead>
         <tr>
             <th>{$primary_label|escape} ID</th>
             {foreach $questions_first as $q}
@@ -89,7 +90,8 @@
 </table>
 {if $is_admin}
 <h3>Archived {$primary_label|escape} Units</h3>
-<table class="table tablesorter modern-table">
+<input type="text" class="tableSearch" data-table="archivedTable" placeholder="Search..." style="margin-bottom:10px;">
+<table class="table tablesorter modern-table" id="archivedTable">
     <thead>
         <tr>
             <th>{$primary_label|escape} ID</th>

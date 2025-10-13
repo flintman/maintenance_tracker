@@ -106,8 +106,9 @@
     </div>
 
     <h3 class="mt-5 mb-3">Maintenance Records</h3>
+    <input type="text" class="tableSearch" data-table="maintenanceTable" placeholder="Search..." style="margin-bottom:10px;">
     <div class="table-responsive">
-        <table class="table modern-table table-hover align-middle tablesorter">
+        <table class="table modern-table table-hover align-middle tablesorter" id="maintenanceTable">
             <thead class="table-light">
                 <tr><th>ID</th><th>Type</th><th>Description</th><th>Actions</th></tr>
             </thead>

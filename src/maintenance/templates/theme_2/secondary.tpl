@@ -172,8 +172,9 @@ function editUnit(id, pmyId) {
         </form>
     </div>
     <h3 class="mt-5 mb-3">Active {$secondary_label|escape} Units</h3>
+    <input type="text" class="tableSearch" data-table="activeTable" placeholder="Search..." style="margin-bottom:10px;">
     <div class="table-responsive">
-        <table class="table modern-table table-hover align-middle tablesorter">
+        <table class="table modern-table table-hover align-middle tablesorter" id="activeTable">
             <thead class="table-light">
                 <tr>
                     <th>{$primary_label|escape} ID</th>
@@ -216,8 +217,9 @@ function editUnit(id, pmyId) {
     </div>
     {if $session.privilege == 'admin'}
     <h3 class="mt-5 mb-3">Archived {$secondary_label|escape} Units</h3>
+    <input type="text" class="tableSearch" data-table="archivedTable" placeholder="Search..." style="margin-bottom:10px;">
     <div class="table-responsive">
-        <table class="table modern-table table-hover align-middle tablesorter">
+        <table class="table modern-table table-hover align-middle tablesorter" id="archivedTable">
             <thead class="table-light">
                 <tr>
                     <th>{$primary_label|escape} ID</th>

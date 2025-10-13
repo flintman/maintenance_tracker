@@ -69,7 +69,8 @@
 </div>
 
 <h3>Maintenance Records</h3>
-<table class="table table-bordered tablesorter modern-table">
+<input type="text" class="tableSearch" data-table="maintenanceTable" placeholder="Search..." style="margin-bottom:10px;">
+<table class="table table-bordered tablesorter modern-table" id="maintenanceTable">
     <thead><tr><th>ID</th><th>Type</th><th>Description</th><th>Actions</th></tr></thead>
     <tbody>
     {foreach $records as $row}
