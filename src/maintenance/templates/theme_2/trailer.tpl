@@ -256,7 +256,7 @@ function editTrl(id, answersMapStr) {
     {/if}
     <h3 class="mt-5 mb-3">Active Trailers</h3>
     <div class="table-responsive">
-        <table class="table modern-table table-hover align-middle">
+        <table class="table modern-table table-hover align-middle tablesorter">
             <thead class="table-light">
                 <tr>
                     <th>Trailer ID</th>
@@ -297,7 +297,7 @@ function editTrl(id, answersMapStr) {
     {if $is_admin}
     <h3 class="mt-5 mb-3">Archived Trailers</h3>
     <div class="table-responsive">
-        <table class="table modern-table table-hover align-middle">
+        <table class="table modern-table table-hover align-middle tablesorter">
             <thead class="table-light">
                 <tr>
                     <th>Trailer ID</th>

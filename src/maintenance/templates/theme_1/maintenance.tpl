@@ -64,7 +64,7 @@
 </div>
 
 <h3>Maintenance Records</h3>
-<table class="table table-bordered">
+<table class="table table-bordered tablesorter">
     <thead><tr><th>ID</th><th>Type</th><th>Description</th><th>Actions</th></tr></thead>
     <tbody>
     {foreach $records as $row}

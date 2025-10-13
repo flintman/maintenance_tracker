@@ -7,7 +7,7 @@
 
 {if $edit_mode}
 <form method="post">
-<table class="table table-bordered">
+<table class="table table-bordered tablesorter">
     <tr><th>Type of Service</th><td><input type="text" name="type_of_service" value="{$maintenance.type_of_service|escape}" class="form-control"></td></tr>
     <tr><th>Description</th><td><textarea name="description" class="form-control">{$maintenance.description|escape}</textarea></td></tr>
     <tr><th>Costs of Parts</th><td><input type="number" name="costs_of_parts" value="{$maintenance.costs_of_parts|escape}" class="form-control"></td></tr>
@@ -17,7 +17,7 @@
 <button type="submit" name="update" class="btn btn-primary">Update Maintenance</button>
 </form>
 {else}
-<table class="table table-bordered">
+<table class="table table-bordered tablesorter">
     <tr><th>Type of Service</th><td>{$maintenance.type_of_service|escape}</td></tr>
     <tr><th>Description</th><td>{$maintenance.description|escape}</td></tr>
     <tr><th>Costs of Parts</th><td>${$maintenance.costs_of_parts|string_format:"%.2f"}</td></tr>

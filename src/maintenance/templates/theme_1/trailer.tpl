@@ -51,7 +51,7 @@
 </div>
 {/if}
 <h3>Active Trailers</h3>
-<table class="table">
+<table class="table tablesorter">
     <thead>
         <tr>
             <th>Trailer ID</th>
@@ -90,7 +90,7 @@
 </table>
 {if $is_admin}
 <h3>Archived Trailers</h3>
-<table class="table">
+<table class="table tablesorter">
     <thead>
         <tr>
             <th>Trailer ID</th>

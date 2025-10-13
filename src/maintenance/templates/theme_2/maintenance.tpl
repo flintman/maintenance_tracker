@@ -102,7 +102,7 @@
 
     <h3 class="mt-5 mb-3">Maintenance Records</h3>
     <div class="table-responsive">
-        <table class="table modern-table table-hover align-middle">
+        <table class="table modern-table table-hover align-middle tablesorter">
             <thead class="table-light">
                 <tr><th>ID</th><th>Type</th><th>Description</th><th>Actions</th></tr>
             </thead>

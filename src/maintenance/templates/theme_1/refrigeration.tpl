@@ -136,7 +136,7 @@ function editUnit(id, trlId) {
 
 <h3>Active Refrigeration Units</h3>
 <div class="table-responsive">
-    <table class="table">
+    <table class="table tablesorter">
         <thead>
             <tr>
                 <th>Trailer ID</th>
@@ -181,7 +181,7 @@ function editUnit(id, trlId) {
 {if $session.privilege == 'admin'}
 <h3>Archived Refrigeration Units</h3>
 <div class="table-responsive">
-    <table class="table">
+    <table class="table tablesorter">
         <thead>
             <tr>
                 <th>Trailer ID</th>

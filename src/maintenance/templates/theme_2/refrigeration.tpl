@@ -173,7 +173,7 @@ function editUnit(id, trlId) {
     </div>
     <h3 class="mt-5 mb-3">Active Refrigeration Units</h3>
     <div class="table-responsive">
-        <table class="table modern-table table-hover align-middle">
+        <table class="table modern-table table-hover align-middle tablesorter">
             <thead class="table-light">
                 <tr>
                     <th>Trailer ID</th>
@@ -217,7 +217,7 @@ function editUnit(id, trlId) {
     {if $session.privilege == 'admin'}
     <h3 class="mt-5 mb-3">Archived Refrigeration Units</h3>
     <div class="table-responsive">
-        <table class="table modern-table table-hover align-middle">
+        <table class="table modern-table table-hover align-middle tablesorter">
             <thead class="table-light">
                 <tr>
                     <th>Trailer ID</th>
