@@ -14,3 +14,17 @@
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
 </form>
+<div class="mt-3">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-bullhorn me-2"></i>Message Board</h5>
+                </div>
+                <div class="card-body">
+                    {$message_board|escape}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

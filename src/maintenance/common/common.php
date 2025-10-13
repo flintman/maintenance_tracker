@@ -42,6 +42,7 @@ $theme_current = $admin_config['default_theme'] ?? 'theme_1'; // Default theme
 $number_columns = $admin_config['columns_to_show'] ?? 3;
 $primary_label = $admin_config['primary_unit'] ?? 'Primary';
 $secondary_label = $admin_config['secondary_unit'] ?? 'Secondary';
+$message_board = $admin_config['message_board'] ?? '0';
 
 $api_keys = [];
 $stmt = $pdo->query("SELECT api_key FROM users WHERE api_key IS NOT NULL AND api_key != ''");
@@ -80,4 +81,5 @@ $smarty->assign('theme', $_COOKIE['theme'] ?? 'light');
 $smarty->assign('session', $_SESSION ?? []);
 $smarty->assign('primary_label', $primary_label);
 $smarty->assign('secondary_label', $secondary_label);
+$smarty->assign('message_board', $message_board);
 $smarty->assign('software_version', getenv('MAINTENANCE_TRACKER_VERSION') ?: '0.0.0');

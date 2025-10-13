@@ -32,5 +32,7 @@
         }
     </script>
 </head>
-<body>
+<body{if !isset($smarty.session.user_id)} class="login-page"{/if}>
+{if isset($smarty.session.user_id)}
 {include file="theme_2/nav.tpl"}
+{/if}

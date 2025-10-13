@@ -85,6 +85,19 @@ CREATE TABLE IF NOT EXISTS admin_config (
     config_value VARCHAR(32) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS admin_message (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    message TEXT,
+    active TINYINT(1) DEFAULT 0,
+    UNIQUE KEY unique_active (active),
+    performed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO admin_message (message, active) VALUES (
+    'Welcome to the Maintenance Tracker. This is in its early stage and just putting the nuts and bolts together and will go this as I use it more. To Change this message go to the admin settings under site config.',
+    1
+);
+
 -- Insert default config row if not exists
 INSERT INTO admin_config (config_name, config_value)
     VALUES ('default_theme', 'theme_1'),

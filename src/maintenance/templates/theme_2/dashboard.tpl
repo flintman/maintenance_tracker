@@ -40,5 +40,14 @@
                 </div>
             </div>
         </div>
+    <div class="col-md-12">
+        <div class="card modern-card text-white mb-3 shadow" style="background: linear-gradient(90deg, #ff9800 0%, #b8860b 100%)">
+            <div class="card-body">
+                <h5 class="card-title mb-3"><i class="fas fa-bullhorn me-2"></i>Message Board</h5>
+                <div class="card-text">
+                    {$message_board|escape}
+                </div>
+            </div>
+        </div>
     </div>
 </div>
