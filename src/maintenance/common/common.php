@@ -74,3 +74,4 @@ $smarty->assign('theme', $_COOKIE['theme'] ?? 'light');
 $smarty->assign('session', $_SESSION ?? []);
 $smarty->assign('primary_label', $primary_label);
 $smarty->assign('secondary_label', $secondary_label);
+$smarty->assign('software_version', getenv('MAINTENANCE_TRACKER_VERSION') ?: '0.0.0');
