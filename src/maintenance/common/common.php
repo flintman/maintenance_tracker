@@ -23,6 +23,10 @@ $options = [
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
 } catch (PDOException $e) {
+    echo "<div style='color: red; font-weight: bold; font-size: 1.2em; margin: 2em 0;'>
+        PLEASE WAIT FOR DATABASE TO LOAD.<br>
+        If this continues for more than 2 minutes and first load of the database, please check for errors.
+    </div>";
     throw new PDOException($e->getMessage(), (int)$e->getCode());
 }
 
