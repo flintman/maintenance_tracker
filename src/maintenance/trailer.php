@@ -80,20 +80,20 @@ function getTrailerAnswers($pdo, $trailer_id) {
 foreach ($active as &$trl) {
     $answers = getTrailerAnswers($pdo, $trl['id']);
     $trl['answers'] = $answers;
-    $trl['answers_first3'] = array_slice($answers, 0, 3);
+    $trl['answers_first'] = array_slice($answers, 0, $number_columns);
     $trl['answers_json'] = htmlspecialchars(json_encode(array_column($answers, 'value', 'label')), ENT_QUOTES);
 }
 unset($trl);
 foreach ($archived as &$trl) {
     $answers = getTrailerAnswers($pdo, $trl['id']);
     $trl['answers'] = $answers;
-    $trl['answers_first3'] = array_slice($answers, 0, 3);
+    $trl['answers_first'] = array_slice($answers, 0, $number_columns);
 }
 unset($trl);
 
 $smarty->assign('is_admin', ($_SESSION['privilege'] ?? '') === 'admin');
 $smarty->assign('questions', $questions);
-$smarty->assign('questions_first3', array_slice($questions, 0, 3));
+$smarty->assign('questions_first', array_slice($questions, 0, $number_columns));
 $smarty->assign('active', $active);
 $smarty->assign('archived', $archived);
 $smarty->assign('theme', $_COOKIE['theme'] ?? 'light');

@@ -72,22 +72,19 @@ function getAnswers($pdo, $refrigeration_id) {
 // Fetch trailers for dropdown
 $trailers = $pdo->query('SELECT trl_id FROM trailers')->fetchAll();
 
-// Assign all required variables to Smarty
-
-
 $smarty->assign('questions', $questions);
 $smarty->assign('questions_preview', $questions);
-$smarty->assign('questions_first3', array_slice($questions, 0, 3));
-$smarty->assign('units', array_map(function($unit) use ($pdo) {
+$smarty->assign('questions_first', array_slice($questions, 0, $number_columns));
+$smarty->assign('units', array_map(function($unit) use ($pdo, $number_columns) {
     $answers = getAnswers($pdo, $unit['id']);
     $unit['answers'] = $answers;
-    $unit['answers_first3'] = array_slice($answers, 0, 3);
+    $unit['answers_first'] = array_slice($answers, 0, $number_columns);
     return $unit;
 }, $units));
-$smarty->assign('archived', array_map(function($unit) use ($pdo) {
+$smarty->assign('archived', array_map(function($unit) use ($pdo, $number_columns) {
     $answers = getAnswers($pdo, $unit['id']);
     $unit['answers'] = $answers;
-    $unit['answers_first3'] = array_slice($answers, 0, 3);
+    $unit['answers_first'] = array_slice($answers, 0, $number_columns);
     return $unit;
 }, $archived));
 $smarty->assign('trailers', $trailers);

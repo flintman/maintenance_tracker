@@ -7,8 +7,6 @@ $smarty = new Smarty();
 $smarty->setTemplateDir(__DIR__ . '/../templates/');
 $smarty->setCompileDir(__DIR__ . '/../templates_c/');
 
-$theme_current = "theme_1"; // Default theme
-
 $host = 'db';
 $db   = getenv('MYSQL_DATABASE');
 $user = getenv('MYSQL_USER');
@@ -29,6 +27,15 @@ try {
 }
 
 if (!isset($_SESSION)) session_start();
+
+// Fetch all admin_config key-value pairs into $admin_config associative array
+$stmt = $pdo->query("SELECT config_name, config_value FROM admin_config");
+$admin_config = [];
+while ($row = $stmt->fetch()) {
+    $admin_config[$row['config_name']] = $row['config_value'];
+}
+$theme_current = $admin_config['default_theme'] ?? 'theme_1'; // Default theme
+$number_columns = $admin_config['columns_to_show'] ?? 3;
 
 // Helper function to sanitize and validate inputs
 function cleanInput($data, $type = 'string') {

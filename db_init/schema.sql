@@ -77,6 +77,17 @@ CREATE TABLE maintenance (
     photos JSON NULL
 );
 
+CREATE TABLE IF NOT EXISTS admin_config (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    config_name VARCHAR(32) NOT NULL UNIQUE,
+    config_value VARCHAR(32) NOT NULL
+);
+
+-- Insert default config row if not exists
+INSERT INTO admin_config (config_name, config_value)
+    VALUES ('default_theme', 'theme_1'),
+           ('columns_to_show', '3')
+
 -- Insert default admin user (password: changeme)
 INSERT INTO users (username, password, privilege, email) VALUES (
   'admin',

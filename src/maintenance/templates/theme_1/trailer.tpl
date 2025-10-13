@@ -55,7 +55,7 @@
     <thead>
         <tr>
             <th>Trailer ID</th>
-            {foreach $questions_first3 as $q}
+            {foreach $questions_first as $q}
                 <th>{$q.label|escape}</th>
             {/foreach}
             <th>Actions</th>
@@ -66,7 +66,7 @@
         {assign var=answers value=$trl.answers}
         <tr>
             <td>{$trl.trl_id|escape}</td>
-            {foreach $trl.answers_first3 as $a}
+            {foreach $trl.answers_first as $a}
                 <td>
                     {if $a.type == 'multi_choice'}
                         {foreach $a.value|split:',' as $val}
@@ -94,7 +94,7 @@
     <thead>
         <tr>
             <th>Trailer ID</th>
-            {foreach $questions_first3 as $q}
+            {foreach $questions_first as $q}
                 <th>{$q.label|escape}</th>
             {/foreach}
             <th>Actions</th>
@@ -105,7 +105,7 @@
         {assign var=answers value=$trl.answers}
         <tr>
             <td>{$trl.trl_id|escape}</td>
-            {foreach $trl.answers_first3 as $a}
+            {foreach $trl.answers_first as $a}
                 <td>
                     {if $a.type == 'multi_choice'}
                         {foreach $a.value|split:',' as $val}

@@ -16,6 +16,9 @@
                     <a class="nav-link" href="manage_trailer.php">Manage Trailers</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="config.php">Site Config</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="../index.php">User Dashboard</a>
                 </li>
             </ul>

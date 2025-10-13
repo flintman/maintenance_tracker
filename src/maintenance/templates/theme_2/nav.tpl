@@ -10,11 +10,11 @@
                     <li class="nav-item"><a class="nav-link" href="refrigeration.php">Refrigeration</a></li>
                     <li class="nav-item"><a class="nav-link" href="trailer.php">Trailer</a></li>
                     <li class="nav-item"><a class="nav-link" href="user.php">Users</a></li>
-                {/if}
-                {if $session.privilege == 'admin'}
-                    <li class="nav-item">
-                        <a class="nav-link" href="admin/index.php">Admin Dashboard</a>
-                    </li>
+                    {if $session.privilege == 'admin'}
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin/index.php">Admin Dashboard</a>
+                        </li>
+                    {/if}
                 {/if}
             </ul>
             <button class="btn btn-outline-light ms-2" onclick="toggleTheme()">Toggle Theme</button>

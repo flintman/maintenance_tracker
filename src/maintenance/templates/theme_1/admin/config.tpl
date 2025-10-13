@@ -1,0 +1,21 @@
+<div class="container py-4">
+    <h1 class="mb-4">Admin Configuration</h1>
+    {if $msg}
+        <div class="alert alert-success">{$msg}</div>
+    {/if}
+    <form method="post" class="card p-4 shadow-sm">
+        <div class="mb-3">
+            <label for="default_theme" class="form-label fw-bold">Default Theme</label>
+            <select name="default_theme" id="default_theme" class="form-control">
+                {foreach $themes as $theme}
+                    <option value="{$theme}" {if $config.default_theme == $theme}selected{/if}>{$theme}</option>
+                {/foreach}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="columns_to_show" class="form-label fw-bold">Columns to Show</label>
+            <input type="number" min="1" max="10" name="columns_to_show" id="columns_to_show" class="form-control" value="{$config.columns_to_show|escape}">
+        </div>
+        <button class="btn modern-btn modern-btn-primary px-4">Save</button>
+    </form>
+</div>
