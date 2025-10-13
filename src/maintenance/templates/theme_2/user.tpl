@@ -19,6 +19,10 @@
         <div class="card-body">
             <form method="post">
                 <div class="mb-3">
+                    <label class="form-label fw-bold">Nickname</label>
+                    <input type="text" name="nickname" class="form-control" value="{$user.nickname|escape}">
+                </div>
+                <div class="mb-3">
                     <label class="form-label fw-bold">Email</label>
                     <input type="email" name="email" class="form-control" value="{$user.email|escape}">
                 </div>

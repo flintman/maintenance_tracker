@@ -13,6 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
     $id = intval($_POST['id']);
     $username = cleanInput($_POST['username']);
     $email = cleanInput($_POST['email'], 'email');
+    $nickname = cleanInput($_POST['nickname']);
     $privilege = $_POST['privilege'] ?? 'user';
     $password = $_POST['password'] ?? '';
     if ($password) {
@@ -20,13 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_user'])) {
             $edit_msg = '<div class="alert alert-danger">Password must be at least 6 characters.</div>';
         } else {
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare('UPDATE users SET username=?, email=?, privilege=?, password=? WHERE id=?');
-            $stmt->execute([$username, $email, $privilege, $hash, $id]);
+            $stmt = $pdo->prepare('UPDATE users SET username=?, email=?, privilege=?, password=?, nickname=? WHERE id=?');
+            $stmt->execute([$username, $email, $privilege, $hash, $nickname, $id]);
             $edit_msg = '<div class="alert alert-success">User updated (password changed)!</div>';
         }
     } else {
-        $stmt = $pdo->prepare('UPDATE users SET username=?, email=?, privilege=? WHERE id=?');
-        $stmt->execute([$username, $email, $privilege, $id]);
+        $stmt = $pdo->prepare('UPDATE users SET username=?, email=?, privilege=?, nickname=? WHERE id=?');
+        $stmt->execute([$username, $email, $privilege, $nickname, $id]);
         $edit_msg = '<div class="alert alert-success">User updated!</div>';
     }
 }

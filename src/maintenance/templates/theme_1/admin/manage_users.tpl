@@ -8,6 +8,7 @@
                 <th>ID</th>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Nickname</th>
                 <th>Privilege</th>
                 <th>Actions</th>
             </tr>
@@ -19,6 +20,7 @@
                 <td>{$user.id}</td>
                 <td><input type="text" name="username" value="{$user.username|escape}" class="form-control"></td>
                 <td><input type="email" name="email" value="{$user.email|escape}" class="form-control"></td>
+                <td><input type="text" name="nickname" value="{$user.nickname|escape}" class="form-control"></td>
                 <td>
                     <select name="privilege" class="form-control">
                         <option value="user" {if $user.privilege == 'user'}selected{/if}>User</option>

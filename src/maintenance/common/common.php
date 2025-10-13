@@ -58,11 +58,14 @@ function cleanInput($data, $type = 'string') {
 
 // If user is signed in and has a theme preference in DB, use it
 if (isset($_SESSION['user_id'])) {
-    $stmt = $pdo->prepare("SELECT theme FROM users WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT theme, nickname FROM users WHERE id = ?");
     $stmt->execute([$_SESSION['user_id']]);
     $user = $stmt->fetch();
     if ($user && !empty($user['theme'])) {
         $theme_current = $user['theme'];
+    }
+    if ($user && !empty($user['nickname'])) {
+        $_SESSION['nickname'] = $user['nickname'];
     }
 }
 

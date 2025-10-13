@@ -42,6 +42,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $success_message = 'Email updated successfully.';
         }
     }
+    if (isset($_POST['nickname'])) {
+        $nickname = trim($_POST['nickname']);
+        if (strlen($nickname) > 50) {
+            $errors[] = 'Nickname must be 50 characters or less.';
+        } else {
+            $stmt = $pdo->prepare('UPDATE users SET nickname = ? WHERE id = ?');
+            $stmt->execute([$nickname, $user_id]);
+            $user['nickname'] = $nickname;
+            $success_message = 'Nickname updated successfully.';
+        }
+    }
 
     // Update theme
     if (isset($_POST['theme']) && in_array($_POST['theme'], $theme_folders)) {

@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold" for="performed_by">Performed By</label>
-                        <input type="text" name="performed_by" id="performed_by" class="form-control" required placeholder="Technician Name">
+                        <input type="text" name="performed_by" id="performed_by" class="form-control" value="{$session.nickname|escape}" required>
                     </div>
                 </div>
                 <div class="row g-3 align-items-center mb-3">
@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold" for="costs_of_parts">Costs of Parts</label>
-                        <input type="number" name="costs_of_parts" id="costs_of_parts" class="form-control" step="0.01" required placeholder="0.00">
+                        <input type="number" name="costs_of_parts" id="costs_of_parts" class="form-control" step="0.01" value="0.00" required>
                     </div>
                 </div>
                 <div class="mb-3">

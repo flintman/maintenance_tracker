@@ -20,9 +20,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_user'])) {
         $user_add_msg = '<div class="alert alert-danger">Password must be at least 6 characters.</div>';
     } else {
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $pdo->prepare('INSERT INTO users (username, email, password, privilege) VALUES (?, ?, ?, ?)');
+        $stmt = $pdo->prepare('INSERT INTO users (username, email, password, privilege, nickname) VALUES (?, ?, ?, ?, ?)');
         try {
-            $stmt->execute([$username, $email, $hash, 'user']);
+            $stmt->execute([$username, $email, $hash, 'user', $username]);
             $user_add_msg = '<div class="alert alert-success">User added!</div>';
         } catch (PDOException $e) {
             $user_add_msg = '<div class="alert alert-danger">Error: ' . htmlspecialchars($e->getMessage()) . '</div>';
