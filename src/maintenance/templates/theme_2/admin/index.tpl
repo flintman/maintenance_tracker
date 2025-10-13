@@ -5,15 +5,15 @@
         <div class="col d-flex">
             <div class="card admin-card mb-3 w-100 h-100">
                 <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <h5 class="card-title">Trailers</h5>
-                    <p class="card-text display-6 mb-0">{$trailer_count}</p>
+                    <h5 class="card-title">{$primary_label|escape} Units</h5>
+                    <p class="card-text display-6 mb-0">{$primary_count}</p>
                 </div>
             </div>
         </div>
         <div class="col d-flex">
             <div class="card admin-card mb-3 w-100 h-100">
                 <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                    <h5 class="card-title">Refrigeration Units</h5>
+                    <h5 class="card-title">{$secondary_label|escape} Units</h5>
                     <p class="card-text display-6 mb-0">{$unit_count}</p>
                 </div>
             </div>

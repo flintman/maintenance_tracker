@@ -1,7 +1,12 @@
 {* Maintenance Records Template *}
 <h2>Maintenance for {$equipment_name|escape}</h2>
-<a href="{$refrigeration_id ? 'refrigeration.php' : 'trailer.php'}" class="btn btn-secondary mb-3">
-    Back to {$refrigeration_id ? 'Refrigeration Units' : 'Trailers'}
+<a href="{if $secondary_id}secondary.php{else}primary.php{/if}" class="btn btn-secondary mb-3">
+    Back to
+    {if $secondary_id}
+        {$secondary_label|escape} Units
+    {else}
+        {$primary_label|escape} Units
+    {/if}
 </a>
 
 {if isset($msg)}
@@ -16,8 +21,8 @@
 
 <div id="addMaintenanceForm" style="display:none;">
     <form method="post" enctype="multipart/form-data">
-        <input type="hidden" name="refrigeration_id" value="{$refrigeration_id}">
-        <input type="hidden" name="trl_id" value="{$trl_id}">
+        <input type="hidden" name="secondary_id" value="{$secondary_id}">
+        <input type="hidden" name="pmy_id" value="{$pmy_id}">
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-primary text-white fw-bold">Service Details</div>
             <div class="card-body">
@@ -64,7 +69,7 @@
 </div>
 
 <h3>Maintenance Records</h3>
-<table class="table table-bordered tablesorter">
+<table class="table table-bordered tablesorter modern-table">
     <thead><tr><th>ID</th><th>Type</th><th>Description</th><th>Actions</th></tr></thead>
     <tbody>
     {foreach $records as $row}
@@ -73,9 +78,9 @@
             <td>{$row.type_of_service|escape}</td>
             <td>{$row.description|escape}</td>
             <td>
-                <a href="view_maintenance.php?id={$row.id}&type={$refrigeration_id ? 'refrigeration' : 'trailer'}" class="btn btn-info">View</a>
+                <a href="view_maintenance.php?id={$row.id}&type={$secondary_id ? 'secondary_units' : 'primary'}" class="btn btn-info">View</a>
                 {if $session.privilege == 'admin'}
-                <a href="view_maintenance.php?id={$row.id}&type={$refrigeration_id ? 'refrigeration' : 'trailer'}&edit=1" class="btn btn-warning">Edit</a>
+                <a href="view_maintenance.php?id={$row.id}&type={$secondary_id ? 'secondary_units' : 'primary'}&edit=1" class="btn btn-warning">Edit</a>
                 {/if}
             </td>
         </tr>

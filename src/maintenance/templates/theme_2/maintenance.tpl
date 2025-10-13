@@ -37,8 +37,13 @@
 </style>
 <div class="container py-4">
     <h1 class="display-5 fw-bold mb-4">Maintenance for {$equipment_name|escape}</h1>
-    <a href="{$refrigeration_id ? 'refrigeration.php' : 'trailer.php'}" class="btn modern-btn modern-btn-info mb-3">
-        Back to {$refrigeration_id ? 'Refrigeration Units' : 'Trailers'}
+    <a href="{if $secondary_id}secondary.php{else}primary.php{/if}" class="btn btn-secondary mb-3">
+        Back to
+        {if $secondary_id}
+            {$secondary_label|escape} Units
+        {else}
+            {$primary_label|escape} Units
+        {/if}
     </a>
 
     {if isset($msg)}
@@ -53,8 +58,8 @@
 
     <div class="collapse" id="addMaintenanceForm">
         <form method="post" enctype="multipart/form-data">
-            <input type="hidden" name="refrigeration_id" value="{$refrigeration_id}">
-            <input type="hidden" name="trl_id" value="{$trl_id}">
+            <input type="hidden" name="secondary_id" value="{$secondary_id}">
+            <input type="hidden" name="pmy_id" value="{$pmy_id}">
             <div class="card modern-card shadow-sm mb-4">
                 <div class="card-header bg-gradient text-white fw-bold" style="background: linear-gradient(90deg, #232526 0%, #00bcd4 100%) !important;">Service Details</div>
                 <div class="card-body">
@@ -113,9 +118,9 @@
                     <td>{$row.type_of_service|escape}</td>
                     <td>{$row.description|escape}</td>
                     <td>
-                        <a href="view_maintenance.php?id={$row.id}&type={$refrigeration_id ? 'refrigeration' : 'trailer'}" class="btn modern-btn modern-btn-info btn-sm">View</a>
+                        <a href="view_maintenance.php?id={$row.id}&type={$secondary_id ? 'secondary_units' : 'primary'}" class="btn modern-btn modern-btn-info btn-sm">View</a>
                         {if $session.privilege == 'admin'}
-                        <a href="view_maintenance.php?id={$row.id}&type={$refrigeration_id ? 'refrigeration' : 'trailer'}&edit=1" class="btn modern-btn modern-btn-secondary btn-sm">Edit</a>
+                        <a href="view_maintenance.php?id={$row.id}&type={$secondary_id ? 'secondary_units' : 'primary'}&edit=1" class="btn modern-btn modern-btn-secondary btn-sm">Edit</a>
                         {/if}
                     </td>
                 </tr>

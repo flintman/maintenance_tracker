@@ -10,10 +10,10 @@
                     <a class="nav-link" href="manage_users.php">Manage Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="manage_refrigeration.php">Manage Refrigeration</a>
+                    <a class="nav-link" href="manage_primary.php">Manage {$primary_label|escape} Units</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="manage_trailer.php">Manage Trailers</a>
+                    <a class="nav-link" href="manage_secondary.php">Manage {$secondary_label|escape} Units</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="config.php">Site Config</a>

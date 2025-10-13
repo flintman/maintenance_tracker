@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var toggleBtn = document.getElementById('toggleAddEditBtn');
     if (toggleBtn) {
         toggleBtn.addEventListener('click', function() {
-            const formDiv = document.getElementById('addEditTrailerForm');
+            const formDiv = document.getElementById('addEditPrimaryForm');
             const arrow = document.getElementById('addEditArrow');
             if (formDiv.style.display === 'none') {
                 formDiv.style.display = 'block';
                 arrow.textContent = '▼';
-                document.getElementById('addEditText').textContent = 'Add Trailer';
+                document.getElementById('addEditText').textContent = 'Add {$primary_label|escape}';
             } else {
                 formDiv.style.display = 'none';
                 arrow.textContent = '➤';
@@ -24,12 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var cancelBtn = document.getElementById('addEditCancelBtn');
     if (cancelBtn) {
         cancelBtn.addEventListener('click', function() {
-            document.getElementById('addEditTrailerForm').style.display = 'none';
+            document.getElementById('addEditPrimaryForm').style.display = 'none';
             document.getElementById('addEditArrow').textContent = '➤';
             document.getElementById('addEditMode').value = 'add';
             document.getElementById('addEditId').value = '';
-            document.getElementById('addEditText').textContent = 'Add Trailer';
-            document.getElementById('addEditTrlId').value = '';
+            document.getElementById('addEditText').textContent = 'Add {$primary_label|escape}';
+            document.getElementById('addEditPmyId').value = '';
             // Clear dynamic question fields
             questionInfo.forEach(function(q) {
                 var el = document.getElementById('addEditQ' + q.id);
@@ -46,21 +46,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-var trailerIdToTrlId = {};
-{foreach $active as $trl}
-    trailerIdToTrlId[{$trl.id}] = '{$trl.trl_id|escape}';
+var primaryIdToPmyId = {};
+{foreach $active as $pmy}
+    primaryIdToPmyId[{$pmy.id}] = '{$pmy.pmy_id|escape}';
 {/foreach}
-function editTrl(id, answersMapStr) {
+function editPmy(id, answersMapStr) {
     var answersMap = {};
     try {
         answersMap = JSON.parse(answersMapStr);
     } catch (e) {}
-    const formDiv = document.getElementById('addEditTrailerForm');
+    const formDiv = document.getElementById('addEditPrimaryForm');
     const arrow = document.getElementById('addEditArrow');
     document.getElementById('addEditMode').value = 'edit';
     document.getElementById('addEditId').value = id;
-    document.getElementById('addEditText').textContent = 'Edit Trailer';
-    document.getElementById('addEditTrlId').value = trailerIdToTrlId[id] || '';
+    document.getElementById('addEditText').textContent = 'Edit {$primary_label|escape}';
+    document.getElementById('addEditPmyId').value = primaryIdToPmyId[id] || '';
     // Populate dynamic question fields using answersMap
     questionInfo.forEach(function(q) {
         var val = answersMap[q.label] || '';
@@ -129,12 +129,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var toggleBtn = document.getElementById('toggleAddEditBtn');
     if (toggleBtn) {
         toggleBtn.addEventListener('click', function() {
-            const formDiv = document.getElementById('addEditTrailerForm');
+            const formDiv = document.getElementById('addEditPrimaryForm');
             const arrow = document.getElementById('addEditArrow');
             if (formDiv.style.display === 'none') {
                 formDiv.style.display = 'block';
                 arrow.textContent = '▼';
-                document.getElementById('addEditText').textContent = 'Add Trailer';
+                document.getElementById('addEditText').textContent = 'Add {$primary_label|escape}';
             } else {
                 formDiv.style.display = 'none';
                 arrow.textContent = '➤';
@@ -144,12 +144,12 @@ document.addEventListener('DOMContentLoaded', function() {
     var cancelBtn = document.getElementById('addEditCancelBtn');
     if (cancelBtn) {
         cancelBtn.addEventListener('click', function() {
-            document.getElementById('addEditTrailerForm').style.display = 'none';
+            document.getElementById('addEditPrimaryForm').style.display = 'none';
             document.getElementById('addEditArrow').textContent = '➤';
             document.getElementById('addEditMode').value = 'add';
             document.getElementById('addEditId').value = '';
-            document.getElementById('addEditText').textContent = 'Add Trailer';
-            document.getElementById('addEditTrlId').value = '';
+            document.getElementById('addEditText').textContent = 'Add {$primary_label|escape}';
+            document.getElementById('addEditPmyId').value = '';
             // Clear dynamic question fields
             questionInfo.forEach(function(q) {
                 var el = document.getElementById('addEditQ' + q.id);
@@ -166,21 +166,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-var trailerIdToTrlId = {};
-{foreach $active as $trl}
-    trailerIdToTrlId[{$trl.id}] = '{$trl.trl_id|escape}';
+var primaryIdToPmyId = {};
+{foreach $active as $pmy}
+    primaryIdToPmyId[{$pmy.id}] = '{$pmy.pmy_id|escape}';
 {/foreach}
-function editTrl(id, answersMapStr) {
+function editPmy(id, answersMapStr) {
     var answersMap = {};
     try {
         answersMap = JSON.parse(answersMapStr);
     } catch (e) {}
-    const formDiv = document.getElementById('addEditTrailerForm');
+    const formDiv = document.getElementById('addEditPrimaryForm');
     const arrow = document.getElementById('addEditArrow');
     document.getElementById('addEditMode').value = 'edit';
     document.getElementById('addEditId').value = id;
-    document.getElementById('addEditText').textContent = 'Edit Trailer';
-    document.getElementById('addEditTrlId').value = trailerIdToTrlId[id] || '';
+    document.getElementById('addEditText').textContent = 'Edit {$primary_label|escape}';
+    document.getElementById('addEditPmyId').value = primaryIdToPmyId[id] || '';
     // Populate dynamic question fields using answersMap
     questionInfo.forEach(function(q) {
         var val = answersMap[q.label] || '';
@@ -202,25 +202,25 @@ function editTrl(id, answersMapStr) {
 }
 </script>
 <div class="container py-4">
-    <h1 class="display-5 fw-bold mb-4">Equipment</h1>
+    <h1 class="display-5 fw-bold mb-4">{$primary_label|escape} Units</h1>
     {if isset($msg)}<div class="alert alert-info">{$msg}</div>{/if}
     {if $is_admin}
     <div class="mb-4">
         <button class="btn modern-btn modern-btn-primary" type="button" id="toggleAddEditBtn">
-            <span class="me-2 arrow" id="addEditArrow">➤</span> <span class="toggle-text" id="addEditText">Add Trailer</span>
+            <span class="me-2 arrow" id="addEditArrow">➤</span> <span class="toggle-text" id="addEditText">Add {$primary_label}</span>
         </button>
     </div>
-    <div id="addEditTrailerForm" style="display:none;">
+    <div id="addEditPrimaryForm" style="display:none;">
         <form method="post" id="addEditForm">
             <input type="hidden" name="mode" id="addEditMode" value="add">
             <input type="hidden" name="id" id="addEditId" value="">
             <div class="card modern-card shadow-sm mb-4">
-                <div class="card-header bg-gradient text-white fw-bold" style="background: linear-gradient(90deg, #232526 0%, #00bcd4 100%) !important;">Trailer Details</div>
+                <div class="card-header bg-gradient text-white fw-bold" style="background: linear-gradient(90deg, #232526 0%, #00bcd4 100%) !important;">{$primary_label} Details</div>
                 <div class="card-body">
                     <div class="row g-3 align-items-center mb-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold" for="addEditTrlId">Trailer ID</label>
-                            <input type="number" name="trl_id" id="addEditTrlId" class="form-control" required>
+                            <label class="form-label fw-bold" for="addEditPmyId">{$primary_label|escape} ID</label>
+                            <input type="number" name="pmy_id" id="addEditPmyId" class="form-control" required>
                         </div>
                     </div>
                     <div class="row g-3">
@@ -254,12 +254,12 @@ function editTrl(id, answersMapStr) {
         </form>
     </div>
     {/if}
-    <h3 class="mt-5 mb-3">Active Trailers</h3>
+    <h3 class="mt-5 mb-3">Active {$primary_label|escape}s</h3>
     <div class="table-responsive">
         <table class="table modern-table table-hover align-middle tablesorter">
             <thead class="table-light">
                 <tr>
-                    <th>Trailer ID</th>
+                    <th>{$primary_label|escape} ID</th>
                     {foreach $questions_first as $q}
                         <th>{$q.label|escape}</th>
                     {/foreach}
@@ -267,11 +267,11 @@ function editTrl(id, answersMapStr) {
                 </tr>
             </thead>
             <tbody>
-                {foreach $active as $trl}
-                    {assign var=answers value=$trl.answers}
+                {foreach $active as $pmy}
+                    {assign var=answers value=$pmy.answers}
                     <tr>
-                        <td class="fw-semibold">{$trl.trl_id|escape}</td>
-                        {foreach $trl.answers_first as $a}
+                        <td class="fw-semibold">{$pmy.pmy_id|escape}</td>
+                        {foreach $pmy.answers_first as $a}
                             <td>
                                 {if $a.type == 'multi_choice'}
                                     {foreach $a.value|split:',' as $val}
@@ -283,10 +283,10 @@ function editTrl(id, answersMapStr) {
                             </td>
                         {/foreach}
                         <td>
-                            <a href="maintenance.php?trl_id={$trl.id}&type=trailer" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
+                            <a href="maintenance.php?pmy_id={$pmy.id}&type=primary" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
                             {if $is_admin}
-                            <a href="trailer.php?archive={$trl.id}" class="btn modern-btn modern-btn-warning btn-sm">Archive</a>
-                            <button class="btn modern-btn modern-btn-secondary btn-sm" onclick="editTrl({$trl.id}, '{$trl.answers_json}')">Edit</button>
+                            <a href="primary.php?archive={$pmy.id}" class="btn modern-btn modern-btn-warning btn-sm">Archive</a>
+                            <button class="btn modern-btn modern-btn-secondary btn-sm" onclick="editPmy({$pmy.id}, '{$pmy.answers_json}')">Edit</button>
                             {/if}
                         </td>
                     </tr>
@@ -295,12 +295,12 @@ function editTrl(id, answersMapStr) {
         </table>
     </div>
     {if $is_admin}
-    <h3 class="mt-5 mb-3">Archived Trailers</h3>
+    <h3 class="mt-5 mb-3">Archived {$primary_label|escape}s</h3>
     <div class="table-responsive">
         <table class="table modern-table table-hover align-middle tablesorter">
             <thead class="table-light">
                 <tr>
-                    <th>Trailer ID</th>
+                    <th>{$primary_label|escape} ID</th>
                     {foreach $questions_first as $q}
                         <th>{$q.label|escape}</th>
                     {/foreach}
@@ -308,11 +308,11 @@ function editTrl(id, answersMapStr) {
                 </tr>
             </thead>
             <tbody>
-                {foreach $archived as $trl}
-                    {assign var=answers value=$trl.answers}
+                {foreach $archived as $pmy}
+                    {assign var=answers value=$pmy.answers}
                     <tr>
-                        <td class="fw-semibold">{$trl.trl_id|escape}</td>
-                        {foreach $trl.answers_first as $a}
+                        <td class="fw-semibold">{$pmy.pmy_id|escape}</td>
+                        {foreach $pmy.answers_first as $a}
                             <td>
                                 {if $a.type == 'multi_choice'}
                                     {foreach $a.value|split:',' as $val}
@@ -324,8 +324,8 @@ function editTrl(id, answersMapStr) {
                             </td>
                         {/foreach}
                         <td>
-                            <a href="trailer.php?unarchive={$trl.id}" class="btn modern-btn modern-btn-success btn-sm">Unarchive</a>
-                            <a href="maintenance.php?trl_id={$trl.id}" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
+                            <a href="primary.php?unarchive={$pmy.id}" class="btn modern-btn modern-btn-success btn-sm">Unarchive</a>
+                            <a href="maintenance.php?pmy_id={$pmy.id}" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
                         </td>
                     </tr>
                 {/foreach}

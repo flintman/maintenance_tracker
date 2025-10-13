@@ -71,12 +71,12 @@ if (!$maintenance) {
     exit;
 }
 $photos = $maintenance['photos'] ? json_decode($maintenance['photos'], true) : [];
-if ($type === 'refrigeration') {
-    $backLink = "maintenance.php?refrigeration_id=" . urlencode($maintenance['refrigeration_id']) . "&type=refrigeration";
-    $backLabel = "Refrigeration Units";
+if ($type === 'secondary_units') {
+    $backLink = "maintenance.php?secondary_id=" . urlencode($maintenance['secondary_id']) . "&type=secondary_units";
+    $backLabel = $secondary_label . " Units";
 } else {
-    $backLink = "maintenance.php?trl_id=" . urlencode($maintenance['trl_id']) . "&type=" . urlencode($type);
-    $backLabel = "Trailers";
+    $backLink = "maintenance.php?pmy_id=" . urlencode($maintenance['pmy_id']) . "&type=" . urlencode($type);
+    $backLabel = $primary_label . " Units";
 }
 
 $smarty->assign('maintenance', $maintenance);

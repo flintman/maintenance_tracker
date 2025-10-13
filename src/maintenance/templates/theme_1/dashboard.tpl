@@ -5,15 +5,15 @@
         <div class="col-md-4">
             <div class="card text-white bg-primary mb-3 shadow">
                 <div class="card-body">
-                    <h5 class="card-title">Trailers</h5>
-                    <p class="card-text display-4">{$trailer_count}</p>
+                    <h5 class="card-title">{$primary_label|escape} Units</h5>
+                    <p class="card-text display-4">{$primary_count}</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card text-white bg-success mb-3 shadow">
                 <div class="card-body">
-                    <h5 class="card-title">Refrigeration Units</h5>
+                    <h5 class="card-title">{$secondary_label|escape} Units</h5>
                     <p class="card-text display-4">{$unit_count}</p>
                 </div>
             </div>
@@ -25,12 +25,12 @@
                     <ul class="list-group list-group-flush">
                         {foreach $latest_maintenance as $m}
                         <li class="list-group-item bg-info text-white">
-                            <a href="view_maintenance.php?id={$m.id}&type={if $m.refrigeration_id}refrigeration{else}trailer{/if}" class="text-white text-decoration-none">
+                            <a href="view_maintenance.php?id={$m.id}&type={if $m.secondary_id}secondary_units{else}primary{/if}" class="text-white text-decoration-none">
                                 <strong>{$m.type_of_service|escape}</strong> -
-                                {if $m.refrigeration_id}
-                                    {$m.refrigeration_answer_1|escape} (Trailer {$m.refrigeration_trailer_id|escape})
+                                {if $m.secondary_id}
+                                    {$m.secondary_answer_1|escape} ({$primary_label|escape} {$m.secondary_primary_id|escape})
                                 {else}
-                                    {if $m.trailer_id}{$m.trailer_id|escape}{elseif $m.trl_id}{$m.trl_id|escape}{else}Unknown{/if}
+                                    {if $m.primary_id}{$m.primary_id|escape}{elseif $m.pmy_id}{$m.pmy_id|escape}{else}Unknown{/if}
                                 {/if}
                                 <br>
                                 <small>{$m.performed_at|escape} by {$m.performed_by|escape}</small>

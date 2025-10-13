@@ -31,14 +31,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_user'])) {
 }
 
 // Dashboard stats
-$stmt = $pdo->query('SELECT COUNT(*) FROM trailers');
-$trailer_count = $stmt->fetchColumn();
-$stmt = $pdo->query('SELECT COUNT(*) FROM refrigeration');
+$stmt = $pdo->query('SELECT COUNT(*) FROM primary_units');
+$primary_count = $stmt->fetchColumn();
+$stmt = $pdo->query('SELECT COUNT(*) FROM secondary_units');
 $unit_count = $stmt->fetchColumn();
 $stmt = $pdo->query('SELECT COUNT(*) FROM users');
 $user_count = $stmt->fetchColumn();
 
-$smarty->assign('trailer_count', $trailer_count);
+$smarty->assign('primary_count', $primary_count);
 $smarty->assign('unit_count', $unit_count);
 $smarty->assign('user_count', $user_count);
 $smarty->assign('user_add_msg', $user_add_msg);

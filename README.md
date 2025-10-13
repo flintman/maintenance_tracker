@@ -1,6 +1,6 @@
 # Equipment Maintenance Tracker
 
-A PHP web application to track equipment maintenance, with login system, maintenance records, and archive/unarchive functionality.
+A PHP web application to track equipment maintenance, with login system, maintenance records, and archive/unarchive functionality.  Setup as a Primary Secondary equipment.   Example Building(Primary) and the equipment inside(Secondary).  Trailer(Primary) and Refrigeration Unit(Secondary)
 
 ## Features
 - User login/register/logout
@@ -35,7 +35,7 @@ A PHP web application to track equipment maintenance, with login system, mainten
    - Open your browser and go to [http://localhost:8080](http://localhost:8080) (or your configured port).
 
 5. **Configure Your Questions**
-   - After setup, you need to build the questions you want to ask for trailers and refrigeration units via the admin interface.
+   - After setup, you need to build the questions you want to ask for primary_units and secondary_units units via the admin interface.
 
 ## License
 

@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $type = $_POST['type'];
         $options = ($type === 'multi_choice') ? cleanInput($_POST['options']) : null;
         $position = intval($_POST['position']);
-        $stmt = $pdo->prepare('INSERT INTO refrigeration_questions (label, type, options, position) VALUES (?, ?, ?, ?)');
+        $stmt = $pdo->prepare('INSERT INTO primary_questions (label, type, options, position) VALUES (?, ?, ?, ?)');
         $stmt->execute([$label, $type, $options, $position]);
     }
     if (isset($_POST['edit_question'])) {
@@ -23,34 +23,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $type = $_POST['type'];
         $options = ($type === 'multi_choice') ? cleanInput($_POST['options']) : null;
         $position = intval($_POST['position']);
-        $stmt = $pdo->prepare('UPDATE refrigeration_questions SET label=?, type=?, options=?, position=? WHERE id=?');
+        $stmt = $pdo->prepare('UPDATE primary_questions SET label=?, type=?, options=?, position=? WHERE id=?');
         $stmt->execute([$label, $type, $options, $position, $id]);
     }
     if (isset($_POST['delete_question'])) {
         $id = intval($_POST['id']);
-        $stmt = $pdo->prepare('DELETE FROM refrigeration_questions WHERE id=?');
+        $stmt = $pdo->prepare('DELETE FROM primary_questions WHERE id=?');
         $stmt->execute([$id]);
     }
     if (isset($_POST['move_up']) || isset($_POST['move_down'])) {
         $id = intval($_POST['id']);
         $direction = isset($_POST['move_up']) ? -1 : 1;
-        $stmt = $pdo->prepare('SELECT position FROM refrigeration_questions WHERE id=?');
+        $stmt = $pdo->prepare('SELECT position FROM primary_questions WHERE id=?');
         $stmt->execute([$id]);
         $current = $stmt->fetchColumn();
         $new = $current + $direction;
-        $stmt = $pdo->prepare('SELECT id FROM refrigeration_questions WHERE position=?');
+        $stmt = $pdo->prepare('SELECT id FROM primary_questions WHERE position=?');
         $stmt->execute([$new]);
         $swap_id = $stmt->fetchColumn();
         if ($swap_id) {
-            $pdo->prepare('UPDATE refrigeration_questions SET position=? WHERE id=?')->execute([$new, $id]);
-            $pdo->prepare('UPDATE refrigeration_questions SET position=? WHERE id=?')->execute([$current, $swap_id]);
+            $pdo->prepare('UPDATE primary_questions SET position=? WHERE id=?')->execute([$new, $id]);
+            $pdo->prepare('UPDATE primary_questions SET position=? WHERE id=?')->execute([$current, $swap_id]);
         }
     }
 }
 
 // Fetch all questions ordered by position
-$questions = $pdo->query('SELECT * FROM refrigeration_questions ORDER BY position ASC')->fetchAll();
+$questions = $pdo->query('SELECT * FROM primary_questions ORDER BY position ASC')->fetchAll();
 
 $smarty->assign('questions', $questions);
-$smarty->display($theme_current . '/admin/manage_refrigeration.tpl');
+$smarty->display($theme_current . '/admin/manage_primary.tpl');
 $smarty->display($theme_current . '/admin/footer.tpl');

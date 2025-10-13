@@ -9,10 +9,10 @@
             <ul class="navbar-nav me-auto">
                 {if isset($session.user_id)}
                 <li class="nav-item">
-                    <a class="nav-link" href="trailer.php">Trailers</a>
+                    <a class="nav-link" href="primary.php">{$primary_label|escape} Units</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="refrigeration.php">Refrigeration</a>
+                    <a class="nav-link" href="secondary.php">{$secondary_label|escape} Units</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="user.php">User Info</a>

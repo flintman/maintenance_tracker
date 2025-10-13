@@ -7,8 +7,8 @@
         <div class="collapse navbar-collapse" id="mainNavbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 {if isset($session.user_id)}
-                    <li class="nav-item"><a class="nav-link" href="refrigeration.php">Refrigeration</a></li>
-                    <li class="nav-item"><a class="nav-link" href="trailer.php">Trailer</a></li>
+                    <li class="nav-item"><a class="nav-link" href="primary.php">{$primary_label|escape} Units</a></li>
+                    <li class="nav-item"><a class="nav-link" href="secondary.php">{$secondary_label|escape} Units</a></li>
                     <li class="nav-item"><a class="nav-link" href="user.php">Users</a></li>
                     {if $session.privilege == 'admin'}
                         <li class="nav-item">

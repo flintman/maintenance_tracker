@@ -11,12 +11,16 @@ foreach ($stmt as $row) {
 // Set defaults if not present
 if (!isset($config['default_theme'])) $config['default_theme'] = 'theme_1';
 if (!isset($config['columns_to_show'])) $config['columns_to_show'] = 3;
+if (!isset($config['primary_label'])) $config['primary_label'] = 'Primary';
+if (!isset($config['secondary_label'])) $config['secondary_label'] = 'Secondary';
 
 // Handle form submission
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $default_theme = $_POST['default_theme'] ?? 'theme_1';
     $columns_to_show = max(1, (int)($_POST['columns_to_show'] ?? 3));
+    $primary_unit = trim($_POST['primary_unit'] ?? 'Primary');
+    $secondary_unit = trim($_POST['secondary_unit'] ?? 'Secondary');
 
     // Always update (assumes row exists and config_name is unique)
     $stmt = $pdo->prepare("UPDATE admin_config SET config_value=? WHERE config_name='default_theme'");
@@ -25,8 +29,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt = $pdo->prepare("UPDATE admin_config SET config_value=? WHERE config_name='columns_to_show'");
     $stmt->execute([$columns_to_show]);
 
+    $stmt = $pdo->prepare("UPDATE admin_config SET config_value=? WHERE config_name='primary_unit'");
+    $stmt->execute([$primary_unit]);
+
+    $stmt = $pdo->prepare("UPDATE admin_config SET config_value=? WHERE config_name='secondary_unit'");
+    $stmt->execute([$secondary_unit]);
+
     $config['default_theme'] = $default_theme;
     $config['columns_to_show'] = $columns_to_show;
+    $config['primary_unit'] = $primary_unit;
+    $config['secondary_unit'] = $secondary_unit;
     $msg = "Configuration updated!";
 }
 

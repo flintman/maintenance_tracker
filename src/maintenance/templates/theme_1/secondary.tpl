@@ -3,12 +3,12 @@ let lastEditId = null;
 let addEditMode = 'add';
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('toggleAddEditBtn').addEventListener('click', function() {
-        const formDiv = document.getElementById('addEditRefrigerationForm');
+        const formDiv = document.getElementById('addEditSecondaryForm');
         const arrow = document.getElementById('addEditArrow');
         if (formDiv.style.display === 'none') {
             formDiv.style.display = 'block';
             arrow.textContent = '▼';
-            document.getElementById('addEditText').textContent = addEditMode === 'edit' ? 'Edit Refrigeration Unit' : 'Add Refrigeration Unit';
+            document.getElementById('addEditText').textContent = addEditMode === 'edit' ? 'Edit {$secondary_label|escape} Unit' : 'Add {$secondary_label|escape} Unit';
         } else {
             formDiv.style.display = 'none';
             arrow.textContent = '➤';
@@ -16,13 +16,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById('addEditCancelBtn').addEventListener('click', function() {
-        document.getElementById('addEditRefrigerationForm').style.display = 'none';
+        document.getElementById('addEditSecondaryForm').style.display = 'none';
         document.getElementById('addEditArrow').textContent = '➤';
         addEditMode = 'add';
         document.getElementById('addEditMode').value = 'add';
         document.getElementById('addEditId').value = '';
-        document.getElementById('addEditText').textContent = 'Add Refrigeration Unit';
-        document.getElementById('addEditTrlId').value = '';
+        document.getElementById('addEditText').textContent = 'Add {$secondary_label|escape} Unit';
+        document.getElementById('addEditPmyId').value = '';
         // Clear all question fields
         {foreach $questions as $q}
         var el = document.getElementById('addEditQ{$q.id}');
@@ -39,14 +39,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function editUnit(id, trlId) {
-    const formDiv = document.getElementById('addEditRefrigerationForm');
+function editUnit(id, pmyId) {
+    const formDiv = document.getElementById('addEditSecondaryForm');
     const arrow = document.getElementById('addEditArrow');
     addEditMode = 'edit';
     document.getElementById('addEditMode').value = 'edit';
     document.getElementById('addEditId').value = id;
-    document.getElementById('addEditText').textContent = 'Edit Refrigeration Unit';
-    document.getElementById('addEditTrlId').value = trlId;
+    document.getElementById('addEditText').textContent = 'Edit {$secondary_label|escape} Unit';
+    document.getElementById('addEditPmyId').value = pmyId;
     // Build answers map
     var answersMap = {};
     {foreach $units as $unit}
@@ -75,30 +75,29 @@ function editUnit(id, trlId) {
     window.scrollTo(0,document.body.scrollHeight);
 }
 </script>
-{* Refrigeration Units Page *}
-<h2>Refrigeration Units</h2>
+<h2>{$secondary_label|escape} Units</h2>
 {if $session.privilege == 'admin'}
 <h3>
     <button class="btn btn-link text-decoration-none" type="button" id="toggleAddEditBtn">
-        <span class="me-2 arrow" id="addEditArrow">➤</span> <span class="toggle-text" id="addEditText">Add Refrigeration Unit</span>
+        <span class="me-2 arrow" id="addEditArrow">➤</span> <span class="toggle-text" id="addEditText">Add {$secondary_label|escape} Unit</span>
     </button>
 </h3>
 {/if}
 
-<div id="addEditRefrigerationForm" style="display:none;">
+<div id="addEditSecondaryForm" style="display:none;">
     <form method="post" id="addEditForm">
         <input type="hidden" name="mode" id="addEditMode" value="add">
         <input type="hidden" name="id" id="addEditId" value="">
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-primary text-white fw-bold">Refrigeration Unit Details</div>
+            <div class="card-header bg-primary text-white fw-bold">{$secondary_label|escape} Unit Details</div>
             <div class="card-body">
                 <div class="row g-3 align-items-center mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold" for="addEditTrlId">Trailer ID</label>
-                        <select name="trl_id" id="addEditTrlId" class="form-control" required>
+                        <label class="form-label fw-bold" for="addEditPmyId">{$primary_label|escape} ID</label>
+                        <select name="pmy_id" id="addEditPmyId" class="form-control" required>
                             <option value=""></option>
-                            {foreach $trailers as $trl}
-                                <option value="{$trl.trl_id}">{$trl.trl_id}</option>
+                            {foreach $primary_units as $pmy}
+                                <option value="{$pmy.pmy_id}">{$pmy.pmy_id}</option>
                             {/foreach}
                         </select>
                     </div>
@@ -134,12 +133,12 @@ function editUnit(id, trlId) {
     </form>
 </div>
 
-<h3>Active Refrigeration Units</h3>
+<h3>Active {$secondary_label|escape} Units</h3>
 <div class="table-responsive">
-    <table class="table tablesorter">
+    <table class="table tablesorter modern-table">
         <thead>
             <tr>
-                <th>Trailer ID</th>
+                <th>{$primary_label|escape} ID</th>
                 {foreach $questions_first as $q}
                     <th>{$q.label|escape}</th>
                 {/foreach}
@@ -150,7 +149,7 @@ function editUnit(id, trlId) {
             {foreach $units as $unit}
                 {assign var=answers value=$unit.answers}
                 <tr>
-                    <td>{$unit.trl_id|escape}</td>
+                    <td>{$unit.pmy_id|escape}</td>
                     {foreach $unit.answers_first as $a}
                         <td>
                             {if $a.type == 'multi_choice'}
@@ -163,13 +162,13 @@ function editUnit(id, trlId) {
                         </td>
                     {/foreach}
                     <td>
-                        <a href="maintenance.php?refrigeration_id={$unit.id}&type=refrigeration" class="btn btn-info btn-sm">View Maintenance</a>
+                        <a href="maintenance.php?secondary_id={$unit.id}&type=secondary_units" class="btn btn-info btn-sm">View Maintenance</a>
                         {if $session.privilege == 'admin'}
                         <form method="post" style="display:inline-block">
                             <input type="hidden" name="id" value="{$unit.id}">
                             <button name="archive" class="btn btn-warning btn-sm">Archive</button>
                         </form>
-                        <button class="btn btn-secondary btn-sm" onclick="editUnit({$unit.id}, {$unit.trl_id})">Edit</button>
+                        <button class="btn btn-secondary btn-sm" onclick="editUnit({$unit.id}, {$unit.pmy_id})">Edit</button>
                         {/if}
                     </td>
                 </tr>
@@ -179,12 +178,12 @@ function editUnit(id, trlId) {
 </div>
 
 {if $session.privilege == 'admin'}
-<h3>Archived Refrigeration Units</h3>
+<h3>Archived {$secondary_label|escape} Units</h3>
 <div class="table-responsive">
-    <table class="table tablesorter">
+    <table class="table tablesorter modern-table">
         <thead>
             <tr>
-                <th>Trailer ID</th>
+                <th>{$primary_label|escape} ID</th>
                 {foreach $questions_first as $q}
                     <th>{$q.label|escape}</th>
                 {/foreach}
@@ -195,7 +194,7 @@ function editUnit(id, trlId) {
             {foreach $archived as $unit}
                 {assign var=answers value=$unit.answers}
                 <tr>
-                    <td>{$unit.trl_id|escape}</td>
+                    <td>{$unit.pmy_id|escape}</td>
                     {foreach $unit.answers_first as $a}
                         <td>
                             {if $a.type == 'multi_choice'}

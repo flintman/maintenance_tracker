@@ -36,6 +36,8 @@ while ($row = $stmt->fetch()) {
 }
 $theme_current = $admin_config['default_theme'] ?? 'theme_1'; // Default theme
 $number_columns = $admin_config['columns_to_show'] ?? 3;
+$primary_label = $admin_config['primary_unit'] ?? 'Primary';
+$secondary_label = $admin_config['secondary_unit'] ?? 'Secondary';
 
 // Helper function to sanitize and validate inputs
 function cleanInput($data, $type = 'string') {
@@ -63,3 +65,5 @@ if (isset($_SESSION['user_id'])) {
 // Assign common variables to Smarty
 $smarty->assign('theme', $_COOKIE['theme'] ?? 'light');
 $smarty->assign('session', $_SESSION ?? []);
+$smarty->assign('primary_label', $primary_label);
+$smarty->assign('secondary_label', $secondary_label);

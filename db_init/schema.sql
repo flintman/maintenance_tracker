@@ -1,4 +1,4 @@
--- Full schema for robust trailer/refrigeration maintenance system
+-- Full schema for robust primary/secondary_units maintenance system
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -9,21 +9,21 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE trailers (
+CREATE TABLE primary_units (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    trl_id INT,
+    pmy_id INT,
     archived TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE refrigeration (
+CREATE TABLE secondary_units (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    trl_id INT NULL,
+    pmy_id INT NULL,
     archived TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE trailer_questions (
+CREATE TABLE primary_questions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     label VARCHAR(100) NOT NULL,
     type ENUM('string','text','number','date','multi_choice') NOT NULL,
@@ -31,16 +31,16 @@ CREATE TABLE trailer_questions (
     position INT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE trailer_answers (
+CREATE TABLE primary_answers (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    trailer_id INT NOT NULL,
+    primary_id INT NOT NULL,
     question_id INT NOT NULL,
     value TEXT,
-    FOREIGN KEY (trailer_id) REFERENCES trailers(id) ON DELETE CASCADE,
-    FOREIGN KEY (question_id) REFERENCES trailer_questions(id) ON DELETE CASCADE
+    FOREIGN KEY (primary_id) REFERENCES primary_units(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES primary_questions(id) ON DELETE CASCADE
 );
 
-CREATE TABLE refrigeration_questions (
+CREATE TABLE secondary_questions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     label VARCHAR(100) NOT NULL,
     type ENUM('string','text','number','date','multi_choice') NOT NULL,
@@ -48,18 +48,18 @@ CREATE TABLE refrigeration_questions (
     position INT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE refrigeration_answers (
+CREATE TABLE secondary_answers (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    refrigeration_id INT NOT NULL,
+    secondary_id INT NOT NULL,
     question_id INT NOT NULL,
     value TEXT,
-    FOREIGN KEY (refrigeration_id) REFERENCES refrigeration(id) ON DELETE CASCADE,
-    FOREIGN KEY (question_id) REFERENCES refrigeration_questions(id) ON DELETE CASCADE
+    FOREIGN KEY (secondary_id) REFERENCES secondary_units(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES secondary_questions(id) ON DELETE CASCADE
 );
 
 CREATE TABLE photos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    unit_type ENUM('trailer','refrigeration'),
+    unit_type ENUM('primary_units','secondary_units'),
     unit_id INT NOT NULL,
     datetime DATETIME DEFAULT CURRENT_TIMESTAMP,
     filename VARCHAR(255)
@@ -67,8 +67,8 @@ CREATE TABLE photos (
 
 CREATE TABLE maintenance (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    refrigeration_id INT NULL,
-    trl_id INT NULL,
+    secondary_id INT NULL,
+    pmy_id INT NULL,
     type_of_service VARCHAR(100),
     description TEXT,
     costs_of_parts DECIMAL(10,2),
@@ -86,7 +86,9 @@ CREATE TABLE IF NOT EXISTS admin_config (
 -- Insert default config row if not exists
 INSERT INTO admin_config (config_name, config_value)
     VALUES ('default_theme', 'theme_1'),
-           ('columns_to_show', '3')
+           ('columns_to_show', '3'),
+           ('primary_unit', 'Primary'),
+           ('secondary_unit', 'Secondary');
 
 -- Insert default admin user (password: changeme)
 INSERT INTO users (username, password, privilege, email) VALUES (

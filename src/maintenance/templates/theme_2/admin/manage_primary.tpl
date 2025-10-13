@@ -1,5 +1,5 @@
 <div class="container mt-5">
-    <h2>Manage Trailer Questions</h2>
+    <h2>Manage {$primary_label|escape} Questions</h2>
     <form method="post" class="mb-4">
         <div class="row">
             <div class="col-md-2">
