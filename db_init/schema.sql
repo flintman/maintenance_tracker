@@ -92,9 +92,10 @@ INSERT INTO admin_config (config_name, config_value)
            ('secondary_unit', 'Secondary');
 
 -- Insert default admin user (password: changeme)
-INSERT INTO users (username, password, privilege, email) VALUES (
+INSERT INTO users (username, password, privilege, email, nickname) VALUES (
   'admin',
   '$2y$10$ZbPOgCEetIZCcTO2PmeZYO6K9igD23CXK4YeXunxJGtPpwWWllFO2', -- Hash for 'changeme'
   'admin',
-  'admin@example.com'
+  'admin@example.com',
+  'Administrator'
 );
