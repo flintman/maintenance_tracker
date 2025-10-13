@@ -18,7 +18,10 @@
                 {/if}
             </ul>
             <button class="btn btn-outline-light ms-2" onclick="toggleTheme()">Toggle Theme</button>
-            <a class="btn btn-danger ms-2" href="logout.php">Logout</a>
+
+            {if isset($session.user_id)}
+                <a class="btn btn-danger ms-2" href="logout.php">Logout</a>
+            {/if}
         </div>
     </div>
 </nav>

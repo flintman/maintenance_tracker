@@ -1,6 +1,11 @@
 <?php
 require_once '../common/common.php';
 
+if (!isset($_SESSION['user_id']) || ($_SESSION['privilege'] ?? '') !== 'admin') {
+    header('Location: ../index.php');
+    exit;
+}
+
 // Fetch all config as key=>value
 $stmt = $pdo->query("SELECT config_name, config_value FROM admin_config");
 $config = [];

@@ -1,11 +1,11 @@
 <?php
 
 require 'common/common.php';
-$smarty->display($theme_current . '/header.tpl');
 if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+$smarty->display($theme_current . '/header.tpl');
 $user_id = $_SESSION['user_id'];
 $stmt = $pdo->prepare('SELECT * FROM users WHERE id = ?');
 $stmt->execute([$user_id]);

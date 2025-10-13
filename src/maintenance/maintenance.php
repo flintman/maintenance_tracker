@@ -1,10 +1,10 @@
 <?php
 require_once 'common/common.php';
-$smarty->display($theme_current . '/header.tpl');
 if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+$smarty->display($theme_current . '/header.tpl');
 // Determine context: secondary_units or primary
 $secondary_id = cleanInput($_GET['secondary_id'] ?? null, 'int');
 $pmy_id = cleanInput($_GET['pmy_id'] ?? null, 'int');

@@ -1,7 +1,6 @@
 <?php
 require_once 'common/common.php';
 if (!isset($_SESSION['user_id'])) {
-    echo 'Access denied';
     exit;
 }
 

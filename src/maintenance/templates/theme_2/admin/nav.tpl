@@ -24,7 +24,7 @@
             </ul>
 
             <button class="btn btn-outline-light ms-2" onclick="toggleTheme()">Toggle Theme</button>
-            <a class="btn btn-danger ms-2" href="/maintenance/logout.php">Logout</a>
+            <a class="btn btn-danger ms-2" href="../logout.php">Logout</a>
         </div>
     </div>
 </nav>

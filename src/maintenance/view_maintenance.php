@@ -1,6 +1,9 @@
 <?php
 
 require 'common/common.php';
+if (!isset($_SESSION['user_id'])) {
+    exit;
+}
 $smarty->display($theme_current . '/header.tpl');
 
 $maintenance_id = $_GET['id'] ?? null;
