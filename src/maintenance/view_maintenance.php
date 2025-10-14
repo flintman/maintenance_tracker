@@ -9,6 +9,7 @@ $smarty->display($theme_current . '/header.tpl');
 $maintenance_id = $_GET['id'] ?? null;
 $type = $_GET['type'] ?? null;
 $edit_mode = isset($_GET['edit']) && $_GET['edit'] == '1';
+$source = $_GET['source'] ?? null;
 
 $alert = '';
 if (!$maintenance_id) {
@@ -74,12 +75,17 @@ if (!$maintenance) {
     exit;
 }
 $photos = $maintenance['photos'] ? json_decode($maintenance['photos'], true) : [];
-if ($type === 'secondary_units') {
-    $backLink = "maintenance.php?secondary_id=" . urlencode($maintenance['secondary_id']) . "&type=secondary_units";
-    $backLabel = $secondary_label . " Units";
+if ($source === 'dashboard' ) {
+    $backLink = "index.php";
+    $backLabel = "Dashboard";
 } else {
-    $backLink = "maintenance.php?pmy_id=" . urlencode($maintenance['pmy_id']) . "&type=" . urlencode($type);
-    $backLabel = $primary_label . " Units";
+    if ($type === 'secondary_units') {
+        $backLink = "maintenance.php?secondary_id=" . urlencode($maintenance['secondary_id']) . "&type=secondary_units";
+        $backLabel = $secondary_label . " Units";
+    } else {
+        $backLink = "maintenance.php?pmy_id=" . urlencode($maintenance['pmy_id']) . "&type=" . urlencode($type);
+        $backLabel = $primary_label . " Units";
+    }
 }
 
 $smarty->assign('maintenance', $maintenance);

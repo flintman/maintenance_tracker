@@ -25,7 +25,7 @@
                     <ul class="list-group list-group-flush">
                         {foreach $latest_maintenance as $m}
                         <li class="list-group-item bg-info text-white">
-                            <a href="view_maintenance.php?id={$m.id}&type={if $m.secondary_id}secondary_units{else}primary{/if}" class="text-white text-decoration-none">
+                            <a href="view_maintenance.php?source=dashboard&id={$m.id}&type={if $m.secondary_id}secondary_units{else}primary{/if}" class="text-white text-decoration-none">
                                 <strong>{$m.type_of_service|escape}</strong> -
                                 {if $m.secondary_id}
                                     {$m.secondary_answer_1|escape} ({$primary_label|escape} {$m.secondary_primary_id|escape})
