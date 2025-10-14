@@ -172,34 +172,41 @@ function editPmy(id, answersMapStr) {
     </div>
     {/if}
     <h3 class="mt-5 mb-3">Active {$primary_label|escape}s</h3>
-    <div class="table-responsive">
-    <input type="text" class="tableSearch" data-table="activeTable" placeholder="Search..." style="margin-bottom:10px;">
-        <table class="table modern-table table-hover align-middle tablesorter" id="activeTable">
-            <thead class="table-light">
-                <tr>
-                    <th>{$primary_label|escape} ID</th>
-                    {foreach $questions_first as $q}
-                        <th>{$q.label|escape}</th>
-                    {/foreach}
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {foreach $active as $pmy}
-                    {assign var=answers value=$pmy.answers}
+
+    <div id="activePrimaryTable" class="sortable-table">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <input class="form-control search" placeholder="Search active units..." />
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table modern-table table-hover align-middle">
+                <thead class="table-light">
                     <tr>
-                        <td class="fw-semibold">{$pmy.pmy_id|escape}</td>
-                        {foreach $pmy.answers_first as $a}
-                            <td>
-                                {if $a.type == 'multi_choice'}
-                                    {foreach $a.value|split:',' as $val}
-                                        <span class="badge modern-badge bg-info text-dark">{$val|escape}</span>
-                                    {/foreach}
-                                {else}
-                                    <span class="text-body">{$a.value|escape}</span>
-                                {/if}
-                            </td>
+                        <th class="sort" data-sort="pmy_id" style="cursor: pointer;">{$primary_label|escape} ID</th>
+                        {foreach $questions_first as $q}
+                            <th class="sort" data-sort="answer_{$q@index}" style="cursor: pointer;">{$q.label|escape}</th>
                         {/foreach}
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="list">
+                    {foreach $active as $pmy}
+                        {assign var=answers value=$pmy.answers}
+                        <tr>
+                            <td class="pmy_id fw-semibold">{$pmy.pmy_id|escape}</td>
+                            {foreach $pmy.answers_first as $a}
+                                <td class="answer_{$a@index}">
+                                    {if $a.type == 'multi_choice'}
+                                        {foreach $a.value|split:',' as $val}
+                                            <span class="badge modern-badge bg-info text-dark">{$val|escape}</span>
+                                        {/foreach}
+                                    {else}
+                                        <span class="text-body">{$a.value|escape}</span>
+                                    {/if}
+                                </td>
+                            {/foreach}
                         <td>
                             <a href="maintenance.php?pmy_id={$pmy.id}&type=primary" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
                             {if $is_admin}
@@ -208,48 +215,115 @@ function editPmy(id, answersMapStr) {
                             {/if}
                         </td>
                     </tr>
-                {/foreach}
-            </tbody>
-        </table>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <ul class="pagination"></ul>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="list-info text-muted"></span>
+            </div>
+        </div>
     </div>
+
     {if $is_admin}
     <h3 class="mt-5 mb-3">Archived {$primary_label|escape}s</h3>
-    <input type="text" class="tableSearch" data-table="archivedTable" placeholder="Search..." style="margin-bottom:10px;">
-    <div class="table-responsive">
-        <table class="table modern-table table-hover align-middle tablesorter" id="archivedTable">
-            <thead class="table-light">
-                <tr>
-                    <th>{$primary_label|escape} ID</th>
-                    {foreach $questions_first as $q}
-                        <th>{$q.label|escape}</th>
-                    {/foreach}
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {foreach $archived as $pmy}
-                    {assign var=answers value=$pmy.answers}
+
+    <div id="archivedPrimaryTable" class="sortable-table">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <input class="form-control search" placeholder="Search archived units..." />
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table modern-table table-hover align-middle">
+                <thead class="table-light">
                     <tr>
-                        <td class="fw-semibold">{$pmy.pmy_id|escape}</td>
-                        {foreach $pmy.answers_first as $a}
-                            <td>
-                                {if $a.type == 'multi_choice'}
-                                    {foreach $a.value|split:',' as $val}
-                                        <span class="badge modern-badge bg-info text-dark">{$val|escape}</span>
-                                    {/foreach}
-                                {else}
-                                    <span class="text-body">{$a.value|escape}</span>
-                                {/if}
-                            </td>
+                        <th class="sort" data-sort="pmy_id" style="cursor: pointer;">{$primary_label|escape} ID</th>
+                        {foreach $questions_first as $q}
+                            <th class="sort" data-sort="answer_{$q@index}" style="cursor: pointer;">{$q.label|escape}</th>
                         {/foreach}
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="list">
+                    {foreach $archived as $pmy}
+                        {assign var=answers value=$pmy.answers}
+                        <tr>
+                            <td class="pmy_id fw-semibold">{$pmy.pmy_id|escape}</td>
+                            {foreach $pmy.answers_first as $a}
+                                <td class="answer_{$a@index}">
+                                    {if $a.type == 'multi_choice'}
+                                        {foreach $a.value|split:',' as $val}
+                                            <span class="badge modern-badge bg-info text-dark">{$val|escape}</span>
+                                        {/foreach}
+                                    {else}
+                                        <span class="text-body">{$a.value|escape}</span>
+                                    {/if}
+                                </td>
+                            {/foreach}
                         <td>
                             <a href="primary.php?unarchive={$pmy.id}" class="btn modern-btn modern-btn-success btn-sm">Unarchive</a>
                             <a href="maintenance.php?pmy_id={$pmy.id}" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
                         </td>
                     </tr>
-                {/foreach}
-            </tbody>
-        </table>
+                    {/foreach}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <ul class="pagination"></ul>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="list-info text-muted"></span>
+            </div>
+        </div>
     </div>
     {/if}
 </div>
+
+<script>
+// Initialize List.js tables
+document.addEventListener('DOMContentLoaded', function() {
+    // Active Primary Units Table
+    if (document.getElementById('activePrimaryTable')) {
+        var valueNames = ['pmy_id'];
+        {foreach $questions_first as $q}
+            valueNames.push('answer_{$q@index}');
+        {/foreach}
+
+        var activePrimaryList = new List('activePrimaryTable', {
+            valueNames: valueNames,
+            pagination: true,
+            page: 10,
+            searchClass: 'search',
+            listClass: 'list'
+        });
+    }
+
+    // Archived Primary Units Table (only if admin)
+    {if $is_admin}
+    if (document.getElementById('archivedPrimaryTable')) {
+        var archivedValueNames = ['pmy_id'];
+        {foreach $questions_first as $q}
+            archivedValueNames.push('answer_{$q@index}');
+        {/foreach}
+
+        var archivedPrimaryList = new List('archivedPrimaryTable', {
+            valueNames: archivedValueNames,
+            pagination: true,
+            page: 10,
+            searchClass: 'search',
+            listClass: 'list'
+        });
+    }
+    {/if}
+});
+</script>

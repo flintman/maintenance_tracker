@@ -69,25 +69,49 @@
 </div>
 
 <h3>Maintenance Records</h3>
-<input type="text" class="tableSearch" data-table="maintenanceTable" placeholder="Search..." style="margin-bottom:10px;">
-<table class="table table-bordered tablesorter modern-table" id="maintenanceTable">
-    <thead><tr><th>ID</th><th>Type</th><th>Description</th><th>Actions</th></tr></thead>
-    <tbody>
-    {foreach $records as $row}
-        <tr>
-            <td>{$row.id}</td>
-            <td>{$row.type_of_service|escape}</td>
-            <td>{$row.description|escape}</td>
-            <td>
-                <a href="view_maintenance.php?id={$row.id}&type={$secondary_id ? 'secondary_units' : 'primary'}" class="btn btn-info">View</a>
-                {if $session.privilege == 'admin'}
-                <a href="view_maintenance.php?id={$row.id}&type={$secondary_id ? 'secondary_units' : 'primary'}&edit=1" class="btn btn-warning">Edit</a>
-                {/if}
-            </td>
-        </tr>
-    {/foreach}
-    </tbody>
-</table>
+
+<div id="maintenanceTable" class="sortable-table">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input class="form-control search" placeholder="Search maintenance records..." />
+        </div>
+    </div>
+
+    <table class="table table-bordered modern-table">
+        <thead>
+            <tr>
+                <th class="sort" data-sort="id" style="cursor: pointer;">ID</th>
+                <th class="sort" data-sort="type" style="cursor: pointer;">Type</th>
+                <th class="sort" data-sort="description" style="cursor: pointer;">Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="list">
+        {foreach $records as $row}
+            <tr>
+                <td class="id">{$row.id}</td>
+                <td class="type">{$row.type_of_service|escape}</td>
+                <td class="description">{$row.description|escape}</td>
+                <td>
+                    <a href="view_maintenance.php?id={$row.id}&type={$secondary_id ? 'secondary_units' : 'primary'}" class="btn btn-info btn-sm">View</a>
+                    {if $session.privilege == 'admin'}
+                    <a href="view_maintenance.php?id={$row.id}&type={$secondary_id ? 'secondary_units' : 'primary'}&edit=1" class="btn btn-warning btn-sm">Edit</a>
+                    {/if}
+                </td>
+            </tr>
+        {/foreach}
+        </tbody>
+    </table>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <ul class="pagination"></ul>
+        </div>
+        <div class="col-md-6 text-end">
+            <span class="list-info text-muted"></span>
+        </div>
+    </div>
+</div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var formDiv = document.getElementById('addMaintenanceForm');
@@ -102,6 +126,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 formDiv.style.display = 'none';
                 arrow.textContent = '➤';
             }
+        });
+    }
+
+    // Initialize List.js for maintenance table
+    if (document.getElementById('maintenanceTable')) {
+        var maintenanceList = new List('maintenanceTable', {
+            valueNames: ['id', 'type', 'description'],
+            pagination: true,
+            page: 10,
+            searchClass: 'search',
+            listClass: 'list'
         });
     }
 });

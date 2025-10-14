@@ -37,6 +37,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         {/foreach}
     });
+
+    // Initialize List.js tables
+    // Active Secondary Units Table
+    if (document.getElementById('activeSecondaryTable')) {
+        var valueNames = ['pmy_id'];
+        {foreach $questions_first as $q}
+            valueNames.push('answer_{$q@index}');
+        {/foreach}
+
+        var activeSecondaryList = new List('activeSecondaryTable', {
+            valueNames: valueNames,
+            pagination: true,
+            page: 10,
+            searchClass: 'search',
+            listClass: 'list'
+        });
+    }
+
+    // Archived Secondary Units Table (only if admin)
+    {if $session.privilege == 'admin'}
+    if (document.getElementById('archivedSecondaryTable')) {
+        var archivedValueNames = ['pmy_id'];
+        {foreach $questions_first as $q}
+            archivedValueNames.push('answer_{$q@index}');
+        {/foreach}
+
+        var archivedSecondaryList = new List('archivedSecondaryTable', {
+            valueNames: archivedValueNames,
+            pagination: true,
+            page: 10,
+            searchClass: 'search',
+            listClass: 'list'
+        });
+    }
+    {/if}
 });
 
 function editUnit(id, pmyId) {
@@ -134,34 +169,41 @@ function editUnit(id, pmyId) {
 </div>
 
 <h3>Active {$secondary_label|escape} Units</h3>
-<div class="table-responsive">
-    <input type="text" class="tableSearch" data-table="activeTable" placeholder="Search..." style="margin-bottom:10px;">
-    <table class="table tablesorter modern-table" id="activeTable">
-        <thead>
-            <tr>
-                <th>{$primary_label|escape} ID</th>
-                {foreach $questions_first as $q}
-                    <th>{$q.label|escape}</th>
-                {/foreach}
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {foreach $units as $unit}
-                {assign var=answers value=$unit.answers}
+
+<div id="activeSecondaryTable" class="sortable-table">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input class="form-control search" placeholder="Search active units..." />
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table modern-table">
+            <thead>
                 <tr>
-                    <td>{$unit.pmy_id|escape}</td>
-                    {foreach $unit.answers_first as $a}
-                        <td>
-                            {if $a.type == 'multi_choice'}
-                                {foreach $a.value|split:',' as $val}
-                                    <span class="badge bg-info text-dark">{$val|escape}</span>
-                                {/foreach}
-                            {else}
-                                {$a.value|escape}
-                            {/if}
-                        </td>
+                    <th class="sort" data-sort="pmy_id" style="cursor: pointer;">{$primary_label|escape} ID</th>
+                    {foreach $questions_first as $q}
+                        <th class="sort" data-sort="answer_{$q@index}" style="cursor: pointer;">{$q.label|escape}</th>
                     {/foreach}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="list">
+                {foreach $units as $unit}
+                    {assign var=answers value=$unit.answers}
+                    <tr>
+                        <td class="pmy_id">{$unit.pmy_id|escape}</td>
+                        {foreach $unit.answers_first as $a}
+                            <td class="answer_{$a@index}">
+                                {if $a.type == 'multi_choice'}
+                                    {foreach $a.value|split:',' as $val}
+                                        <span class="badge bg-info text-dark">{$val|escape}</span>
+                                    {/foreach}
+                                {else}
+                                    {$a.value|escape}
+                                {/if}
+                            </td>
+                        {/foreach}
                     <td>
                         <a href="maintenance.php?secondary_id={$unit.id}&type=secondary_units" class="btn btn-info btn-sm">View Maintenance</a>
                         {if $session.privilege == 'admin'}
@@ -173,50 +215,75 @@ function editUnit(id, pmyId) {
                         {/if}
                     </td>
                 </tr>
-            {/foreach}
-        </tbody>
-    </table>
-</div>
-
-{if $session.privilege == 'admin'}
-<h3>Archived {$secondary_label|escape} Units</h3>
-<div class="table-responsive">
-    <input type="text" class="tableSearch" data-table="archivedTable" placeholder="Search..." style="margin-bottom:10px;">
-    <table class="table tablesorter modern-table" id="archivedTable">
-        <thead>
-            <tr>
-                <th>{$primary_label|escape} ID</th>
-                {foreach $questions_first as $q}
-                    <th>{$q.label|escape}</th>
                 {/foreach}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <ul class="pagination"></ul>
+        </div>
+        <div class="col-md-6 text-end">
+            <span class="list-info text-muted"></span>
+        </div>
+    </div>
+</div>{if $session.privilege == 'admin'}
+<h3>Archived {$secondary_label|escape} Units</h3>
+
+<div id="archivedSecondaryTable" class="sortable-table">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input class="form-control search" placeholder="Search archived units..." />
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table modern-table">
+            <thead>
+                <tr>
+                    <th class="sort" data-sort="pmy_id" style="cursor: pointer;">{$primary_label|escape} ID</th>
+                    {foreach $questions_first as $q}
+                        <th class="sort" data-sort="answer_{$q@index}" style="cursor: pointer;">{$q.label|escape}</th>
+                    {/foreach}
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
-            {foreach $archived as $unit}
-                {assign var=answers value=$unit.answers}
-                <tr>
-                    <td>{$unit.pmy_id|escape}</td>
-                    {foreach $unit.answers_first as $a}
+        <tbody class="list">
+                {foreach $archived as $unit}
+                    {assign var=answers value=$unit.answers}
+                    <tr>
+                        <td class="pmy_id">{$unit.pmy_id|escape}</td>
+                        {foreach $unit.answers_first as $a}
+                            <td class="answer_{$a@index}">
+                                {if $a.type == 'multi_choice'}
+                                    {foreach $a.value|split:',' as $val}
+                                        <span class="badge bg-info text-dark">{$val|escape}</span>
+                                    {/foreach}
+                                {else}
+                                    {$a.value|escape}
+                                {/if}
+                            </td>
+                        {/foreach}
                         <td>
-                            {if $a.type == 'multi_choice'}
-                                {foreach $a.value|split:',' as $val}
-                                    <span class="badge bg-info text-dark">{$val|escape}</span>
-                                {/foreach}
-                            {else}
-                                {$a.value|escape}
-                            {/if}
+                            <form method="post" style="display:inline-block">
+                                <input type="hidden" name="id" value="{$unit.id}">
+                                <button name="unarchive" class="btn btn-success btn-sm">Unarchive</button>
+                            </form>
                         </td>
-                    {/foreach}
-                    <td>
-                        <form method="post" style="display:inline-block">
-                            <input type="hidden" name="id" value="{$unit.id}">
-                            <button name="unarchive" class="btn btn-success btn-sm">Unarchive</button>
-                        </form>
-                    </td>
-                </tr>
-            {/foreach}
-        </tbody>
-    </table>
+                    </tr>
+                {/foreach}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <ul class="pagination"></ul>
+        </div>
+        <div class="col-md-6 text-end">
+            <span class="list-info text-muted"></span>
+        </div>
+    </div>
 </div>
 {/if}

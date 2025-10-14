@@ -61,3 +61,81 @@
     border-color: #b0bec5 !important;
 }
 
+/* List.js Styling */
+.sortable-table .search {
+    padding: 8px 14px;
+    border: 1.5px solid var(--bs-border-color, #dee2e6);
+    border-radius: 0.375rem;
+    background-color: var(--bs-body-bg, #fff);
+    color: var(--bs-body-color, #212529);
+    font-size: 1rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.sortable-table .search:focus {
+    outline: 0;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.sortable-table .sort {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border: 1px solid var(--bs-border-color, #dee2e6);
+}
+
+.sortable-table .sort:hover {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: white;
+}
+
+.sortable-table .sort.asc:after {
+    content: " ↑";
+    font-weight: bold;
+}
+
+.sortable-table .sort.desc:after {
+    content: " ↓";
+    font-weight: bold;
+}
+
+.sortable-table .pagination {
+    margin: 0;
+}
+
+.sortable-table .pagination li {
+    list-style: none;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.sortable-table .pagination .active a {
+    background-color: var(--bs-primary, #0d6efd);
+    color: white;
+    border-radius: 0.375rem;
+    padding: 6px 12px;
+    text-decoration: none;
+    border: 1px solid var(--bs-primary, #0d6efd);
+}
+
+.sortable-table .pagination a {
+    padding: 6px 12px;
+    text-decoration: none;
+    color: var(--bs-primary, #0d6efd);
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: 0.375rem;
+    transition: all 0.2s ease-in-out;
+    display: inline-block;
+}
+
+.sortable-table .pagination a:hover {
+    background-color: var(--bs-light, #f8f9fa);
+    border-color: var(--bs-primary, #0d6efd);
+}
+
+.sortable-table .list-info {
+    font-size: 0.875em;
+    margin-top: 8px;
+}
+

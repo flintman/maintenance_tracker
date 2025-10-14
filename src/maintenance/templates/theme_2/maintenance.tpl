@@ -106,18 +106,30 @@
     </div>
 
     <h3 class="mt-5 mb-3">Maintenance Records</h3>
-    <input type="text" class="tableSearch" data-table="maintenanceTable" placeholder="Search..." style="margin-bottom:10px;">
-    <div class="table-responsive">
-        <table class="table modern-table table-hover align-middle tablesorter" id="maintenanceTable">
-            <thead class="table-light">
-                <tr><th>ID</th><th>Type</th><th>Description</th><th>Actions</th></tr>
-            </thead>
-            <tbody>
+
+    <div id="maintenanceTable" class="sortable-table">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <input class="form-control search" placeholder="Search maintenance records..." />
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table modern-table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="sort" data-sort="record_id" style="cursor: pointer;">ID</th>
+                        <th class="sort" data-sort="service_type" style="cursor: pointer;">Type</th>
+                        <th class="sort" data-sort="description" style="cursor: pointer;">Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="list">
             {foreach $records as $row}
                 <tr>
-                    <td>{$row.id}</td>
-                    <td>{$row.type_of_service|escape}</td>
-                    <td>{$row.description|escape}</td>
+                    <td class="record_id">{$row.id}</td>
+                    <td class="service_type">{$row.type_of_service|escape}</td>
+                    <td class="description">{$row.description|escape}</td>
                     <td>
                         <a href="view_maintenance.php?id={$row.id}&type={$secondary_id ? 'secondary_units' : 'primary'}" class="btn modern-btn modern-btn-info btn-sm">View</a>
                         {if $session.privilege == 'admin'}
@@ -128,6 +140,11 @@
             {/foreach}
             </tbody>
         </table>
+        </div>
+
+        <nav>
+            <ul class="pagination"></ul>
+        </nav>
     </div>
     {if $records|@count == 0}
     <div class="alert alert-secondary">No maintenance records found.</div>
@@ -138,4 +155,17 @@ function toggleArrow(button) {
     const arrow = button.querySelector('.arrow');
     arrow.textContent = button.getAttribute('aria-expanded') === 'true' ? '▼' : '➤';
 }
+
+// Initialize List.js for maintenance records table
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('maintenanceTable')) {
+        var maintenanceOptions = {
+            valueNames: ['record_id', 'service_type', 'description'],
+            pagination: true,
+            page: 10,
+            searchColumns: ['record_id', 'service_type', 'description']
+        };
+        var maintenanceList = new List('maintenanceTable', maintenanceOptions);
+    }
+});
 </script>
