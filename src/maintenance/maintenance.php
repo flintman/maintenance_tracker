@@ -21,13 +21,15 @@ if (!$secondary_id && !$pmy_id) {
 // Fetch equipment name
 if ($secondary_id) {
     // Fetch answer to question 1 for this secondary_units unit
-    $stmt_q1 = $pdo->prepare('SELECT value FROM secondary_answers WHERE secondary_id = ? AND question_id = 1 LIMIT 1');
-    $stmt_q1->execute([$secondary_id]);
-    $equipment_name = $stmt_q1->fetchColumn();
+    $stmt = $pdo->prepare('SELECT pmy_id FROM secondary_units WHERE id = ?');
+    $stmt->execute([$secondary_id]);
+    $equipment_name = $stmt->fetchColumn();
+    $equipment_name = $secondary_label . ' on ' . $primary_label . ' ' . $equipment_name;
 } else {
     $stmt = $pdo->prepare('SELECT pmy_id FROM primary_units WHERE id = ?');
     $stmt->execute([$pmy_id]);
     $equipment_name = $stmt->fetchColumn();
+    $equipment_name = $primary_label . ' ' . $equipment_name;
 }
 $smarty->assign('equipment_name', $equipment_name);
 
