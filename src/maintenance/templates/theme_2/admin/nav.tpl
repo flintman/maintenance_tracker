@@ -10,10 +10,10 @@
                     <a class="nav-link" href="manage_users.php">Manage Users</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="manage_primary.php">Manage {$primary_label|escape} Units</a>
+                    <a class="nav-link" href="manage_units.php">Manage {$primary_label|escape} Units</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="manage_secondary.php">Manage {$secondary_label|escape} Units</a>
+                    <a class="nav-link" href="manage_units.php?secondary=0">Manage {$secondary_label|escape} Units</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="manage_message.php">Manage Messages</a>

@@ -1,8 +1,8 @@
-<h2>{$primary_label|escape} Units</h2>
+<h2>{$unit_label|escape} Units</h2>
 {if $is_admin}
 <h3>
     <button class="btn btn-link text-decoration-none" type="button" id="toggleAddEditBtn">
-        <span class="me-2 arrow" id="addEditArrow">➤</span> <span class="toggle-text" id="addEditText">Add {$primary_label|escape}</span>
+        <span class="me-2 arrow" id="addEditArrow">➤</span> <span class="toggle-text" id="addEditText">Add {$unit_label|escape}</span>
     </button>
 </h3>
 <div id="addEditPrimaryForm" style="display:none;">
@@ -10,12 +10,21 @@
         <input type="hidden" name="mode" id="addEditMode" value="add">
         <input type="hidden" name="id" id="addEditId" value="">
         <div class="card shadow-sm mb-4">
-            <div class="card-header bg-primary text-white fw-bold">{$primary_label|escape} Details</div>
+            <div class="card-header bg-primary text-white fw-bold">{$unit_label|escape} Details</div>
             <div class="card-body">
                 <div class="row g-3 align-items-center mb-3">
                     <div class="col-md-6">
                         <label class="form-label fw-bold" for="addEditPmyId">{$primary_label|escape} ID</label>
-                        <input type="number" name="pmy_id" id="addEditPmyId" class="form-control" required>
+                          {if !$secondary_id}
+                                <input type="number" name="pmy_id" id="addEditPmyId" class="form-control" required>
+                            {else}
+                                <select name="pmy_id" id="addEditPmyId" class="form-control" required>
+                                    <option value=""></option>
+                                    {foreach $primary_units as $pmy}
+                                        <option value="{$pmy.pmy_id}">{$pmy.pmy_id}</option>
+                                    {/foreach}
+                                </select>
+                            {/if}
                     </div>
                 </div>
                 <div class="row g-3">
@@ -49,7 +58,7 @@
     </form>
 </div>
 {/if}
-<h3>Active {$primary_label|escape} Units</h3>
+<h3>Active {$unit_label|escape} Units</h3>
 
 <div id="activePrimaryTable" class="sortable-table">
     <div class="row mb-3">
@@ -85,10 +94,10 @@
                     </td>
                 {/foreach}
                 <td>
-                    <a href="maintenance.php?pmy_id={$pmy.id}&type=primary" class="btn btn-info btn-sm">View Maintenance</a>
+                    <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn btn-info btn-sm">View Maintenance</a>
                     {if $is_admin}
-                    <a href="primary.php?archive={$pmy.id}" class="btn btn-warning btn-sm">Archive</a>
-                    <button class="btn btn-secondary btn-sm" onclick="editPmy({$pmy.id}, '{$pmy.answers_json}')">Edit</button>
+                        <a href="units.php?archive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn btn-warning btn-sm">Archive</a>
+                        <button class="btn btn-secondary btn-sm" onclick="editPmy({$pmy.id}, '{$pmy.answers_json}')">Edit</button>
                     {/if}
                 </td>
             </tr>
@@ -106,7 +115,7 @@
     </div>
 </div>
 {if $is_admin}
-<h3>Archived {$primary_label|escape} Units</h3>
+<h3>Archived {$unit_label|escape} Units</h3>
 
 <div id="archivedPrimaryTable" class="sortable-table">
     <div class="row mb-3">
@@ -142,8 +151,8 @@
                     </td>
                 {/foreach}
                 <td>
-                    <a href="primary.php?unarchive={$pmy.id}" class="btn btn-success btn-sm">Unarchive</a>
-                    <a href="maintenance.php?pmy_id={$pmy.id}" class="btn btn-info btn-sm">View Maintenance</a>
+                    <a href="units.php?unarchive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn btn-success btn-sm">Unarchive</a>
+                    <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn btn-info btn-sm">View Maintenance</a>
                 </td>
             </tr>
         {/foreach}
@@ -173,7 +182,7 @@ document.getElementById('toggleAddEditBtn').addEventListener('click', function()
     if (formDiv.style.display === 'none') {
         formDiv.style.display = 'block';
         arrow.textContent = '▼';
-        document.getElementById('addEditText').textContent = 'Add {$primary_label|escape}';
+        document.getElementById('addEditText').textContent = 'Add {$unit_label|escape}';
     } else {
         formDiv.style.display = 'none';
         arrow.textContent = '➤';
@@ -185,7 +194,7 @@ document.getElementById('addEditCancelBtn').addEventListener('click', function()
     document.getElementById('addEditArrow').textContent = '➤';
     document.getElementById('addEditMode').value = 'add';
     document.getElementById('addEditId').value = '';
-    document.getElementById('addEditText').textContent = 'Add {$primary_label|escape}';
+    document.getElementById('addEditText').textContent = 'Add {$unit_label|escape}';
     document.getElementById('addEditPmyId').value = '';
     // Clear dynamic question fields
     questionInfo.forEach(function(q) {
@@ -217,7 +226,7 @@ function editPmy(id, answersMapStr) {
     const arrow = document.getElementById('addEditArrow');
     document.getElementById('addEditMode').value = 'edit';
     document.getElementById('addEditId').value = id;
-    document.getElementById('addEditText').textContent = 'Edit {$primary_label|escape}';
+    document.getElementById('addEditText').textContent = 'Edit {$unit_label|escape}';
     document.getElementById('addEditPmyId').value = primaryIdToPmyId[id] || '';
     // Populate dynamic question fields using answersMap
     questionInfo.forEach(function(q) {

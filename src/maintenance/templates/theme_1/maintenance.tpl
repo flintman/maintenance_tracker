@@ -1,6 +1,6 @@
 {* Maintenance Records Template *}
 <h2>Maintenance for {$equipment_name|escape}</h2>
-<a href="{if $secondary_id}secondary.php{else}primary.php{/if}" class="btn btn-secondary mb-3">
+<a href="{if $secondary_id}units.php?secondary=1{else}units.php{/if}" class="btn btn-secondary mb-3">
     Back to
     {if $secondary_id}
         {$secondary_label|escape} Units

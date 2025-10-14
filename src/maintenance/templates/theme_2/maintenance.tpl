@@ -37,7 +37,7 @@
 </style>
 <div class="container py-4">
     <h1 class="display-5 fw-bold mb-4">Maintenance for {$equipment_name|escape}</h1>
-    <a href="{if $secondary_id}secondary.php{else}primary.php{/if}" class="btn btn-secondary mb-3">
+    <a href="{if $secondary_id}units.php?secondary=1{else}unit.php{/if}" class="btn btn-secondary mb-3">
         Back to
         {if $secondary_id}
             {$secondary_label|escape} Units
