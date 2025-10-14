@@ -94,25 +94,31 @@ body.login-page {
     padding: 2.5rem 2rem;
     min-width: 340px;
 }
+
 .login-title {
     font-weight: 700;
     color: #232526;
 }
+
 .form-control, .btn {
     border-radius: 2rem;
 }
+
 .modern-btn-primary {
     background: linear-gradient(90deg, #232526 0%, #00bcd4 100%);
     color: #fff;
     border: none;
 }
+
 .modern-btn-primary:hover {
     background: linear-gradient(90deg, #00bcd4 0%, #232526 100%);
     color: #fff;
 }
+
 .alert {
     border-radius: 1rem;
 }
+
 .message-banner {
     background: #fff;
     border-radius: 1rem;
@@ -121,6 +127,7 @@ body.login-page {
     box-shadow: 0 4px 24px rgba(0,0,0,0.15);
     overflow: hidden;
 }
+
 .message-banner .alert {
     margin-bottom: 0;
     background: linear-gradient(45deg, #ffc107, #ff9800);
@@ -130,14 +137,17 @@ body.login-page {
     border-radius: 1rem;
     font-weight: 500;
 }
+
 .message-banner .alert strong {
     font-weight: 700;
     display: block;
     margin-bottom: 0.5rem;
 }
+
 .message-banner .alert i {
     color: #212529;
 }
+
 .container-login {
     display: flex;
     flex-direction: column;
@@ -147,6 +157,7 @@ body.login-page {
     margin: 0 auto;
     padding: 2rem;
 }
+
 [data-bs-theme="dark"] .tableSearch {
     background-color: #232526;
     color: #e0e0e0;
