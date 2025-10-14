@@ -32,7 +32,7 @@ if (isset($_SESSION['user_id'])) {
         FROM maintenance m
         LEFT JOIN secondary_units r ON m.secondary_id = r.id
         LEFT JOIN primary_units t ON m.pmy_id = t.id
-        ORDER BY m.performed_at DESC
+        ORDER BY m.id DESC
         LIMIT 5
     ');
     $latest_maintenance = $stmt->fetchAll();
