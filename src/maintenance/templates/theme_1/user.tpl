@@ -18,7 +18,7 @@
 
 <form method="post">
     <div class="mb-3">
-        <label>Nickname</label>
+        <label>Nickname </label> <small class="form-text text-muted"> Enter your nickname here,  will be displayed on your maintenance records</small>
         <input type="text" name="nickname" class="form-control" value="{$user.nickname|escape}">
     </div>
     <div class="mb-3">
@@ -34,15 +34,14 @@
         </select>
     </div>
     <div class="mb-3">
-        <label>API Key</label>
+        <label>API Key </label> <small class="form-text text-muted"> Keep your API key secret. Generating a new key will invalidate the old one.</small>
         <div class="input-group">
             <input type="text" name="api_key" class="form-control" value="{$user.api_key|escape}" readonly>
             <button class="btn btn-secondary" type="submit" name="generate_api_key" value="1">Generate New</button>
         </div>
-        <small class="form-text text-muted">Keep your API key secret. Generating a new key will invalidate the old one.</small>
     </div>
     <div class="mb-3">
-        <label>Current Password</label>
+        <label>Current Password </label> <small class="form-text text-muted"> Enter in your current password to change your password.</small>
         <input type="password" name="current_password" class="form-control">
     </div>
     <div class="mb-3">
