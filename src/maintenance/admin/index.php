@@ -31,9 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_user'])) {
 }
 
 // Dashboard stats
-$stmt = $pdo->query('SELECT COUNT(*) FROM primary_units');
+$stmt = $pdo->query('SELECT COUNT(*) FROM equipment WHERE equipment_level = 1');
 $primary_count = $stmt->fetchColumn();
-$stmt = $pdo->query('SELECT COUNT(*) FROM secondary_units');
+$stmt = $pdo->query('SELECT COUNT(*) FROM equipment WHERE equipment_level = 2');
 $unit_count = $stmt->fetchColumn();
 $stmt = $pdo->query('SELECT COUNT(*) FROM users');
 $user_count = $stmt->fetchColumn();

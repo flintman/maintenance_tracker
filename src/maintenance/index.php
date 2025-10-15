@@ -10,28 +10,29 @@ $smarty->assign('message_board', $active_message ?: 'No messages at this time.')
 
 if (isset($_SESSION['user_id'])) {
     // Dashboard logic
-    $stmt = $pdo->query('SELECT COUNT(*) FROM primary_units');
+    $stmt = $pdo->query('SELECT COUNT(*) FROM equipment WHERE equipment_level = 1');
     $primary_count = $stmt->fetchColumn();
-    $stmt = $pdo->query('SELECT COUNT(*) FROM secondary_units');
+    $stmt = $pdo->query('SELECT COUNT(*) FROM equipment WHERE equipment_level = 2');
     $unit_count = $stmt->fetchColumn();
     $stmt = $pdo->query('
         SELECT
             m.*,
-            t.pmy_id AS primary_id,
-            r.id AS secondary_id,
-            r.pmy_id AS secondary_primary_id,
+            eq_primary.pmy_id AS primary_id,
+            eq_secondary.id AS secondary_id,
+            eq_secondary.pmy_id AS secondary_primary_id,
             CASE
                 WHEN m.secondary_id IS NOT NULL THEN (
-                    SELECT ra.value
-                    FROM secondary_answers ra
-                    WHERE ra.secondary_id = m.secondary_id AND ra.question_id = 1
+                    SELECT a.value
+                    FROM answers a
+                    JOIN questions q ON a.question_id = q.id
+                    WHERE a.id = m.secondary_id AND q.equipment_level = 2 AND q.id = 1
                     LIMIT 1
                 )
                 ELSE NULL
             END AS secondary_answer_1
         FROM maintenance m
-        LEFT JOIN secondary_units r ON m.secondary_id = r.id
-        LEFT JOIN primary_units t ON m.pmy_id = t.id
+        LEFT JOIN equipment eq_secondary ON m.secondary_id = eq_secondary.id AND eq_secondary.equipment_level = 2
+        LEFT JOIN equipment eq_primary ON m.pmy_id = eq_primary.id AND eq_primary.equipment_level = 1
         ORDER BY m.id DESC
         LIMIT 5
     ');

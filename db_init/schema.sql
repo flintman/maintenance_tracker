@@ -11,52 +11,30 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE primary_units (
+CREATE TABLE equipment (
     id INT AUTO_INCREMENT PRIMARY KEY,
     pmy_id INT,
+    equipment_level INT DEFAULT 1,
     archived TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE secondary_units (
+CREATE TABLE questions (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    pmy_id INT NULL,
-    archived TINYINT(1) DEFAULT 0,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE primary_questions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    equipment_level INT DEFAULT 1,
     label VARCHAR(100) NOT NULL,
     type ENUM('string','text','number','date','multi_choice') NOT NULL,
     options VARCHAR(255) DEFAULT NULL,
     position INT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE primary_answers (
+CREATE TABLE answers (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    primary_id INT NOT NULL,
+    equipment_id INT NOT NULL,
     question_id INT NOT NULL,
     value TEXT,
-    FOREIGN KEY (primary_id) REFERENCES primary_units(id) ON DELETE CASCADE,
-    FOREIGN KEY (question_id) REFERENCES primary_questions(id) ON DELETE CASCADE
-);
-
-CREATE TABLE secondary_questions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    label VARCHAR(100) NOT NULL,
-    type ENUM('string','text','number','date','multi_choice') NOT NULL,
-    options VARCHAR(255) DEFAULT NULL,
-    position INT NOT NULL DEFAULT 0
-);
-
-CREATE TABLE secondary_answers (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    secondary_id INT NOT NULL,
-    question_id INT NOT NULL,
-    value TEXT,
-    FOREIGN KEY (secondary_id) REFERENCES secondary_units(id) ON DELETE CASCADE,
-    FOREIGN KEY (question_id) REFERENCES secondary_questions(id) ON DELETE CASCADE
+    FOREIGN KEY (equipment_id) REFERENCES equipment(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
 );
 
 CREATE TABLE photos (

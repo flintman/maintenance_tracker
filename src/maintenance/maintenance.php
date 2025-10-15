@@ -21,12 +21,12 @@ if (!$secondary_id && !$pmy_id) {
 // Fetch equipment name
 if ($secondary_id) {
     // Fetch answer to question 1 for this secondary_units unit
-    $stmt = $pdo->prepare('SELECT pmy_id FROM secondary_units WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT pmy_id FROM equipment WHERE id = ? and equipment_level = 2');
     $stmt->execute([$secondary_id]);
     $equipment_name = $stmt->fetchColumn();
     $equipment_name = $secondary_label . ' on ' . $primary_label . ' ' . $equipment_name;
 } else {
-    $stmt = $pdo->prepare('SELECT pmy_id FROM primary_units WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT pmy_id FROM equipment WHERE id = ? and equipment_level = 1');
     $stmt->execute([$pmy_id]);
     $equipment_name = $stmt->fetchColumn();
     $equipment_name = $primary_label . ' ' . $equipment_name;

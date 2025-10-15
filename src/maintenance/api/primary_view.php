@@ -12,7 +12,7 @@ if (!isset($provided_key) || !isset($api_keys)) {
 $id = $_GET['id'] ?? null;
 
 if ($id) {
-    $stmt = $pdo->prepare('SELECT * FROM primary_units WHERE id = ?');
+    $stmt = $pdo->prepare('SELECT * FROM equipment WHERE id = ? and equipment_level = 1');
     $stmt->execute([$id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($result) {
@@ -22,6 +22,6 @@ if ($id) {
         echo json_encode(['error' => 'Not found']);
     }
 } else {
-    $stmt = $pdo->query('SELECT * FROM primary_units');
+    $stmt = $pdo->query('SELECT * FROM equipment WHERE equipment_level = 1');
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 }

@@ -14,7 +14,6 @@ if(isset($_GET['secondary'])) {
     $unit_label = $secondary_label;
 }
 
-
 // Handle add/edit/delete/reorder questions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_question'])) {
@@ -22,8 +21,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $type = $_POST['type'];
         $options = ($type === 'multi_choice') ? cleanInput($_POST['options']) : null;
         $position = intval($_POST['position']);
-        $stmt = $pdo->prepare('INSERT INTO '.$number_unit.'_questions (label, type, options, position) VALUES (?, ?, ?, ?)');
-        $stmt->execute([$label, $type, $options, $position]);
+        $stmt = $pdo->prepare('INSERT INTO questions (equipment_level, label, type, options, position) VALUES (?, ?, ?, ?, ?)');
+        $stmt->execute([$number_unit === 'primary' ? 1 : 2, $label, $type, $options, $position]);
     }
     if (isset($_POST['edit_question'])) {
         $id = intval($_POST['id']);
@@ -31,27 +30,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $type = $_POST['type'];
         $options = ($type === 'multi_choice') ? cleanInput($_POST['options']) : null;
         $position = intval($_POST['position']);
-        $stmt = $pdo->prepare('UPDATE '.$number_unit.'_questions SET label=?, type=?, options=?, position=? WHERE id=?');
+        $stmt = $pdo->prepare('UPDATE questions SET label=?, type=?, options=?, position=? WHERE id=?');
         $stmt->execute([$label, $type, $options, $position, $id]);
     }
     if (isset($_POST['delete_question'])) {
         $id = intval($_POST['id']);
-        $stmt = $pdo->prepare('DELETE FROM '.$number_unit.'_questions WHERE id=?');
+        $stmt = $pdo->prepare('DELETE FROM questions WHERE id=?');
         $stmt->execute([$id]);
     }
     if (isset($_POST['move_up']) || isset($_POST['move_down'])) {
         $id = intval($_POST['id']);
         $direction = isset($_POST['move_up']) ? -1 : 1;
-        $stmt = $pdo->prepare('SELECT position FROM '.$number_unit.'_questions WHERE id=?');
+        $stmt = $pdo->prepare('SELECT position FROM questions WHERE id=?');
         $stmt->execute([$id]);
         $current = $stmt->fetchColumn();
         $new = $current + $direction;
-        $stmt = $pdo->prepare('SELECT id FROM '.$number_unit.'_questions WHERE position=?');
+        $stmt = $pdo->prepare('SELECT id FROM questions WHERE position=?');
         $stmt->execute([$new]);
         $swap_id = $stmt->fetchColumn();
         if ($swap_id) {
-            $pdo->prepare('UPDATE '.$number_unit.'_questions SET position=? WHERE id=?')->execute([$new, $id]);
-            $pdo->prepare('UPDATE '.$number_unit.'_questions SET position=? WHERE id=?')->execute([$current, $swap_id]);
+            $pdo->prepare('UPDATE questions SET position=? WHERE id=?')->execute([$new, $id]);
+            $pdo->prepare('UPDATE questions SET position=? WHERE id=?')->execute([$current, $swap_id]);
         }
     }
 }
@@ -59,7 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $smarty->display($theme_current . '/admin/header.tpl');
 
 // Fetch all questions ordered by position
-$questions = $pdo->query('SELECT * FROM '.$number_unit.'_questions ORDER BY position ASC')->fetchAll();
+$stmt = $pdo->prepare('SELECT * FROM questions WHERE equipment_level = ? ORDER BY position ASC');
+$stmt->execute([$number_unit === 'primary' ? 1 : 2]);
+$questions = $stmt->fetchAll();
 
 $smarty->assign('questions', $questions);
 $smarty->assign('unit_label', $unit_label);
