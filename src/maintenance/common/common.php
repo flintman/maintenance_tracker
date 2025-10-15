@@ -1,34 +1,13 @@
 <?php
-require 'include/smarty-5.6.0/libs/Smarty.class.php';
+require_once __DIR__ . '/include/smarty-5.6.0/libs/Smarty.class.php';
+define('MAINTENANCE_TRACKER_INIT', true);
+require_once __DIR__ . '/db.php';
 
 // Initialize Smarty
 use Smarty\Smarty;
 $smarty = new Smarty();
 $smarty->setTemplateDir(__DIR__ . '/../templates/');
 $smarty->setCompileDir(__DIR__ . '/../templates_c/');
-
-$host = 'db';
-$db   = getenv('MYSQL_DATABASE');
-$user = getenv('MYSQL_USER');
-$pass = getenv('MYSQL_PASSWORD');
-$charset = 'utf8mb4';
-
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
-
-try {
-    $pdo = new PDO($dsn, $user, $pass, $options);
-} catch (PDOException $e) {
-    echo "<div style='color: red; font-weight: bold; font-size: 1.2em; margin: 2em 0;'>
-        PLEASE WAIT FOR DATABASE TO LOAD.<br>
-        If this continues for more than 2 minutes and first load of the database, please check for errors.
-    </div>";
-    throw new PDOException($e->getMessage(), (int)$e->getCode());
-}
 
 if (!isset($_SESSION)) session_start();
 
@@ -43,6 +22,16 @@ $number_columns = $admin_config['columns_to_show'] ?? 3;
 $primary_label = $admin_config['primary_unit'] ?? 'Primary';
 $secondary_label = $admin_config['secondary_unit'] ?? 'Secondary';
 $message_board = $admin_config['message_board'] ?? '0';
+
+// Check for version mismatch which sees if it needs to upgrade
+$database_version = $admin_config['version'] ?? '0.0.0';
+$version = getenv('MAINTENANCE_TRACKER_VERSION') ?: '0.0.0';
+
+if ($version !== $database_version) {
+    // Redirect to update script if versions do not match
+    header('Location: ../update/index.php?from_version=' . urlencode($database_version));
+    exit;
+}
 
 $api_keys = [];
 $stmt = $pdo->query("SELECT api_key FROM users WHERE api_key IS NOT NULL AND api_key != ''");

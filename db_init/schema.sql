@@ -81,7 +81,8 @@ INSERT INTO admin_config (config_name, config_value)
     VALUES ('default_theme', 'theme_1'),
            ('columns_to_show', '3'),
            ('primary_unit', 'Primary'),
-           ('secondary_unit', 'Secondary');
+           ('secondary_unit', 'Secondary'),
+           ('version', '1.0.1');
 
 -- Insert default admin user (password: changeme)
 INSERT INTO users (username, password, privilege, email, nickname) VALUES (
