@@ -8,11 +8,11 @@ if (!isset($provided_key) || !isset($api_keys)) {
         exit;
     }
 }
-// GET: /api/index.php?action=primary_view&id=123
+// GET: /api/index.php?action=view&id=123
 $id = $_GET['id'] ?? null;
 
 if ($id) {
-    $stmt = $pdo->prepare('SELECT * FROM equipment WHERE id = ? and equipment_level = 1');
+    $stmt = $pdo->prepare('SELECT * FROM equipment WHERE id = ?');
     $stmt->execute([$id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($result) {
@@ -22,6 +22,6 @@ if ($id) {
         echo json_encode(['error' => 'Not found']);
     }
 } else {
-    $stmt = $pdo->query('SELECT * FROM equipment WHERE equipment_level = 1');
+    $stmt = $pdo->query('SELECT * FROM equipment');
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 }

@@ -8,18 +8,26 @@ if (!isset($provided_key) || !isset($api_keys)) {
         exit;
     }
 }
-// GET: /api/index.php?action=primary_question_answer&id=123
+// GET: /api/index.php?action=question_answer&id=123
 $id = $_GET['id'] ?? null;
 
 if ($id) {
     // Prepare statement to fetch all questions and their answers for the given primary_id
-    $stmt = $pdo->prepare('
-        SELECT q.id as question_id, q.label as question, a.value as answer
-        FROM primary_questions q
-        LEFT JOIN primary_answers a ON q.id = a.question_id AND a.primary_id = ?
-        ORDER BY q.position ASC
-    ');
-    $stmt->execute([$id]);
+    // determine equipment level so we can return only relevant questions
+    $levelStmt = $pdo->prepare('SELECT equipment_level FROM equipment WHERE id = ? LIMIT 1');
+    $levelStmt->execute([$id]);
+    $levelRow = $levelStmt->fetch(PDO::FETCH_ASSOC);
+    $equipment_level = $levelRow ? (int)$levelRow['equipment_level'] : 1;
+
+    // Fetch questions for this equipment level (or level 0 as wildcard) and left-join answers for this equipment id
+    $stmt = $pdo->prepare(
+        'SELECT q.id as question_id, q.label as question, a.value as answer
+         FROM questions q
+         LEFT JOIN answers a ON q.id = a.question_id AND a.equipment_id = ?
+         WHERE (q.equipment_level = ? OR q.equipment_level = 0)
+         ORDER BY q.position ASC'
+    );
+    $stmt->execute([$id, $equipment_level]);
     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if ($results) {

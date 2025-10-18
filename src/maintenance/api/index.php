@@ -17,17 +17,11 @@ switch ($action) {
     case 'maintenance_view':
         require 'maintenance_view.php';
         break;
-    case 'primary_view':
-        require 'primary_view.php';
+    case 'view':
+        require 'view.php';
         break;
-    case 'primary_question_answer':
-        require 'primary_question_answer.php';
-        break;
-    case 'secondary_view':
-        require 'secondary_view.php';
-        break;
-    case 'secondary_question_answer':
-        require 'secondary_question_answer.php';
+    case 'question_answer':
+        require 'question_answer.php';
         break;
     default:
         http_response_code(400);
