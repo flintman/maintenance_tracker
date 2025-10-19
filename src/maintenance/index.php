@@ -54,8 +54,8 @@ if (isset($_SESSION['user_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';
-    $password = $_POST['password'] ?? '';
+    $username = cleanInput($_POST['username']) ?? '';
+    $password = cleanInput($_POST['password']) ?? '';
     $stmt = $pdo->prepare('SELECT * FROM users WHERE LOWER(username) = LOWER(?)');
     $stmt->execute([$username]);
     $user = $stmt->fetch();
