@@ -9,6 +9,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="templates/theme_2/css/common.css">
     <script>
+        var LIGHT_MODE_LABEL = '{$LIGHT_MODE_LABEL|escape}';
+        var DARK_MODE_LABEL = '{$DARK_MODE_LABEL|escape}';
+
         document.addEventListener('DOMContentLoaded', () => {
             const theme = document.cookie.split('; ').find(row => row.startsWith('theme='))?.split('=')[1];
             if (theme) {

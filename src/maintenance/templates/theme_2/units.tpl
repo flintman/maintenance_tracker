@@ -44,14 +44,14 @@ var questionInfo = [
 // Toggle add/edit form
 document.addEventListener('DOMContentLoaded', function() {
     var toggleBtn = document.getElementById('toggleAddEditBtn');
-    if (toggleBtn) {
+            if (toggleBtn) {
         toggleBtn.addEventListener('click', function() {
             const formDiv = document.getElementById('addEditPrimaryForm');
             const arrow = document.getElementById('addEditArrow');
             if (formDiv.style.display === 'none') {
                 formDiv.style.display = 'block';
                 arrow.textContent = '▼';
-                document.getElementById('addEditText').textContent = 'Add {$unit_label|escape}';
+                document.getElementById('addEditText').textContent = '{$BTN_ADD|escape} {$unit_label|escape}';
             } else {
                 formDiv.style.display = 'none';
                 arrow.textContent = '➤';
@@ -59,13 +59,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     var cancelBtn = document.getElementById('addEditCancelBtn');
-    if (cancelBtn) {
+            if (cancelBtn) {
         cancelBtn.addEventListener('click', function() {
             document.getElementById('addEditPrimaryForm').style.display = 'none';
             document.getElementById('addEditArrow').textContent = '➤';
             document.getElementById('addEditMode').value = 'add';
             document.getElementById('addEditId').value = '';
-            document.getElementById('addEditText').textContent = 'Add {$unit_label|escape}';
+            document.getElementById('addEditText').textContent = '{$BTN_ADD|escape} {$unit_label|escape}';
             document.getElementById('addEditPmyId').value = '';
             // Clear dynamic question fields
             questionInfo.forEach(function(q) {
@@ -96,7 +96,7 @@ function editPmy(id, answersMapStr) {
     const arrow = document.getElementById('addEditArrow');
     document.getElementById('addEditMode').value = 'edit';
     document.getElementById('addEditId').value = id;
-    document.getElementById('addEditText').textContent = 'Edit {$unit_label|escape}';
+    document.getElementById('addEditText').textContent = '{$EDIT_BUTTON|escape} {$unit_label|escape}';
     document.getElementById('addEditPmyId').value = primaryIdToPmyId[id] || '';
     // Populate dynamic question fields using answersMap
     questionInfo.forEach(function(q) {
@@ -119,12 +119,12 @@ function editPmy(id, answersMapStr) {
 }
 </script>
 <div class="container py-4">
-    <h1 class="display-5 fw-bold mb-4">{$unit_label|escape} Units</h1>
+    <h1 class="display-5 fw-bold mb-4">{$unit_label|escape} {$UNITS_TITLE|escape}</h1>
     {if isset($msg)}<div class="alert alert-info">{$msg}</div>{/if}
     {if $is_admin}
     <div class="mb-4">
         <button class="btn modern-btn modern-btn-primary" type="button" id="toggleAddEditBtn">
-            <span class="me-2 arrow" id="addEditArrow">➤</span> <span class="toggle-text" id="addEditText">Add {$unit_label}</span>
+            <span class="me-2 arrow" id="addEditArrow">➤</span> <span class="toggle-text" id="addEditText">{$BTN_ADD|escape} {$unit_label|escape}</span>
         </button>
     </div>
     <div id="addEditPrimaryForm" style="display:none;">
@@ -132,11 +132,11 @@ function editPmy(id, answersMapStr) {
             <input type="hidden" name="mode" id="addEditMode" value="add">
             <input type="hidden" name="id" id="addEditId" value="">
             <div class="card modern-card shadow-sm mb-4">
-                <div class="card-header bg-gradient text-white fw-bold" style="background: linear-gradient(90deg, #232526 0%, #00bcd4 100%) !important;">{$unit_label} Details</div>
+                <div class="card-header bg-gradient text-white fw-bold" style="background: linear-gradient(90deg, #232526 0%, #00bcd4 100%) !important;">{$unit_label|escape} {$DETAILS_TITLE|escape}</div>
                 <div class="card-body">
                     <div class="row g-3 align-items-center mb-3">
                         <div class="col-md-6">
-                            <label class="form-label fw-bold" for="addEditPmyId">{$primary_label|escape} ID</label>
+                            <label class="form-label fw-bold" for="addEditPmyId">{$primary_label|escape} {$DETAILS_TITLE|escape} {$TH_ID|escape}</label>
                             {if !$secondary_id}
                                 <input type="number" name="pmy_id" id="addEditPmyId" class="form-control" required>
                             {else}
@@ -174,18 +174,18 @@ function editPmy(id, answersMapStr) {
                 </div>
             </div>
             <div class="d-flex justify-content-end mb-3">
-                <button class="btn modern-btn modern-btn-primary px-4" id="addEditSubmitBtn">Submit</button>
-                <button type="button" class="btn modern-btn modern-btn-secondary ms-2" id="addEditCancelBtn">Cancel</button>
+                <button class="btn modern-btn modern-btn-primary px-4" id="addEditSubmitBtn">{$BTN_SUBMIT|escape}</button>
+                <button type="button" class="btn modern-btn modern-btn-secondary ms-2" id="addEditCancelBtn">{$BTN_CANCEL|escape}</button>
             </div>
         </form>
     </div>
     {/if}
-    <h3 class="mt-5 mb-3">Active {$unit_label|escape}s</h3>
+    <h3 class="mt-5 mb-3">{$ACTIVE_LABEL|escape} {$unit_label|escape}s</h3>
 
     <div id="activePrimaryTable" class="sortable-table">
         <div class="row mb-3">
             <div class="col-md-6">
-                <input class="form-control search" placeholder="Search active units..." />
+                <input class="form-control search" placeholder="{$SEARCH_ACTIVE_PLACEHOLDER|escape}" />
             </div>
         </div>
 
@@ -193,11 +193,11 @@ function editPmy(id, answersMapStr) {
             <table class="table modern-table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th class="sort" data-sort="pmy_id" style="cursor: pointer;">{$unit_label|escape} ID</th>
+                        <th class="sort" data-sort="pmy_id" style="cursor: pointer;">{$unit_label|escape} {$DETAILS_TITLE|escape} {$TH_ID|escape}</th>
                         {foreach $questions_first as $q}
                             <th class="sort" data-sort="answer_{$q@index}" style="cursor: pointer;">{$q.label|escape}</th>
                         {/foreach}
-                        <th>Actions</th>
+                        <th>{$TH_ACTIONS|escape}</th>
                     </tr>
                 </thead>
                 <tbody class="list">
@@ -217,10 +217,10 @@ function editPmy(id, answersMapStr) {
                                 </td>
                             {/foreach}
                         <td>
-                            <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
+                            <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn modern-btn modern-btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
                             {if $is_admin}
-                            <a href="units.php?archive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn modern-btn modern-btn-warning btn-sm">Archive</a>
-                            <button class="btn modern-btn modern-btn-secondary btn-sm" onclick="editPmy({$pmy.id}, '{$pmy.answers_json}')">Edit</button>
+                            <a href="units.php?archive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn modern-btn modern-btn-warning btn-sm">{$ARCHIVE_BUTTON|escape}</a>
+                            <button class="btn modern-btn modern-btn-secondary btn-sm" onclick="editPmy({$pmy.id}, '{$pmy.answers_json}')">{$EDIT_BUTTON|escape}</button>
                             {/if}
                         </td>
                     </tr>
@@ -240,12 +240,12 @@ function editPmy(id, answersMapStr) {
     </div>
 
     {if $is_admin}
-    <h3 class="mt-5 mb-3">Archived {$unit_label|escape}s</h3>
+    <h3 class="mt-5 mb-3">{$ARCHIVED_LABEL|escape} {$unit_label|escape}s</h3>
 
     <div id="archivedPrimaryTable" class="sortable-table">
         <div class="row mb-3">
-            <div class="col-md-6">
-                <input class="form-control search" placeholder="Search archived units..." />
+                            <div class="col-md-6">
+                <input class="form-control search" placeholder="{$SEARCH_ARCHIVED_PLACEHOLDER|escape}" />
             </div>
         </div>
 
@@ -253,11 +253,11 @@ function editPmy(id, answersMapStr) {
             <table class="table modern-table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th class="sort" data-sort="pmy_id" style="cursor: pointer;">{$unit_label|escape} ID</th>
+                        <th class="sort" data-sort="pmy_id" style="cursor: pointer;">{$unit_label|escape} {$DETAILS_TITLE|escape} {$TH_ID|escape}</th>
                         {foreach $questions_first as $q}
                             <th class="sort" data-sort="answer_{$q@index}" style="cursor: pointer;">{$q.label|escape}</th>
                         {/foreach}
-                        <th>Actions</th>
+                        <th>{$TH_ACTIONS|escape}</th>
                     </tr>
                 </thead>
                 <tbody class="list">
@@ -277,8 +277,8 @@ function editPmy(id, answersMapStr) {
                                 </td>
                             {/foreach}
                         <td>
-                            <a href="units.php?unarchive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn modern-btn modern-btn-success btn-sm">Unarchive</a>
-                            <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn modern-btn modern-btn-info btn-sm">View Maintenance</a>
+                            <a href="units.php?unarchive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn modern-btn modern-btn-success btn-sm">{$UNARCHIVE_BUTTON|escape}</a>
+                            <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn modern-btn modern-btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
                         </td>
                     </tr>
                     {/foreach}

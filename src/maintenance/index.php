@@ -5,7 +5,7 @@ require_once 'common/common.php';
 $stmt = $pdo->query('SELECT message FROM admin_message WHERE active = 1 LIMIT 1');
 $active_message = $stmt->fetchColumn();
 
-$smarty->assign('message_board', $active_message ?: 'No messages at this time.');
+$smarty->assign('message_board', $active_message ?: $smarty->getTemplateVars('NO_MESSAGES_AT_THIS_TIME'));
 
 
 if (isset($_SESSION['user_id'])) {
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: index.php');
         exit;
     } else {
-        $error = 'Invalid credentials';
+        $error = $smarty->getTemplateVars('INVALID_CREDENTIALS');
     }
 }
 

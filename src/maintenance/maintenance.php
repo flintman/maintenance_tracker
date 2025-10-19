@@ -14,7 +14,7 @@ $secondary_id = $secondary_id ?: null;
 $pmy_id = $pmy_id ?: null;
 
 if (!$secondary_id && !$pmy_id) {
-    echo "No equipment selected.";
+    echo $smarty->getTemplateVars('NO_EQUIPMENT_SELECTED');
     exit;
 }
 
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_maintenance'])) {
         $stmt->execute([json_encode($uploaded_photos), $maintenance_id]);
     }
 
-    $msg = 'Maintenance record added successfully!';
+    $msg = $smarty->getTemplateVars('MAINTENANCE_RECORD_ADDED');
     $smarty->assign('msg', $msg ?? '');
 }
 

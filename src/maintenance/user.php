@@ -38,30 +38,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare('UPDATE users SET api_key = ? WHERE id = ?');
         $stmt->execute([$api_key, $user_id]);
         $user['api_key'] = $api_key;
-        $success_message = 'A new API key has been generated.';
+        $success_message = $smarty->getTemplateVars('API_KEY_GENERATED');
     }
 
     // Update email
     if (isset($_POST['email'])) {
         $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $errors[] = 'Invalid email address.';
+            $errors[] = $smarty->getTemplateVars('INVALID_EMAIL_ADDRESS');
         } else {
             $stmt = $pdo->prepare('UPDATE users SET email = ? WHERE id = ?');
             $stmt->execute([$email, $user_id]);
             $user['email'] = $email;
-            $success_message = 'Email updated successfully.';
+            $success_message = $smarty->getTemplateVars('EMAIL_UPDATED_SUCCESS');
         }
     }
     if (isset($_POST['nickname'])) {
         $nickname = trim($_POST['nickname']);
         if (strlen($nickname) > 50) {
-            $errors[] = 'Nickname must be 50 characters or less.';
+            $errors[] = $smarty->getTemplateVars('NICKNAME_TOO_LONG');
         } else {
             $stmt = $pdo->prepare('UPDATE users SET nickname = ? WHERE id = ?');
             $stmt->execute([$nickname, $user_id]);
             $user['nickname'] = $nickname;
-            $success_message = 'Nickname updated successfully.';
+            $success_message = $smarty->getTemplateVars('NICKNAME_UPDATED_SUCCESS');
         }
     }
 
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare('UPDATE users SET theme = ? WHERE id = ?');
         $stmt->execute([$_POST['theme'], $user_id]);
         $user['theme'] = $_POST['theme'];
-        $success_message = 'Theme updated successfully.';
+        $success_message = $smarty->getTemplateVars('THEME_UPDATED_SUCCESS');
     }
 
     // Update password only if current password is provided
@@ -80,16 +80,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $confirm_password = $_POST['confirm_password'];
 
         if (!password_verify($current_password, $user['password'])) {
-            $errors[] = 'Current password is incorrect.';
+            $errors[] = $smarty->getTemplateVars('CURRENT_PASSWORD_INCORRECT');
         } elseif ($new_password !== $confirm_password) {
-            $errors[] = 'New passwords do not match.';
+            $errors[] = $smarty->getTemplateVars('NEW_PASSWORDS_MISMATCH');
         } elseif (strlen($new_password) < 8) {
-            $errors[] = 'New password must be at least 8 characters long.';
+            $errors[] = $smarty->getTemplateVars('NEW_PASSWORD_TOO_SHORT');
         } else {
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
             $stmt = $pdo->prepare('UPDATE users SET password = ? WHERE id = ?');
             $stmt->execute([$hashed_password, $user_id]);
-            $success_message = 'Password updated successfully.';
+            $success_message = $smarty->getTemplateVars('PASSWORD_UPDATED_SUCCESS');
         }
     }
 }

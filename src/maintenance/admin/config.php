@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $config['columns_to_show'] = $columns_to_show;
     $config['primary_unit'] = $primary_unit;
     $config['secondary_unit'] = $secondary_unit;
-    $msg = "Configuration updated!";
+    $msg = $smarty->getTemplateVars('CONFIGURATION_UPDATED');
 }
 
 // Get available themes

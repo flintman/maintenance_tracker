@@ -1,6 +1,6 @@
 {$refresh nofilter}
 <div class="container py-4">
-    <h1 class="display-5 fw-bold mb-4">User Info</h1>
+    <h1 class="display-5 fw-bold mb-4">{$USER_INFO_TITLE|escape}</h1>
     {if $errors}
         <div class="alert alert-danger">
             <ul class="mb-0">
@@ -19,16 +19,16 @@
         <div class="card-body">
             <form method="post">
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Nickname </label><small class="form-text text-muted"> Enter your nickname here,  will be displayed on your maintenance records</small>
+                    <label class="form-label fw-bold">{$NICKNAME_LABEL|escape}</label><small class="form-text text-muted">{$NICKNAME_HINT|escape}</small>
                     <input type="text" name="nickname" class="form-control" value="{$user.nickname|escape}">
                 </div>
-                    
+
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Email</label>
+                    <label class="form-label fw-bold">{$EMAIL_TITLE|escape}</label>
                     <input type="email" name="email" class="form-control" value="{$user.email|escape}">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Theme</label>
+                    <label class="form-label fw-bold">{$THEME_TITLE|escape}</label>
                     <select name="theme" class="form-control">
                         {foreach $themes as $theme}
                             <option value="{$theme|escape}"{if $user.theme == $theme} selected{/if}>{$theme|escape}</option>
@@ -36,25 +36,25 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label>API Key </label><small class="form-text text-muted"> Keep your API key secret. Generating a new key will invalidate the old one.</small>
+                    <label>{$API_KEY_TITLE|escape}</label><small class="form-text text-muted">{$API_KEY_HINT|escape}</small>
                     <div class="input-group">
                         <input type="text" name="api_key" class="form-control" value="{$user.api_key|escape}" readonly>
-                        <button class="btn btn-secondary" type="submit" name="generate_api_key" value="1">Generate New</button>
+                        <button class="btn btn-secondary" type="submit" name="generate_api_key" value="1">{$BTN_GENERATE_KEY|escape}</button>
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Current Password </label> <small class="form-text text-muted"> Enter in your current password to change your password.</small>
+                    <label class="form-label fw-bold">{$CURRENT_PASSWORD_LABEL|escape}</label> <small class="form-text text-muted">{$CURRENT_PASSWORD_HINT|escape}</small>
                     <input type="password" name="current_password" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-bold">New Password</label>
+                    <label class="form-label fw-bold">{$NEW_PASSWORD_LABEL|escape}</label>
                     <input type="password" name="new_password" class="form-control">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label fw-bold">Confirm New Password</label>
+                    <label class="form-label fw-bold">{$CONFIRM_NEW_PASSWORD_LABEL|escape}</label>
                     <input type="password" name="confirm_password" class="form-control">
                 </div>
-                <button class="btn modern-btn modern-btn-primary">Update</button>
+                <button class="btn modern-btn modern-btn-primary">{$BTN_SAVE|escape}</button>
             </form>
         </div>
     </div>

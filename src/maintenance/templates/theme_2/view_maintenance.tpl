@@ -2,8 +2,8 @@
     {if $alert}
         {$alert nofilter}
     {/if}
-    <h1 class="display-5 fw-bold mb-4">{if $edit_mode}Edit{else}View{/if} Maintenance Details</h1>
-    <a href="{$backLink}" class="btn modern-btn btn-secondary mb-3">Back to {$backLabel}</a>
+    <h1 class="display-5 fw-bold mb-4">{if $edit_mode}{$ADMIN_EDIT_BUTTON|escape}{else}{$BTN_VIEW|escape}{/if} {$MAINTENANCE_DETAILS_TITLE|escape}</h1>
+    <a href="{$backLink}" class="btn modern-btn btn-secondary mb-3">{$BACK_TO_LABEL|escape} {$backLabel}</a>
 
     {if $edit_mode}
     <form method="post">
@@ -11,27 +11,27 @@
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Type of Service</label>
+                    <label class="form-label fw-bold">{$TYPE_OF_SERVICE_LABEL|escape}</label>
                     <input type="text" name="type_of_service" value="{$maintenance.type_of_service|escape}" class="form-control">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Performed By</label>
+                    <label class="form-label fw-bold">{$PERFORMED_BY_LABEL|escape}</label>
                     <input type="text" name="performed_by" value="{$maintenance.performed_by|escape}" class="form-control">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Performed At</label>
+                    <label class="form-label fw-bold">{$PERFORMED_ON_LABEL|escape}</label>
                     <input type="text" name="performed_at" value="{$maintenance.performed_at|escape}" class="form-control">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label fw-bold">Costs of Parts</label>
+                    <label class="form-label fw-bold">{$COSTS_OF_PARTS_LABEL|escape}</label>
                     <input type="number" name="costs_of_parts" value="{$maintenance.costs_of_parts|escape}" class="form-control">
                 </div>
                 <div class="col-12 mb-3">
-                    <label class="form-label fw-bold">Description</label>
+                    <label class="form-label fw-bold">{$DESCRIPTION_LABEL|escape}</label>
                     <textarea name="description" class="form-control">{$maintenance.description|escape}</textarea>
                 </div>
             </div>
-            <button type="submit" name="update" class="btn modern-btn modern-btn-primary">Update Maintenance</button>
+            <button type="submit" name="update" class="btn modern-btn modern-btn-primary">{$BTN_UPDATE_MAINTENANCE|escape}</button>
         </div>
     </div>
     </form>
@@ -39,26 +39,26 @@
     <div class="card modern-card mb-4">
         <div class="card-body">
             <dl class="row mb-0">
-                <dt class="col-sm-3">Type of Service</dt>
+                <dt class="col-sm-3">{$TYPE_OF_SERVICE_LABEL|escape}</dt>
                 <dd class="col-sm-9">{$maintenance.type_of_service|escape}</dd>
-                <dt class="col-sm-3">Description</dt>
+                <dt class="col-sm-3">{$DESCRIPTION_LABEL|escape}</dt>
                 <dd class="col-sm-9">{$maintenance.description|escape}</dd>
-                <dt class="col-sm-3">Costs of Parts</dt>
+                <dt class="col-sm-3">{$COSTS_OF_PARTS_LABEL|escape}</dt>
                 <dd class="col-sm-9">${$maintenance.costs_of_parts|string_format:"%.2f"}</dd>
-                <dt class="col-sm-3">Performed At</dt>
+                <dt class="col-sm-3">{$PERFORMED_ON_LABEL|escape}</dt>
                 <dd class="col-sm-9">{$maintenance.performed_at|escape}</dd>
-                <dt class="col-sm-3">Performed By</dt>
+                <dt class="col-sm-3">{$PERFORMED_BY_LABEL|escape}</dt>
                 <dd class="col-sm-9">{$maintenance.performed_by|escape}</dd>
             </dl>
         </div>
     </div>
     {/if}
 
-    <h3>Photos</h3>
+    <h3>{$PHOTOS_TITLE|escape}</h3>
     {if $edit_mode}
     <form method="post" enctype="multipart/form-data">
         <input type="file" name="photo" accept="image/*">
-        <button type="submit" class="btn modern-btn btn-success">Add Photo</button>
+    <button type="submit" class="btn modern-btn btn-success">{$BTN_ADD_PHOTO|escape}</button>
     </form>
     {/if}
     <div class="photo-gallery">
@@ -68,7 +68,7 @@
                 {if $edit_mode}
                 <form method="post" style="display:inline;">
                     <input type="hidden" name="delete_photo" value="{$photo|escape}">
-                    <button type="submit" class="btn modern-btn btn-danger btn-sm">Delete</button>
+                    <button type="submit" class="btn modern-btn btn-danger btn-sm">{$BTN_DELETE|escape}</button>
                 </form>
                 {/if}
             </div>

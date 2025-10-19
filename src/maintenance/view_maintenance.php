@@ -13,7 +13,7 @@ $source = $_GET['source'] ?? null;
 
 $alert = '';
 if (!$maintenance_id) {
-    $alert = "No maintenance record selected.";
+    $alert = '<div class="alert alert-warning">' . $smarty->getTemplateVars('NO_MAINTENANCE_SELECTED') . '</div>';
     $smarty->assign('alert', $alert);
     $smarty->display($theme_current . '/view_maintenance.tpl');
     $smarty->display($theme_current . '/footer.tpl');
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     $performed_by = cleanInput($_POST['performed_by']);
     $stmt = $pdo->prepare('UPDATE maintenance SET type_of_service=?, description=?, costs_of_parts=?, performed_at=?, performed_by=? WHERE id=?');
     $stmt->execute([$type_of_service, $description, $costs_of_parts, $performed_at, $performed_by, $maintenance_id]);
-    $alert = '<div class="alert alert-success">Maintenance updated!</div>';
+    $alert = '<div class="alert alert-success">' . $smarty->getTemplateVars('MAINTENANCE_UPDATED') . '</div>';
 }
 
 // Handle photo upload
@@ -44,9 +44,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
         $photos[] = basename($_FILES['photo']['name']);
         $stmt = $pdo->prepare('UPDATE maintenance SET photos=? WHERE id=?');
         $stmt->execute([json_encode($photos), $maintenance_id]);
-        $alert = '<div class="alert alert-success">Photo uploaded!</div>';
+            $alert = '<div class="alert alert-success">' . $smarty->getTemplateVars('PHOTO_UPLOADED') . '</div>';
     } else {
-        $alert = '<div class="alert alert-danger">Photo upload failed.</div>';
+        $alert = '<div class="alert alert-danger">' . $smarty->getTemplateVars('PHOTO_UPLOAD_FAILED') . '</div>';
     }
 }
 
@@ -61,14 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_photo'])) {
     $stmt = $pdo->prepare('UPDATE maintenance SET photos=? WHERE id=?');
     $stmt->execute([json_encode(array_values($photos)), $maintenance_id]);
     @unlink("assets/uploads/" . $photo_to_delete);
-    $alert = '<div class="alert alert-success">Photo deleted!</div>';
+    $alert = '<div class="alert alert-success">' . $smarty->getTemplateVars('PHOTO_DELETED') . '</div>';
 }
 
 $stmt = $pdo->prepare('SELECT * FROM maintenance WHERE id = ?');
 $stmt->execute([$maintenance_id]);
 $maintenance = $stmt->fetch();
-if (!$maintenance) {
-    $alert = "Maintenance record not found.";
+    if (!$maintenance) {
+    $alert = '<div class="alert alert-warning">' . $smarty->getTemplateVars('MAINTENANCE_NOT_FOUND') . '</div>';
     $smarty->assign('alert', $alert);
     $smarty->display($theme_current . '/view_maintenance.tpl');
     $smarty->display($theme_current . '/footer.tpl');

@@ -18,7 +18,7 @@ $admin_config = [];
 while ($row = $stmt->fetch()) {
     $admin_config[$row['config_name']] = $row['config_value'];
 }
-$theme_current = $admin_config['default_theme'] ?? 'theme_1'; // Default theme
+$theme_current = $admin_config['default_theme'] ?? 'theme_1';
 $number_columns = $admin_config['columns_to_show'] ?? 3;
 $primary_label = $admin_config['primary_unit'] ?? 'Primary';
 $secondary_label = $admin_config['secondary_unit'] ?? 'Secondary';
@@ -52,6 +52,8 @@ if (isset($_SESSION['user_id'])) {
         $_SESSION['nickname'] = $user['nickname'];
     }
 }
+
+require_once __DIR__ . '/language/english.php';
 
 // Assign common variables to Smarty
 $smarty->assign('theme', $_COOKIE['theme'] ?? 'light');

@@ -1,15 +1,15 @@
 <div class="container mt-5">
-    <h2>Manage Users</h2>
+    <h2>{$ADMIN_MANAGE_USERS_TITLE|escape}</h2>
     {$edit_msg nofilter}{$delete_msg nofilter}
-    <h3 class="mt-4">All Users</h3>
+    <h3 class="mt-4">{$ADMIN_ALL_USERS_TITLE|escape}</h3>
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Email</th>
-                <th>Privilege</th>
-                <th>Actions</th>
+                <th>{$TH_ID|escape}</th>
+                <th>{$USERNAME_TITLE|escape}</th>
+                <th>{$EMAIL_TITLE|escape}</th>
+                <th>{$PRIVILEGE_TITLE|escape}</th>
+                <th>{$TH_ACTIONS|escape}</th>
             </tr>
         </thead>
         <tbody>
@@ -21,15 +21,15 @@
                 <td><input type="email" name="email" value="{$user.email|escape}" class="form-control"></td>
                 <td>
                     <select name="privilege" class="form-control">
-                        <option value="user" {if $user.privilege == 'user'}selected{/if}>User</option>
-                        <option value="admin" {if $user.privilege == 'admin'}selected{/if}>Admin</option>
+                        <option value="user" {if $user.privilege == 'user'}selected{/if}>{$PRIVILEGE_USER|escape}</option>
+                        <option value="admin" {if $user.privilege == 'admin'}selected{/if}>{$PRIVILEGE_ADMIN|escape}</option>
                     </select>
                 </td>
                 <td>
                     <input type="hidden" name="id" value="{$user.id}">
-                    <input type="password" name="password" class="form-control mb-1" placeholder="New password (optional)">
-                    <button type="submit" name="edit_user" class="btn btn-primary btn-sm">Save</button>
-                    <button type="submit" name="delete_user" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')">Delete</button>
+                    <input type="password" name="password" class="form-control mb-1" placeholder="{$PASSWORD_PLACEHOLDER_NEW|escape}">
+                    <button type="submit" name="edit_user" class="btn btn-primary btn-sm">{$BTN_SAVE|escape}</button>
+                    <button type="submit" name="delete_user" class="btn btn-danger btn-sm" onclick="return confirm('{$ADMIN_DELETE_CONFIRM_USER|escape}')">{$BTN_DELETE|escape}</button>
                 </td>
                 </form>
             </tr>
