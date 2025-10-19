@@ -10,11 +10,19 @@
         </ul>
     </div>
 {/if}
-{if $success_message}
-    <div class="alert alert-success">
-        {$success_message|escape}
-    </div>
-{/if}
+{if $success_messages|@count gt 0}
+        <div class="alert alert-success">
+            <ul class="mb-0">
+            {foreach $success_messages as $sm}
+                <li>{$sm|escape}</li>
+            {/foreach}
+            </ul>
+        </div>
+    {elseif $success_message}
+        <div class="alert alert-success">
+            {$success_message|escape}
+        </div>
+    {/if}
 
 <form method="post">
     <div class="mb-3">

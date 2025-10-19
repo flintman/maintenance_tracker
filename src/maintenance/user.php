@@ -13,7 +13,7 @@ $user = $stmt->fetch();
 
 
 $errors = [];
-$success_message = '';
+$success_messages = [];
 
 // Get available themes from templates/ directory
 $themes_dir = __DIR__ . '/templates/';
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare('UPDATE users SET api_key = ? WHERE id = ?');
         $stmt->execute([$api_key, $user_id]);
         $user['api_key'] = $api_key;
-        $success_message = $smarty->getTemplateVars('API_KEY_GENERATED');
+        $success_messages[] = $smarty->getTemplateVars('API_KEY_GENERATED');
     }
 
     // Update email
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare('UPDATE users SET email = ? WHERE id = ?');
             $stmt->execute([$email, $user_id]);
             $user['email'] = $email;
-            $success_message = $smarty->getTemplateVars('EMAIL_UPDATED_SUCCESS');
+            $success_messages[] = $smarty->getTemplateVars('EMAIL_UPDATED_SUCCESS');
         }
     }
     if (isset($_POST['nickname'])) {
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare('UPDATE users SET nickname = ? WHERE id = ?');
             $stmt->execute([$nickname, $user_id]);
             $user['nickname'] = $nickname;
-            $success_message = $smarty->getTemplateVars('NICKNAME_UPDATED_SUCCESS');
+            $success_messages[] = $smarty->getTemplateVars('NICKNAME_UPDATED_SUCCESS');
         }
     }
 
@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare('UPDATE users SET theme = ? WHERE id = ?');
         $stmt->execute([$_POST['theme'], $user_id]);
         $user['theme'] = $_POST['theme'];
-        $success_message = $smarty->getTemplateVars('THEME_UPDATED_SUCCESS');
+        $success_messages[] = $smarty->getTemplateVars('THEME_UPDATED_SUCCESS');
     }
 
     // Update password only if current password is provided
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
             $stmt = $pdo->prepare('UPDATE users SET password = ? WHERE id = ?');
             $stmt->execute([$hashed_password, $user_id]);
-            $success_message = $smarty->getTemplateVars('PASSWORD_UPDATED_SUCCESS');
+            $success_messages[] = $smarty->getTemplateVars('PASSWORD_UPDATED_SUCCESS');
         }
     }
 }
@@ -97,9 +97,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $smarty->assign('user', $user);
 $smarty->assign('themes', $theme_folders);
 $smarty->assign('errors', $errors);
-$smarty->assign('success_message', $success_message);
+$smarty->assign('success_messages', $success_messages);
+// Backwards-compatible single string for templates expecting `success_message`
+$smarty->assign('success_message', !empty($success_messages) ? implode(' ', $success_messages) : '');
 $refresh = '';
-if (!empty($success_message)) {
+if (!empty($success_messages)) {
     $refresh = '<meta http-equiv="refresh" content="2">';
 }
 $smarty->assign('refresh', $refresh);
