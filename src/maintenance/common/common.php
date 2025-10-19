@@ -2,6 +2,7 @@
 require_once __DIR__ . '/include/smarty-5.6.0/libs/Smarty.class.php';
 define('MAINTENANCE_TRACKER_INIT', true);
 require_once __DIR__ . '/db.php';
+require_once __DIR__ . '/functions.php';
 
 // Initialize Smarty
 use Smarty\Smarty;
@@ -37,19 +38,6 @@ $api_keys = [];
 $stmt = $pdo->query("SELECT api_key FROM users WHERE api_key IS NOT NULL AND api_key != ''");
 while ($row = $stmt->fetch()) {
     $api_keys[] = $row['api_key'];
-}
-
-// Helper function to sanitize and validate inputs
-function cleanInput($data, $type = 'string') {
-    switch ($type) {
-        case 'email':
-            return filter_var($data, FILTER_SANITIZE_EMAIL);
-        case 'int':
-            return filter_var($data, FILTER_SANITIZE_NUMBER_INT);
-        case 'string':
-        default:
-            return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
-    }
 }
 
 // If user is signed in and has a theme preference in DB, use it
