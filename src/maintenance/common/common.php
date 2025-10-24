@@ -11,6 +11,18 @@ $smarty->setTemplateDir(__DIR__ . '/../templates/');
 $smarty->setCompileDir(__DIR__ . '/../templates_c/');
 
 if (!isset($_SESSION)) session_start();
+// If user is signed in and has a theme preference in DB, use it
+if (isset($_SESSION['user_id'])) {
+    $stmt = $pdo->prepare("SELECT theme, nickname FROM users WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $user = $stmt->fetch();
+    if ($user && !empty($user['theme'])) {
+        $theme_current = $user['theme'];
+    }
+    if ($user && !empty($user['nickname'])) {
+        $_SESSION['nickname'] = $user['nickname'];
+    }
+}
 
 // Fetch all admin_config key-value pairs into $admin_config associative array
 $stmt = $pdo->query("SELECT config_name, config_value FROM admin_config");
@@ -28,7 +40,7 @@ $message_board = $admin_config['message_board'] ?? '0';
 $database_version = $admin_config['version'] ?? '0.0.0';
 $version = getenv('MAINTENANCE_TRACKER_VERSION') ?: '0.0.0';
 
-if ($version !== $database_version) {
+if (($version !== $database_version) && (isset($_SESSION['user_id']) && ($_SESSION['privilege'] ?? '') === 'admin')) {
     // Redirect to update script if versions do not match
     header('Location: ../update/index.php?from_version=' . urlencode($database_version));
     exit;
@@ -38,19 +50,6 @@ $api_keys = [];
 $stmt = $pdo->query("SELECT api_key FROM users WHERE api_key IS NOT NULL AND api_key != ''");
 while ($row = $stmt->fetch()) {
     $api_keys[] = $row['api_key'];
-}
-
-// If user is signed in and has a theme preference in DB, use it
-if (isset($_SESSION['user_id'])) {
-    $stmt = $pdo->prepare("SELECT theme, nickname FROM users WHERE id = ?");
-    $stmt->execute([$_SESSION['user_id']]);
-    $user = $stmt->fetch();
-    if ($user && !empty($user['theme'])) {
-        $theme_current = $user['theme'];
-    }
-    if ($user && !empty($user['nickname'])) {
-        $_SESSION['nickname'] = $user['nickname'];
-    }
 }
 
 require_once __DIR__ . '/language/english.php';

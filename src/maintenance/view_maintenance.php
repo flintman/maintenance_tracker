@@ -1,7 +1,7 @@
 <?php
-
 require 'common/common.php';
 if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
     exit;
 }
 $smarty->display($theme_current . '/header.tpl');

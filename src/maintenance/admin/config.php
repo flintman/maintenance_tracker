@@ -1,6 +1,5 @@
 <?php
 require_once '../common/common.php';
-
 if (!isset($_SESSION['user_id']) || ($_SESSION['privilege'] ?? '') !== 'admin') {
     header('Location: ../index.php');
     exit;

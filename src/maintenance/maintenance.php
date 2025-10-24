@@ -1,6 +1,7 @@
 <?php
 require_once 'common/common.php';
 if (!isset($_SESSION['user_id'])) {
+    header('Location: index.php');
     exit;
 }
 
