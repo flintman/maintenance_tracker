@@ -17,9 +17,9 @@ if (isset($_SESSION['user_id'])) {
     $stmt = $pdo->query('
         SELECT
             m.*,
-            eq_primary.pmy_id AS primary_id,
+            eq_primary.unit_id AS primary_id,
             eq_secondary.id AS secondary_id,
-            eq_secondary.pmy_id AS secondary_primary_id,
+            eq_secondary.unit_id AS secondary_primary_id,
             CASE
                 WHEN m.secondary_id IS NOT NULL THEN (
                     SELECT a.value
@@ -32,7 +32,7 @@ if (isset($_SESSION['user_id'])) {
             END AS secondary_answer_1
         FROM maintenance m
         LEFT JOIN equipment eq_secondary ON m.secondary_id = eq_secondary.id AND eq_secondary.equipment_level = 2
-        LEFT JOIN equipment eq_primary ON m.pmy_id = eq_primary.id AND eq_primary.equipment_level = 1
+    LEFT JOIN equipment eq_primary ON m.pmy_id = eq_primary.id AND eq_primary.equipment_level = 1
         ORDER BY m.id DESC
         LIMIT 5
     ');

@@ -37,7 +37,7 @@
 </style>
 <div class="container py-4">
     <h1 class="display-5 fw-bold mb-4">{$MAINTENANCE_FOR_TITLE|escape} {$equipment_name|escape}</h1>
-    <a href="{if $secondary_id}units.php?secondary=1{else}unit.php{/if}" class="btn btn-secondary mb-3">
+    <a href="{if $secondary_id}units.php?secondary=1{else}units.php{/if}" class="btn btn-secondary mb-3">
         {$BACK_TO_LABEL|escape}
         {if $secondary_id}
             {$secondary_label|escape} {$UNITS_TITLE|escape}

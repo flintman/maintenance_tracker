@@ -36,7 +36,7 @@
 <div class="photo-gallery">
     {foreach $photos as $photo}
         <div style="display:inline-block; margin:10px;">
-            <img src="assets/uploads/{$photo|escape}" style="max-width:200px; display:block;">
+            <img src="assets/uploads/{$unit_id}/{$photo|escape}" style="max-width:200px; display:block;">
             {if $edit_mode}
             <form method="post" style="display:inline;">
                 <input type="hidden" name="delete_photo" value="{$photo|escape}">

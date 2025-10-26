@@ -9,7 +9,7 @@ if (!isset($provided_key) || !isset($api_keys)) {
     }
 }
 
-// GET: /api/index.php?action=maintenance_view&id=123 || /api/index.php?action=maintenance_view&pmy_id=456
+// GET: /api/index.php?action=maintenance_view&id=123 || /api/index.php?action=maintenance_view&unit_id=456
 $id = $_GET['id'] ?? null;
 $pmy_id = $_GET['pmy_id'] ?? null;
 

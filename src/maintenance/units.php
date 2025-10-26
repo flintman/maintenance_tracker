@@ -49,9 +49,9 @@ if (($_SESSION['privilege'] ?? '') === 'admin') {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mode'])) {
         if ($_POST['mode'] === 'add') {
-            $pmy_id = cleanInput($_POST['pmy_id'], 'int');
-            $stmt = $pdo->prepare('INSERT INTO equipment (pmy_id, equipment_level) VALUES (?, ?)');
-            $stmt->execute([$pmy_id, $number_unit === 'primary' ? 1 : 2]);
+            $unit_id = cleanInput($_POST['unit_id'], 'int');
+            $stmt = $pdo->prepare('INSERT INTO equipment (unit_id, equipment_level) VALUES (?, ?)');
+            $stmt->execute([$unit_id, $number_unit === 'primary' ? 1 : 2]);
             $primary_id = $pdo->lastInsertId();
             foreach ($questions as $q) {
                 if ($q['type'] === 'multi_choice') {
@@ -64,9 +64,9 @@ if (($_SESSION['privilege'] ?? '') === 'admin') {
             }
         } elseif ($_POST['mode'] === 'edit') {
             $id = cleanInput($_POST['id'], 'int');
-            $pmy_id = cleanInput($_POST['pmy_id'], 'int');
-            $stmt = $pdo->prepare('UPDATE equipment SET pmy_id = ? WHERE id = ? and equipment_level = ?');
-            $stmt->execute([$pmy_id, $id, $number_unit === 'primary' ? 1 : 2]);
+            $unit_id = cleanInput($_POST['unit_id'], 'int');
+            $stmt = $pdo->prepare('UPDATE equipment SET unit_id = ? WHERE id = ? and equipment_level = ?');
+            $stmt->execute([$unit_id, $id, $number_unit === 'primary' ? 1 : 2]);
             foreach ($questions as $q) {
                 if ($q['type'] === 'multi_choice') {
                     $value = isset($_POST['question_' . $q['id']]) ? implode(',', $_POST['question_' . $q['id']]) : '';
@@ -121,7 +121,7 @@ foreach ($archived as &$pmy) {
 }
 unset($pmy);
 
-$primary_units = $pdo->query('SELECT pmy_id FROM equipment WHERE equipment_level = 1')->fetchAll();
+$primary_units = $pdo->query('SELECT unit_id FROM equipment WHERE equipment_level = 1')->fetchAll();
 $smarty->assign('primary_units', $primary_units);
 
 $smarty->assign('is_admin', ($_SESSION['privilege'] ?? '') === 'admin');

@@ -19,6 +19,22 @@ if (!$maintenance_id) {
     $smarty->display($theme_current . '/footer.tpl');
     exit;
 }
+// Determine which ID is set (pmy_id or secondary_id) and get unit_id
+$stmt = $pdo->prepare('SELECT pmy_id, secondary_id FROM maintenance WHERE id=?');
+$stmt->execute([$maintenance_id]);
+$maintenance_data = $stmt->fetch();
+
+if ($maintenance_data['pmy_id']) {
+    $id = $maintenance_data['pmy_id'];
+} elseif ($maintenance_data['secondary_id']) {
+    $id = $maintenance_data['secondary_id'];
+} else {
+    $id = null;
+}
+
+$stmt = $pdo->prepare('SELECT unit_id FROM equipment WHERE id=?');
+$stmt->execute([$id]);
+$unit_id = $stmt->fetchColumn();
 
 // Handle update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
@@ -34,7 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
 
 // Handle photo upload
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
-    $target_dir = "assets/uploads/";
+    $target_dir = "assets/uploads/" . $unit_id . "/";
+    if (!is_dir($target_dir)) {
+        mkdir($target_dir, 0777, true);
+    }
     $target_file = $target_dir . basename($_FILES['photo']['name']);
     if (move_uploaded_file($_FILES['photo']['tmp_name'], $target_file)) {
         $stmt = $pdo->prepare('SELECT photos FROM maintenance WHERE id=?');
@@ -44,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
         $photos[] = basename($_FILES['photo']['name']);
         $stmt = $pdo->prepare('UPDATE maintenance SET photos=? WHERE id=?');
         $stmt->execute([json_encode($photos), $maintenance_id]);
-            $alert = '<div class="alert alert-success">' . $smarty->getTemplateVars('PHOTO_UPLOADED') . '</div>';
+        $alert = '<div class="alert alert-success">' . $smarty->getTemplateVars('PHOTO_UPLOADED') . '</div>';
     } else {
         $alert = '<div class="alert alert-danger">' . $smarty->getTemplateVars('PHOTO_UPLOAD_FAILED') . '</div>';
     }
@@ -53,14 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['photo'])) {
 // Handle photo delete
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_photo'])) {
     $photo_to_delete = cleanInput($_POST['delete_photo']);
-    $stmt = $pdo->prepare('SELECT photos FROM maintenance WHERE id=?');
+    $stmt = $pdo->prepare('SELECT pmy_id, photos FROM maintenance WHERE id=?');
     $stmt->execute([$maintenance_id]);
     $maintenance = $stmt->fetch();
     $photos = $maintenance['photos'] ? json_decode($maintenance['photos'], true) : [];
     $photos = array_filter($photos, function($p) use ($photo_to_delete) { return $p !== $photo_to_delete; });
     $stmt = $pdo->prepare('UPDATE maintenance SET photos=? WHERE id=?');
     $stmt->execute([json_encode(array_values($photos)), $maintenance_id]);
-    @unlink("assets/uploads/" . $photo_to_delete);
+    @unlink("assets/uploads/" . $unit_id . "/" . $photo_to_delete);
     $alert = '<div class="alert alert-success">' . $smarty->getTemplateVars('PHOTO_DELETED') . '</div>';
 }
 
@@ -75,6 +94,7 @@ $maintenance = $stmt->fetch();
     exit;
 }
 $photos = $maintenance['photos'] ? json_decode($maintenance['photos'], true) : [];
+
 if ($source === 'dashboard' ) {
     $backLink = "index.php";
     $backLabel = "Dashboard";
@@ -88,6 +108,7 @@ if ($source === 'dashboard' ) {
     }
 }
 
+$smarty->assign('unit_id', $unit_id);
 $smarty->assign('maintenance', $maintenance);
 $smarty->assign('photos', $photos);
 $smarty->assign('edit_mode', $edit_mode);

@@ -13,7 +13,7 @@ CREATE TABLE users (
 
 CREATE TABLE equipment (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    pmy_id INT,
+    unit_id INT,
     equipment_level INT DEFAULT 1,
     archived TINYINT(1) DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

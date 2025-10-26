@@ -138,12 +138,12 @@ function editPmy(id, answersMapStr) {
                         <div class="col-md-6">
                             <label class="form-label fw-bold" for="addEditPmyId">{$primary_label|escape} {$DETAILS_TITLE|escape} {$TH_ID|escape}</label>
                             {if !$secondary_id}
-                                <input type="number" name="pmy_id" id="addEditPmyId" class="form-control" required>
+                                <input type="number" name="unit_id" id="addEditUnitId" class="form-control" required>
                             {else}
-                                <select name="pmy_id" id="addEditPmyId" class="form-control" required>
+                                <select name="unit_id" id="addEditUnitId" class="form-control" required>
                                     <option value=""></option>
                                     {foreach $primary_units as $pmy}
-                                        <option value="{$pmy.pmy_id}">{$pmy.pmy_id}</option>
+                                        <option value="{$pmy.unit_id}">{$pmy.unit_id}</option>
                                     {/foreach}
                                 </select>
                             {/if}
@@ -193,7 +193,7 @@ function editPmy(id, answersMapStr) {
             <table class="table modern-table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th class="sort" data-sort="pmy_id" style="cursor: pointer;">{$unit_label|escape} {$DETAILS_TITLE|escape} {$TH_ID|escape}</th>
+                        <th class="sort" data-sort="unit_id" style="cursor: pointer;">{$unit_label|escape} {$DETAILS_TITLE|escape} {$TH_ID|escape}</th>
                         {foreach $questions_first as $q}
                             <th class="sort" data-sort="answer_{$q@index}" style="cursor: pointer;">{$q.label|escape}</th>
                         {/foreach}
@@ -204,7 +204,7 @@ function editPmy(id, answersMapStr) {
                     {foreach $active as $pmy}
                         {assign var=answers value=$pmy.answers}
                         <tr>
-                            <td class="pmy_id fw-semibold">{$pmy.pmy_id|escape}</td>
+                            <td class="unit_id fw-semibold">{$pmy.unit_id|escape}</td>
                             {foreach $pmy.answers_first as $a}
                                 <td class="answer_{$a@index}">
                                     {if $a.type == 'multi_choice'}
@@ -253,7 +253,7 @@ function editPmy(id, answersMapStr) {
             <table class="table modern-table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th class="sort" data-sort="pmy_id" style="cursor: pointer;">{$unit_label|escape} {$DETAILS_TITLE|escape} {$TH_ID|escape}</th>
+                        <th class="sort" data-sort="unit_id" style="cursor: pointer;">{$unit_label|escape} {$DETAILS_TITLE|escape} {$TH_ID|escape}</th>
                         {foreach $questions_first as $q}
                             <th class="sort" data-sort="answer_{$q@index}" style="cursor: pointer;">{$q.label|escape}</th>
                         {/foreach}
@@ -264,7 +264,7 @@ function editPmy(id, answersMapStr) {
                     {foreach $archived as $pmy}
                         {assign var=answers value=$pmy.answers}
                         <tr>
-                            <td class="pmy_id fw-semibold">{$pmy.pmy_id|escape}</td>
+                            <td class="unit_id fw-semibold">{$pmy.unit_id|escape}</td>
                             {foreach $pmy.answers_first as $a}
                                 <td class="answer_{$a@index}">
                                     {if $a.type == 'multi_choice'}
