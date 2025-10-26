@@ -9,13 +9,24 @@ if (!isset($provided_key) || !isset($api_keys)) {
     }
 }
 
-// GET: /api/index.php?action=maintenance_view&id=123
+// GET: /api/index.php?action=maintenance_view&id=123 || /api/index.php?action=maintenance_view&pmy_id=456
 $id = $_GET['id'] ?? null;
+$pmy_id = $_GET['pmy_id'] ?? null;
 
 if ($id) {
     $stmt = $pdo->prepare('SELECT * FROM maintenance WHERE id = ?');
     $stmt->execute([$id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($result) {
+        echo json_encode($result);
+    } else {
+        http_response_code(404);
+        echo json_encode(['error' => 'Not found']);
+    }
+} elseif ($pmy_id) {
+    $stmt = $pdo->prepare('SELECT * FROM maintenance WHERE pmy_id = ?');
+    $stmt->execute([$pmy_id]);
+    $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     if ($result) {
         echo json_encode($result);
     } else {
