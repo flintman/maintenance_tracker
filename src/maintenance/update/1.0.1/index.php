@@ -5,11 +5,6 @@ if (!file_exists(__DIR__ . '/../../common/db.php')) {
     die("Database configuration file not found: " . __DIR__ . '/../../common/db.php');
 }
 
-if (!isset($_SESSION['user_id']) || ($_SESSION['privilege'] ?? '') !== 'admin') {
-    header('Location: ../index.php');
-    exit;
-}
-
 $updatedVersion = '1.0.1';
 // 1. Create new tables if not exist
 $pdo->exec("

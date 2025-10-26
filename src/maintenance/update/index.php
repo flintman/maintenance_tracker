@@ -1,9 +1,4 @@
 <?php
-if (!isset($_SESSION['user_id']) || ($_SESSION['privilege'] ?? '') !== 'admin') {
-    header('Location: ../index.php');
-    exit;
-}
-
 // Get the current version from the query parameter
 $fromVersion = isset($_GET['from_version']) ? $_GET['from_version'] : null;
 if (!$fromVersion) {

@@ -40,10 +40,16 @@ if (isset($_SESSION['user_id'])) {
 $database_version = $admin_config['version'] ?? '0.0.0';
 $version = getenv('MAINTENANCE_TRACKER_VERSION') ?: '0.0.0';
 
+
 if (($version !== $database_version) && (isset($_SESSION['user_id']) && ($_SESSION['privilege'] ?? '') === 'admin')) {
     // Redirect to update script if versions do not match
     header('Location: ../update/index.php?from_version=' . urlencode($database_version));
     exit;
+} else {
+    $updateDir = __DIR__ . '/../update/';
+    if (is_dir($updateDir)) {
+        $smarty->assign('update_warning', 'Security Warning: Please remove the update folder from the server!');
+    }
 }
 
 $api_keys = [];

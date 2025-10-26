@@ -27,6 +27,9 @@
     </script>
 </head>
 <body{if !isset($smarty.session.user_id)} class="login-page"{/if}>
+{if $update_warning|default:''|strip ne ''}
+    <div style="color:red;font-weight:bold;text-align:center;">{$update_warning|escape}</div>
+{/if}
 {if isset($smarty.session.user_id)}
 {include file="theme_2/nav.tpl"}
 {/if}

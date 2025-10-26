@@ -29,5 +29,8 @@
 
 </head>
 <body>
+{if $update_warning|default:''|strip ne ''}
+    <div style="color:red;font-weight:bold;text-align:center;">{$update_warning|escape}</div>
+{/if}
 {include file="theme_1/nav.tpl"}
 <div class="container py-4">
