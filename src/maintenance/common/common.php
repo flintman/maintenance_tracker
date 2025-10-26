@@ -10,6 +10,18 @@ $smarty = new Smarty();
 $smarty->setTemplateDir(__DIR__ . '/../templates/');
 $smarty->setCompileDir(__DIR__ . '/../templates_c/');
 
+// Fetch all admin_config key-value pairs into $admin_config associative array
+$stmt = $pdo->query("SELECT config_name, config_value FROM admin_config");
+$admin_config = [];
+while ($row = $stmt->fetch()) {
+    $admin_config[$row['config_name']] = $row['config_value'];
+}
+$theme_current = $admin_config['default_theme'] ?? 'theme_1';
+$number_columns = $admin_config['columns_to_show'] ?? 3;
+$primary_label = $admin_config['primary_unit'] ?? 'Primary';
+$secondary_label = $admin_config['secondary_unit'] ?? 'Secondary';
+$message_board = $admin_config['message_board'] ?? '0';
+
 if (!isset($_SESSION)) session_start();
 // If user is signed in and has a theme preference in DB, use it
 if (isset($_SESSION['user_id'])) {
@@ -23,18 +35,6 @@ if (isset($_SESSION['user_id'])) {
         $_SESSION['nickname'] = $user['nickname'];
     }
 }
-
-// Fetch all admin_config key-value pairs into $admin_config associative array
-$stmt = $pdo->query("SELECT config_name, config_value FROM admin_config");
-$admin_config = [];
-while ($row = $stmt->fetch()) {
-    $admin_config[$row['config_name']] = $row['config_value'];
-}
-$theme_current = $admin_config['default_theme'] ?? 'theme_1';
-$number_columns = $admin_config['columns_to_show'] ?? 3;
-$primary_label = $admin_config['primary_unit'] ?? 'Primary';
-$secondary_label = $admin_config['secondary_unit'] ?? 'Secondary';
-$message_board = $admin_config['message_board'] ?? '0';
 
 // Check for version mismatch which sees if it needs to upgrade
 $database_version = $admin_config['version'] ?? '0.0.0';
