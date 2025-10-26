@@ -37,14 +37,6 @@ CREATE TABLE answers (
     FOREIGN KEY (question_id) REFERENCES questions(id) ON DELETE CASCADE
 );
 
-CREATE TABLE photos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    unit_type ENUM('primary_units','secondary_units'),
-    unit_id INT NOT NULL,
-    datetime DATETIME DEFAULT CURRENT_TIMESTAMP,
-    filename VARCHAR(255)
-);
-
 CREATE TABLE maintenance (
     id INT AUTO_INCREMENT PRIMARY KEY,
     secondary_id INT NULL,
