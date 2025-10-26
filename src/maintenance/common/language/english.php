@@ -60,6 +60,29 @@ $smarty->assign('ADMIN_ACTIVATE_BUTTON', 'Activate');
 $smarty->assign('ADMIN_EDIT_BUTTON', 'Edit');
 $smarty->assign('ADMIN_DELETE_CONFIRM', 'Are you sure you want to delete this message? This action cannot be undone.');
 $smarty->assign('ADMIN_DELETE_BUTTON', $smarty->getTemplateVars('BTN_DELETE'));
+$smarty->assign('ADMIN_MESSAGE_ADDED', 'Message added successfully!');
+$smarty->assign('ADMIN_ERROR_ADDING_MESSAGE', 'Error adding message:');
+$smarty->assign('ADMIN_MESSAGE_EMPTY', 'Message cannot be empty.');
+$smarty->assign('ADMIN_MESSAGE_UPDATED', 'Message updated successfully!');
+$smarty->assign('ADMIN_ERROR_UPDATING_MESSAGE', 'Error updating message:');
+$smarty->assign('ADMIN_INVALID_ID_OR_EMPTY', 'Invalid message ID or empty message.');
+$smarty->assign('ADMIN_MESSAGE_ACTIVATED', 'Message activated successfully!');
+$smarty->assign('ADMIN_ERROR_ACTIVATING_MESSAGE', 'Error activating message:');
+$smarty->assign('ADMIN_INVALID_MESSAGE_ID', 'Invalid message ID.');
+$smarty->assign('ADMIN_MESSAGE_DELETED', 'Message deleted successfully!');
+$smarty->assign('ADMIN_ERROR_DELETING_MESSAGE', 'Error deleting message:');
+
+// ----- Admin: Dashboard (admin/index.php) -----
+$smarty->assign('ADMIN_PASSWORDS_DO_NOT_MATCH', 'Passwords do not match.');
+$smarty->assign('ADMIN_PASSWORD_TOO_SHORT', 'Password must be at least 6 characters.');
+$smarty->assign('ADMIN_USER_ADDED', 'User added!');
+$smarty->assign('ADMIN_ERROR_ADDING_USER', 'Error adding user:');
+
+// ----- Admin: Manage Users (manage_users.php) -----
+$smarty->assign('USER_PASSWORD_TOO_SHORT', 'Password must be at least 6 characters.');
+$smarty->assign('USER_UPDATED_PASSWORD', 'User updated (password changed)!');
+$smarty->assign('USER_UPDATED', 'User updated!');
+$smarty->assign('USER_DELETED', 'User deleted!');
 
 // ----- Admin: Navigation / Labels -----
 $smarty->assign('ADMIN_PANEL_TITLE', 'Admin Panel');

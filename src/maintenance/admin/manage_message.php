@@ -18,12 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $stmt = $pdo->prepare('INSERT INTO admin_message (message, active) VALUES (?, NULL)');
                 $stmt->execute([$message]);
-                $success_msg = 'Message added successfully!';
+                $success_msg = $smarty->getTemplateVars('ADMIN_MESSAGE_ADDED');
             } catch (PDOException $e) {
-                $error_msg = 'Error adding message: ' . $e->getMessage();
+                $error_msg = $smarty->getTemplateVars('ADMIN_ERROR_ADDING_MESSAGE') . ' ' . $e->getMessage();
             }
         } else {
-            $error_msg = 'Message cannot be empty.';
+            $error_msg = $smarty->getTemplateVars('ADMIN_MESSAGE_EMPTY');
         }
     }
 
@@ -35,12 +35,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $stmt = $pdo->prepare('UPDATE admin_message SET message = ? WHERE id = ?');
                 $stmt->execute([$message, $id]);
-                $success_msg = 'Message updated successfully!';
+                $success_msg = $smarty->getTemplateVars('ADMIN_MESSAGE_UPDATED');
             } catch (PDOException $e) {
-                $error_msg = 'Error updating message: ' . $e->getMessage();
+                $error_msg = $smarty->getTemplateVars('ADMIN_ERROR_UPDATING_MESSAGE') . ' ' . $e->getMessage();
             }
         } else {
-            $error_msg = 'Invalid message ID or empty message.';
+            $error_msg = $smarty->getTemplateVars('ADMIN_INVALID_ID_OR_EMPTY');
         }
     }
 
@@ -60,13 +60,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute([$id]);
 
                 $pdo->commit();
-                $success_msg = 'Message activated successfully!';
+                $success_msg = $smarty->getTemplateVars('ADMIN_MESSAGE_ACTIVATED');
             } catch (PDOException $e) {
                 $pdo->rollBack();
-                $error_msg = 'Error activating message: ' . $e->getMessage();
+                $error_msg = $smarty->getTemplateVars('ADMIN_ERROR_ACTIVATING_MESSAGE') . ' ' . $e->getMessage();
             }
         } else {
-            $error_msg = 'Invalid message ID.';
+            $error_msg = $smarty->getTemplateVars('ADMIN_INVALID_MESSAGE_ID');
         }
     }
 
@@ -77,12 +77,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             try {
                 $stmt = $pdo->prepare('DELETE FROM admin_message WHERE id = ?');
                 $stmt->execute([$id]);
-                $success_msg = 'Message deleted successfully!';
+                $success_msg = $smarty->getTemplateVars('ADMIN_MESSAGE_DELETED');
             } catch (PDOException $e) {
-                $error_msg = 'Error deleting message: ' . $e->getMessage();
+                $error_msg = $smarty->getTemplateVars('ADMIN_ERROR_DELETING_MESSAGE') . ' ' . $e->getMessage();
             }
         } else {
-            $error_msg = 'Invalid message ID.';
+            $error_msg = $smarty->getTemplateVars('ADMIN_INVALID_MESSAGE_ID');
         }
     }
 }

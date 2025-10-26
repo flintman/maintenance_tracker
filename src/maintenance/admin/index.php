@@ -14,17 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_user'])) {
     $password = $_POST['password'] ?? '';
     $password2 = $_POST['password2'] ?? '';
     if ($password !== $password2) {
-        $user_add_msg = '<div class="alert alert-danger">Passwords do not match.</div>';
+        $user_add_msg = '<div class="alert alert-danger">' . $smarty->getTemplateVars('ADMIN_PASSWORDS_DO_NOT_MATCH') . '</div>';
     } elseif (strlen($password) < 6) {
-        $user_add_msg = '<div class="alert alert-danger">Password must be at least 6 characters.</div>';
+        $user_add_msg = '<div class="alert alert-danger">' . $smarty->getTemplateVars('ADMIN_PASSWORD_TOO_SHORT') . '</div>';
     } else {
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $pdo->prepare('INSERT INTO users (username, email, password, privilege, nickname) VALUES (?, ?, ?, ?, ?)');
         try {
             $stmt->execute([$username, $email, $hash, 'user', $username]);
-            $user_add_msg = '<div class="alert alert-success">User added!</div>';
+            $user_add_msg = '<div class="alert alert-success">' . $smarty->getTemplateVars('ADMIN_USER_ADDED') . '</div>';
         } catch (PDOException $e) {
-            $user_add_msg = '<div class="alert alert-danger">Error: ' . htmlspecialchars($e->getMessage()) . '</div>';
+            $user_add_msg = '<div class="alert alert-danger">' . $smarty->getTemplateVars('ADMIN_ERROR_ADDING_USER') . ' ' . htmlspecialchars($e->getMessage()) . '</div>';
         }
     }
 }
