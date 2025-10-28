@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 var primaryIdToPmyId = {};
 {foreach $active as $pmy}
-    primaryIdToPmyId[{$pmy.id}] = '{$pmy.pmy_id|escape}';
+    primaryIdToPmyId[{$pmy.id}] = '{$pmy.unit_id|escape}';
 {/foreach}
 function editPmy(id, answersMapStr) {
     var answersMap = {};
@@ -97,7 +97,11 @@ function editPmy(id, answersMapStr) {
     document.getElementById('addEditMode').value = 'edit';
     document.getElementById('addEditId').value = id;
     document.getElementById('addEditText').textContent = '{$EDIT_BUTTON|escape} {$unit_label|escape}';
-    document.getElementById('addEditPmyId').value = primaryIdToPmyId[id] || '';
+    // Set the unit_id field for editing
+    var unitIdInput = document.getElementById('addEditUnitId');
+    if (unitIdInput) {
+        unitIdInput.value = primaryIdToPmyId[id] || '';
+    }
     // Populate dynamic question fields using answersMap
     questionInfo.forEach(function(q) {
         var val = answersMap[q.label] || '';
@@ -115,7 +119,7 @@ function editPmy(id, answersMapStr) {
     });
     formDiv.style.display = 'block';
     arrow.textContent = '▼';
-    window.scrollTo(0,document.body.scrollHeight);
+    window.scrollTo(0, 0);
 }
 </script>
 <div class="container py-4">
@@ -217,7 +221,7 @@ function editPmy(id, answersMapStr) {
                                 </td>
                             {/foreach}
                         <td>
-                            <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn modern-btn modern-btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
+                            <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}unit_id={$pmy.id}{/if}" class="btn modern-btn modern-btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
                             {if $is_admin}
                             <a href="units.php?archive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn modern-btn modern-btn-warning btn-sm">{$ARCHIVE_BUTTON|escape}</a>
                             <button class="btn modern-btn modern-btn-secondary btn-sm" onclick="editPmy({$pmy.id}, '{$pmy.answers_json}')">{$EDIT_BUTTON|escape}</button>
@@ -303,7 +307,7 @@ function editPmy(id, answersMapStr) {
 document.addEventListener('DOMContentLoaded', function() {
     // Active Primary Units Table
     if (document.getElementById('activePrimaryTable')) {
-        var valueNames = ['pmy_id'];
+    var valueNames = ['unit_id'];
         {foreach $questions_first as $q}
             valueNames.push('answer_{$q@index}');
         {/foreach}
@@ -320,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Archived Primary Units Table (only if admin)
     {if $is_admin}
     if (document.getElementById('archivedPrimaryTable')) {
-        var archivedValueNames = ['pmy_id'];
+    var archivedValueNames = ['unit_id'];
         {foreach $questions_first as $q}
             archivedValueNames.push('answer_{$q@index}');
         {/foreach}

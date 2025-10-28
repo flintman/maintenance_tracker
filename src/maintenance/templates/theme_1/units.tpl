@@ -14,7 +14,7 @@
             <div class="card-body">
                 <div class="row g-3 align-items-center mb-3">
                     <div class="col-md-6">
-                        <label class="form-label fw-bold" for="addEditPmyId">{$primary_label|escape} {$TH_ID|escape}</label>
+                        <label class="form-label fw-bold" for="addEditUnitId">{$primary_label|escape} {$TH_ID|escape}</label>
                           {if !$secondary_id}
                                 <input type="number" name="unit_id" id="addEditUnitId" class="form-control" required>
                             {else}
@@ -94,7 +94,7 @@
                     </td>
                 {/foreach}
                 <td>
-                    <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
+                    <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}unit_id={$pmy.id}{/if}" class="btn btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
                     {if $is_admin}
                         <a href="units.php?archive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn btn-warning btn-sm">{$ARCHIVE_BUTTON|escape}</a>
                         <button class="btn btn-secondary btn-sm" onclick="editPmy({$pmy.id}, '{$pmy.answers_json}')">{$EDIT_BUTTON|escape}</button>
@@ -143,7 +143,7 @@
                     {/foreach}
                     <td>
                         <a href="units.php?unarchive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn btn-success btn-sm">{$UNARCHIVE_BUTTON|escape}</a>
-                        <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
+                        <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}unit_id={$pmy.id}{/if}" class="btn btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
                     </td>
                 </tr>
             {/foreach}
@@ -181,13 +181,16 @@ document.getElementById('toggleAddEditBtn').addEventListener('click', function()
     }
 });
 
-    document.getElementById('addEditCancelBtn').addEventListener('click', function() {
+document.getElementById('addEditCancelBtn').addEventListener('click', function() {
     document.getElementById('addEditPrimaryForm').style.display = 'none';
     document.getElementById('addEditArrow').textContent = '➤';
     document.getElementById('addEditMode').value = 'add';
     document.getElementById('addEditId').value = '';
-        document.getElementById('addEditText').textContent = '{$BTN_ADD|escape} {$unit_label|escape}';
-    document.getElementById('addEditPmyId').value = '';
+    document.getElementById('addEditText').textContent = '{$BTN_ADD|escape} {$unit_label|escape}';
+    var unitIdInput = document.getElementById('addEditUnitId');
+    if (unitIdInput) {
+        unitIdInput.value = '';
+    }
     // Clear dynamic question fields
     questionInfo.forEach(function(q) {
         var el = document.getElementById('addEditQ' + q.id);
@@ -203,10 +206,10 @@ document.getElementById('toggleAddEditBtn').addEventListener('click', function()
     });
 });
 
-// Map primary id to pmy_id for edit form population
-var primaryIdToPmyId = {};
+// Map primary id to unit_id for edit form population
+var primaryIdToUnitId = {};
 {foreach $active as $pmy}
-    primaryIdToPmyId[{$pmy.id}] = '{$pmy.pmy_id|escape}';
+    primaryIdToUnitId[{$pmy.id}] = '{$pmy.unit_id|escape}';
 {/foreach}
 
 function editPmy(id, answersMapStr) {
@@ -219,7 +222,10 @@ function editPmy(id, answersMapStr) {
     document.getElementById('addEditMode').value = 'edit';
     document.getElementById('addEditId').value = id;
     document.getElementById('addEditText').textContent = '{$ADMIN_EDIT_BUTTON|escape} {$unit_label|escape}';
-    document.getElementById('addEditPmyId').value = primaryIdToPmyId[id] || '';
+    var unitIdInput = document.getElementById('addEditUnitId');
+    if (unitIdInput) {
+        unitIdInput.value = primaryIdToUnitId[id] || '';
+    }
     // Populate dynamic question fields using answersMap
     questionInfo.forEach(function(q) {
         var val = answersMap[q.label] || '';
@@ -237,14 +243,14 @@ function editPmy(id, answersMapStr) {
     });
     formDiv.style.display = 'block';
     arrow.textContent = '▼';
-    window.scrollTo(0,document.body.scrollHeight);
+    window.scrollTo(0, 0);
 }
 
 // Initialize List.js tables
 document.addEventListener('DOMContentLoaded', function() {
     // Active Primary Units Table
     if (document.getElementById('activePrimaryTable')) {
-        var valueNames = ['pmy_id'];
+        var valueNames = ['unit_id'];
         {foreach $questions_first as $q}
             valueNames.push('answer_{$q@index}');
         {/foreach}
@@ -261,7 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Archived Primary Units Table (only if admin)
     {if $is_admin}
     if (document.getElementById('archivedPrimaryTable')) {
-        var archivedValueNames = ['pmy_id'];
+        var archivedValueNames = ['unit_id'];
         {foreach $questions_first as $q}
             archivedValueNames.push('answer_{$q@index}');
         {/foreach}
