@@ -67,6 +67,7 @@
         </div>
     </div>
 
+
     <table class="table modern-table">
         <thead>
             <tr>
@@ -104,6 +105,14 @@
         {/foreach}
         </tbody>
     </table>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <ul class="pagination"></ul>
+        </div>
+        <div class="col-md-6 text-end">
+            <span class="list-info text-muted"></span>
+        </div>
+    </div>
 
     {if $is_admin}
     <h3>{$ARCHIVED_LABEL|escape} {$unit_label|escape} {$UNITS_TITLE|escape}</h3>
@@ -149,7 +158,6 @@
             {/foreach}
             </tbody>
         </table>
-
         <div class="row mt-3">
             <div class="col-md-6">
                 <ul class="pagination"></ul>
