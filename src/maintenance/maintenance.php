@@ -42,7 +42,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_maintenance'])) {
     $description = cleanInput($_POST['description']);
     $costs_of_parts = cleanInput($_POST['costs_of_parts'], 'float');
     $performed_at = cleanInput($_POST['performed_at']);
-    $performed_by = cleanInput($_POST['performed_by']);
+    // Determine performed_by: if admin, use posted value, else use current user
+    if (($_SESSION['privilege'] ?? '') === 'admin') {
+        $performed_by = cleanInput($_POST['performed_by']);
+    } else {
+        $performed_by = $_SESSION['username'] ?? '';
+    }
 
     // Ensure secondary_id and pmy_id are properly set to NULL if empty
     $secondary_id = $secondary_id ?: null;
@@ -88,6 +93,21 @@ if ($secondary_id) {
     $stmt->execute([$pmy_id]);
 }
 $records = $stmt->fetchAll();
+
+// For performed_by field: if admin, get all users; else, pass current username
+
+if (($_SESSION['privilege'] ?? '') === 'admin') {
+    $users_stmt = $pdo->query('SELECT username, nickname FROM users ORDER BY username ASC');
+    $all_users = $users_stmt->fetchAll(PDO::FETCH_ASSOC); // array of [username, nickname]
+    $smarty->assign('all_users', $all_users);
+    $smarty->assign('is_admin', true);
+    $smarty->assign('current_user', $_SESSION['username'] ?? '');
+    $smarty->assign('current_nickname', $_SESSION['nickname'] ?? '');
+} else {
+    $smarty->assign('current_user', $_SESSION['username'] ?? '');
+    $smarty->assign('current_nickname', $_SESSION['nickname'] ?? '');
+    $smarty->assign('is_admin', false);
+}
 
 $smarty->assign('pmy_id', $pmy_id);
 $smarty->assign('secondary_id', $secondary_id);

@@ -33,7 +33,16 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold" for="performed_by">{$PERFORMED_BY_LABEL|escape}</label>
-                        <input type="text" name="performed_by" id="performed_by" class="form-control" value="{$session.nickname|escape}" required>
+                        {if $is_admin}
+                            <select name="performed_by" id="performed_by" class="form-control" required>
+                                <option value="">{$SELECT_USER_LABEL|escape}</option>
+                                {foreach $all_users as $user}
+                                    <option value="{$user.username|escape}"{if $user.username == $current_user} selected{/if}>{$user.nickname|escape} ({$user.username|escape})</option>
+                                {/foreach}
+                            </select>
+                        {else}
+                            <input type="text" name="performed_by" id="performed_by" class="form-control" value="{$current_nickname|escape}" readonly required>
+                        {/if}
                     </div>
                 </div>
                 <div class="row g-3 align-items-center mb-3">
