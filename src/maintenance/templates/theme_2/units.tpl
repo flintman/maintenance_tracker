@@ -221,7 +221,7 @@ function editPmy(id, answersMapStr) {
                                 </td>
                             {/foreach}
                         <td>
-                            <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}unit_id={$pmy.id}{/if}" class="btn modern-btn modern-btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
+                            <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn modern-btn modern-btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
                             {if $is_admin}
                             <a href="units.php?archive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn modern-btn modern-btn-warning btn-sm">{$ARCHIVE_BUTTON|escape}</a>
                             <button class="btn modern-btn modern-btn-secondary btn-sm" onclick="editPmy({$pmy.id}, '{$pmy.answers_json}')">{$EDIT_BUTTON|escape}</button>

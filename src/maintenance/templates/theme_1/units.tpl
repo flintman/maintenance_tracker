@@ -152,7 +152,7 @@
                     {/foreach}
                     <td>
                         <a href="units.php?unarchive={$pmy.id}{if $number_unit == 'secondary'}&secondary=1{/if}" class="btn btn-success btn-sm">{$UNARCHIVE_BUTTON|escape}</a>
-                        <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}unit_id={$pmy.id}{/if}" class="btn btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
+                        <a href="maintenance.php?{if $number_unit == 'secondary'}&secondary_id={$pmy.id}{else}pmy_id={$pmy.id}{/if}" class="btn btn-info btn-sm">{$VIEW_MAINTENANCE_BUTTON|escape}</a>
                     </td>
                 </tr>
             {/foreach}
