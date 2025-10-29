@@ -75,7 +75,7 @@ INSERT INTO admin_config (config_name, config_value)
            ('columns_to_show', '3'),
            ('primary_unit', 'Primary'),
            ('secondary_unit', 'Secondary'),
-           ('version', '1.0.2');
+           ('version', '1.0.3');
 
 -- Insert default admin user (password: changeme)
 INSERT INTO users (username, password, privilege, email, nickname) VALUES (

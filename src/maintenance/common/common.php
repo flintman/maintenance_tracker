@@ -22,6 +22,22 @@ $primary_label = $admin_config['primary_unit'] ?? 'Primary';
 $secondary_label = $admin_config['secondary_unit'] ?? 'Secondary';
 $message_board = $admin_config['message_board'] ?? '0';
 
+// Check for version mismatch which sees if it needs to upgrade
+$database_version = $admin_config['version'] ?? '0.0.0';
+$version = getenv('MAINTENANCE_TRACKER_VERSION') ?: '0.0.0';
+
+
+if (($version !== $database_version)) {
+    // Redirect to update script if versions do not match
+    header('Location: ../update/index.php?from_version=' . urlencode($database_version));
+    exit;
+} else {
+    $updateDir = __DIR__ . '/../update/';
+    if (is_dir($updateDir)) {
+        $smarty->assign('update_warning', 'Security Warning: Please remove the update folder from the server!');
+    }
+}
+
 if (!isset($_SESSION)) session_start();
 // Note: Auto-login via remember_me cookie is handled in index.php
 // If user is signed in and has a theme preference in DB, use it
@@ -34,22 +50,6 @@ if (isset($_SESSION['user_id'])) {
     }
     if ($user && !empty($user['nickname'])) {
         $_SESSION['nickname'] = $user['nickname'];
-    }
-}
-
-// Check for version mismatch which sees if it needs to upgrade
-$database_version = $admin_config['version'] ?? '0.0.0';
-$version = getenv('MAINTENANCE_TRACKER_VERSION') ?: '0.0.0';
-
-
-if (($version !== $database_version) && (isset($_SESSION['user_id']) && ($_SESSION['privilege'] ?? '') === 'admin')) {
-    // Redirect to update script if versions do not match
-    header('Location: ../update/index.php?from_version=' . urlencode($database_version));
-    exit;
-} else {
-    $updateDir = __DIR__ . '/../update/';
-    if (is_dir($updateDir)) {
-        $smarty->assign('update_warning', 'Security Warning: Please remove the update folder from the server!');
     }
 }
 
