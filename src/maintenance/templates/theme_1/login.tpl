@@ -12,6 +12,10 @@
         <label for="password" class="form-label">{$PASSWORD_TITLE|escape}</label>
         <input type="password" name="password" id="password" class="form-control" required>
     </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
+        <label class="form-check-label" for="remember_me">Remember Me</label>
+    </div>
     <button type="submit" class="btn btn-primary">{$LOGIN_BUTTON|escape}</button>
 </form>
 <div class="mt-3">

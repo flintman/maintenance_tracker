@@ -23,6 +23,7 @@ $secondary_label = $admin_config['secondary_unit'] ?? 'Secondary';
 $message_board = $admin_config['message_board'] ?? '0';
 
 if (!isset($_SESSION)) session_start();
+// Note: Auto-login via remember_me cookie is handled in index.php
 // If user is signed in and has a theme preference in DB, use it
 if (isset($_SESSION['user_id'])) {
     $stmt = $pdo->prepare("SELECT theme, nickname FROM users WHERE id = ?");

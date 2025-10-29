@@ -7,6 +7,7 @@ CREATE TABLE users (
     email VARCHAR(100),
     nickname VARCHAR(100),
     api_key VARCHAR(255) UNIQUE,
+    remember_token VARCHAR(255) DEFAULT NULL,
     theme VARCHAR(20) DEFAULT 'theme_1',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

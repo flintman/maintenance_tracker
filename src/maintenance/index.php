@@ -8,6 +8,23 @@ $active_message = $stmt->fetchColumn();
 $smarty->assign('message_board', $active_message ?: $smarty->getTemplateVars('NO_MESSAGES_AT_THIS_TIME'));
 
 
+// Auto-login via remember me cookie if session not set
+if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
+    $token = $_COOKIE['remember_me'];
+    $stmt = $pdo->prepare('SELECT * FROM users WHERE remember_token = ?');
+    $stmt->execute([$token]);
+    $user = $stmt->fetch();
+    if ($user) {
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['privilege'] = $user['privilege'];
+        // Optionally, refresh the cookie expiry
+        setcookie('remember_me', $token, time() + 60*60*24*30, '/', '', true, true);
+        // Force reload to ensure session-dependent UI is correct
+        header('Location: index.php');
+        exit;
+    }
+}
+
 if (isset($_SESSION['user_id'])) {
     // Dashboard logic
     $stmt = $pdo->query('SELECT COUNT(*) FROM equipment WHERE equipment_level = 1');
@@ -62,6 +79,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['privilege'] = $user['privilege'];
+        // Handle Remember Me
+        if (!empty($_POST['remember_me'])) {
+            $token = bin2hex(random_bytes(32));
+            $stmt2 = $pdo->prepare('UPDATE users SET remember_token = ? WHERE id = ?');
+            $stmt2->execute([$token, $user['id']]);
+            setcookie('remember_me', $token, time() + 60*60*24*30, '/', '', true, true); // 30 days, secure, httpOnly
+        } else {
+            // Clear any previous token/cookie
+            setcookie('remember_me', '', time() - 3600, '/', '', true, true);
+            $stmt2 = $pdo->prepare('UPDATE users SET remember_token = NULL WHERE id = ?');
+            $stmt2->execute([$user['id']]);
+        }
         header('Location: index.php');
         exit;
     } else {
