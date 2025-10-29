@@ -26,23 +26,39 @@ if (($_SESSION['privilege'] ?? '') === 'admin') {
     // Archive/unarchive
     if (isset($_GET['archive'])) {
         $archive_id = cleanInput($_GET['archive'], 'int');
+        $stmt_unit = $pdo->prepare('SELECT unit_id FROM equipment WHERE id = ?');
+        $stmt_unit->execute([$archive_id]);
+        $unit_id = $stmt_unit->fetchColumn();
         if ($number_unit === 'secondary') {
             $stmt = $pdo->prepare('UPDATE equipment SET archived = 1 WHERE id = ? and equipment_level = 2');
+            $stmt->execute([$archive_id]);
         } else {
+            // Archive primary unit
             $stmt = $pdo->prepare('UPDATE equipment SET archived = 1 WHERE id = ? and equipment_level = 1');
+            $stmt->execute([$archive_id]);
+            // Archive all secondary units linked to this primary unit
+            $stmt = $pdo->prepare('UPDATE equipment SET archived = 1 WHERE unit_id = ? and equipment_level = 2');
+            $stmt->execute([$unit_id]);
         }
-        $stmt->execute([$archive_id]);
         header('Location: ' . $redirect_url);
         exit;
     }
     if (isset($_GET['unarchive'])) {
         $unarchive_id = cleanInput($_GET['unarchive'], 'int');
+        $stmt_unit = $pdo->prepare('SELECT unit_id FROM equipment WHERE id = ?');
+        $stmt_unit->execute([$unarchive_id]);
+        $unit_id = $stmt_unit->fetchColumn();
         if ($number_unit === 'secondary') {
             $stmt = $pdo->prepare('UPDATE equipment SET archived = 0 WHERE id = ? and equipment_level = 2');
+            $stmt->execute([$unarchive_id]);
         } else {
+            // Unarchive primary unit
             $stmt = $pdo->prepare('UPDATE equipment SET archived = 0 WHERE id = ? and equipment_level = 1');
+            $stmt->execute([$unarchive_id]);
+            // Unarchive all secondary units linked to this primary unit
+            $stmt = $pdo->prepare('UPDATE equipment SET archived = 0 WHERE unit_id = ? and equipment_level = 2');
+            $stmt->execute([$unit_id]);
         }
-        $stmt->execute([$unarchive_id]);
         header('Location: ' . $redirect_url);
         exit;
     }
