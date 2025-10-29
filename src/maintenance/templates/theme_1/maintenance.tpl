@@ -37,7 +37,7 @@
                             <select name="performed_by" id="performed_by" class="form-control" required>
                                 <option value="">{$SELECT_USER_LABEL|escape}</option>
                                 {foreach $all_users as $user}
-                                    <option value="{$user.username|escape}"{if $user.username == $current_user} selected{/if}>{$user.nickname|escape} ({$user.username|escape})</option>
+                                    <option value="{$user.nickname|escape}"{if $user.nickname == $current_nickname} selected{/if}>{$user.nickname|escape} ({$user.username|escape})</option>
                                 {/foreach}
                             </select>
                         {else}
