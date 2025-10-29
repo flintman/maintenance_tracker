@@ -12,17 +12,28 @@
         var LIGHT_MODE_LABEL = '{$LIGHT_MODE_LABEL|escape}';
         var DARK_MODE_LABEL = '{$DARK_MODE_LABEL|escape}';
 
+        function getThemeCookie() {
+            const match = document.cookie.match(/(?:^|; )theme=([^;]*)/);
+            return match ? decodeURIComponent(match[1]) : null;
+        }
+        function setTheme(theme) {
+            document.documentElement.setAttribute('data-bs-theme', theme);
+            document.cookie = 'theme=' + theme + ';path=/;max-age=' + (60*60*24*30);
+        }
         document.addEventListener('DOMContentLoaded', () => {
-            const theme = document.cookie.split('; ').find(row => row.startsWith('theme='))?.split('=')[1];
-            if (theme) {
-                document.documentElement.setAttribute('data-bs-theme', theme);
+            let theme = getThemeCookie();
+            if (!theme) {
+                // Default to light if not set
+                theme = 'light';
+                setTheme(theme);
+            } else {
+                setTheme(theme);
             }
         });
         function toggleTheme() {
             let theme = document.documentElement.getAttribute('data-bs-theme');
             theme = theme === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-bs-theme', theme);
-            document.cookie = 'theme=' + theme + ';path=/';
+            setTheme(theme);
         }
     </script>
 </head>
