@@ -1,5 +1,18 @@
 {* Dashboard Template *}
 <div class="container mt-5">
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-bullhorn me-2"></i>{$MESSAGE_BOARD_TITLE|escape}</h5>
+                </div>
+                <div class="card-body">
+                    {$message_board|escape}
+                </div>
+            </div>
+        </div>
+    </div>
     <h2 class="mb-4">{$DASHBOARD_TITLE|escape}</h2>
     <div class="row mb-4">
         <div class="col-md-4">
@@ -38,19 +51,6 @@
                         </li>
                         {/foreach}
                     </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow mb-4">
-                <div class="card-header bg-warning text-dark">
-                    <h5 class="mb-0"><i class="fas fa-bullhorn me-2"></i>{$MESSAGE_BOARD_TITLE|escape}</h5>
-                </div>
-                <div class="card-body">
-                    {$message_board|escape}
                 </div>
             </div>
         </div>
