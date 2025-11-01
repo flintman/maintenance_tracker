@@ -76,7 +76,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_photo'])) {
     $stmt->execute([$maintenance_id]);
     $maintenance = $stmt->fetch();
     $photos = $maintenance['photos'] ? json_decode($maintenance['photos'], true) : [];
-    $photos = array_filter($photos, function($p) use ($photo_to_delete) { return $p !== $photo_to_delete; });
+    $photos = array_filter($photos, function ($p) use ($photo_to_delete) {
+        return $p !== $photo_to_delete;
+    });
     $stmt = $pdo->prepare('UPDATE maintenance SET photos=? WHERE id=?');
     $stmt->execute([json_encode(array_values($photos)), $maintenance_id]);
     @unlink("assets/uploads/" . $unit_id . "/" . $photo_to_delete);
@@ -86,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_photo'])) {
 $stmt = $pdo->prepare('SELECT * FROM maintenance WHERE id = ?');
 $stmt->execute([$maintenance_id]);
 $maintenance = $stmt->fetch();
-    if (!$maintenance) {
+if (!$maintenance) {
     $alert = '<div class="alert alert-warning">' . $smarty->getTemplateVars('MAINTENANCE_NOT_FOUND') . '</div>';
     $smarty->assign('alert', $alert);
     $smarty->display($theme_current . '/view_maintenance.tpl');
@@ -95,7 +97,7 @@ $maintenance = $stmt->fetch();
 }
 $photos = $maintenance['photos'] ? json_decode($maintenance['photos'], true) : [];
 
-if ($source === 'dashboard' ) {
+if ($source === 'dashboard') {
     $backLink = "index.php";
     $backLabel = "Dashboard";
 } else {

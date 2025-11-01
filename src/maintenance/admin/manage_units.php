@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id']) || ($_SESSION['privilege'] ?? '') !== 'admin') 
 $number_unit = 'primary';
 $unit_label = $primary_label;
 
-if(isset($_GET['secondary'])) {
+if (isset($_GET['secondary'])) {
     $number_unit = 'secondary';
     $unit_label = $secondary_label;
 }

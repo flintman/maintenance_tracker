@@ -9,7 +9,7 @@ $number_unit = 'primary';
 $unit_label = $primary_label;
 $redirect_url = 'units.php';
 
-if(isset($_GET['secondary'])) {
+if (isset($_GET['secondary'])) {
     $number_unit = 'secondary';
     $unit_label = $secondary_label;
     $redirect_url = 'units.php?secondary=1';
@@ -98,7 +98,6 @@ if (($_SESSION['privilege'] ?? '') === 'admin') {
                 } else {
                     $stmt = $pdo->prepare('INSERT INTO answers (equipment_id, question_id, value) VALUES (?, ?, ?)');
                     $stmt->execute([$id, $q['id'], $value]);
-
                 }
             }
         }
@@ -116,7 +115,8 @@ if ($number_unit === 'secondary') {
     $archived = $pdo->query('SELECT * FROM equipment WHERE archived = 1 AND equipment_level = 1')->fetchAll();
 }
 
-function getPrimaryAnswers($pdo, $primary_id, $number_unit) {
+function getPrimaryAnswers($pdo, $primary_id, $number_unit)
+{
     $stmt = $pdo->prepare('SELECT q.label, q.type, q.options, a.value FROM answers a JOIN questions q ON a.question_id = q.id WHERE a.equipment_id = ? ORDER BY q.position ASC');
     $stmt->execute([$primary_id]);
     return $stmt->fetchAll();

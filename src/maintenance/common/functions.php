@@ -5,7 +5,8 @@ if (!defined('MAINTENANCE_TRACKER_INIT')) {
 }
 
 // Helper function to sanitize and validate inputs
-function cleanInput($data, $type = 'string') {
+function cleanInput($data, $type = 'string')
+{
     switch ($type) {
         case 'email':
             return filter_var($data, FILTER_SANITIZE_EMAIL);

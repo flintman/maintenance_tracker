@@ -24,13 +24,13 @@ if (!$files) {
     exit(0);
 }
 $files = array_map('basename', $files);
-usort($files, function($a, $b) {
-    return version_compare(str_replace('.sql','',$a), str_replace('.sql','',$b));
+usort($files, function ($a, $b) {
+    return version_compare(str_replace('.sql', '', $a), str_replace('.sql', '', $b));
 });
 
 $ranAny = false;
 foreach ($files as $file) {
-    $ver = str_replace('.sql','',$file);
+    $ver = str_replace('.sql', '', $file);
     if (version_compare($ver, $database_version, '>')) {
         $sql = file_get_contents($updateDir . '/' . $file);
         try {

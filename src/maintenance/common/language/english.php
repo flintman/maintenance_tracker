@@ -259,4 +259,3 @@ $smarty->assign('MOVE_UP', $smarty->getTemplateVars('ACTION_MOVE_UP'));
 $smarty->assign('MOVE_DOWN', $smarty->getTemplateVars('ACTION_MOVE_DOWN'));
 
 // End of language file
-

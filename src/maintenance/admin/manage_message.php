@@ -102,4 +102,3 @@ $smarty->assign('error_msg', $error_msg);
 $smarty->display($theme_current . '/admin/header.tpl');
 $smarty->display($theme_current . '/admin/manage_message.tpl');
 $smarty->display($theme_current . '/admin/footer.tpl');
-?>

@@ -117,6 +117,3 @@ $maintenance_id = cleanInput($_POST['maintenance_id'] ?? null, 'int');
 
 $smarty->display($theme_current . '/maintenance.tpl');
 $smarty->display($theme_current . '/footer.tpl');
-?>
-
-

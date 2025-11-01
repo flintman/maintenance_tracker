@@ -18,7 +18,7 @@ if (!isset($_SESSION['user_id']) && isset($_COOKIE['remember_me'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['privilege'] = $user['privilege'];
         // Optionally, refresh the cookie expiry
-        setcookie('remember_me', $token, time() + 60*60*24*30, '/', '', true, true);
+        setcookie('remember_me', $token, time() + 60 * 60 * 24 * 30, '/', '', true, true);
         // Force reload to ensure session-dependent UI is correct
         header('Location: index.php');
         exit;
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token = bin2hex(random_bytes(32));
             $stmt2 = $pdo->prepare('UPDATE users SET remember_token = ? WHERE id = ?');
             $stmt2->execute([$token, $user['id']]);
-            setcookie('remember_me', $token, time() + 60*60*24*30, '/', '', true, true); // 30 days, secure, httpOnly
+            setcookie('remember_me', $token, time() + 60 * 60 * 24 * 30, '/', '', true, true); // 30 days, secure, httpOnly
         } else {
             // Clear any previous token/cookie
             setcookie('remember_me', '', time() - 3600, '/', '', true, true);
