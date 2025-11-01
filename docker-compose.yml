@@ -10,7 +10,7 @@ services:
     volumes:
       - ./src/maintenance:/var/www/html
     ports:
-      - "8080:80"
+      - "8089:80"
     depends_on:
       - db
     restart: always
